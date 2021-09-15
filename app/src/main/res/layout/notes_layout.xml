@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/start_jobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#48ad4f"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Start Job"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/stop_jobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/job_stop_bg"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Stop Job"
+                android:textAllCaps="true"
+                android:textColor="#fff"
+                android:visibility="gone"/>
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/resume_jobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/resume_jobs"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Resume Job"
+                android:textAllCaps="true"
+                android:textColor="#fff"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/IsJobDoneTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#47a3ee"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Is job Done ?"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/ViewNotesTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="View Notes"
+                android:textAllCaps="true"
+                android:textColor="#000000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/AddNotesTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_red"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Add Notes"
+                android:textAllCaps="true"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

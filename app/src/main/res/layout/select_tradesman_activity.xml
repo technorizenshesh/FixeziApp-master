@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/selecttradesman_toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/selecttradesman_toolbar"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/r1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp">
+
+                    <RelativeLayout
+                        android:layout_width="220dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/border_black">
+
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                            android:id="@+id/youhaveselecttradementxttt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="#000"
+                            android:gravity="center"
+                            android:text="YOU HAVE SELECTED"
+                            android:textColor="#ffffff"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyybtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="200dp"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/border_black">
+
+
+                        <Button
+                            android:id="@+id/selectedfromprevious"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/yellsow"
+                            android:text="COMMERCIAL"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyy2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyybtn"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_black_solid_grey">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/yellsow">
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                            android:id="@+id/tradeenameee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="30dp"
+                            android:text=""
+                            android:textColor="#fff"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyy5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_black_solid_yellow_two">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true">
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                            android:id="@+id/tradeenameee2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="30dp"
+                            android:text="Select Company image to continue"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/linear1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy5"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="4dp">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/PagerContainerST1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:scrollbars="horizontal">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <me.crosswall.lib.coverflow.core.PagerContainer
+                        android:id="@+id/PagerContainerST"
+                        android:layout_width="match_parent"
+                        android:layout_height="185dp"
+                        android:visibility="gone">
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/OverlapPagerST"
+                            android:layout_width="match_parent"
+                            android:layout_height="185dp"
+                            android:layout_weight="1"
+                            android:visibility="visible" />
+
+                    </me.crosswall.lib.coverflow.core.PagerContainer>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyy6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linear1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_black_solid_yellow_two">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true">
+
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                            android:id="@+id/tv_selecttedArea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="30dp"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/pleaseselecctttt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy6"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_40sdp"
+                    android:background="@color/black"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_5sdp">
+
+                    <ImageView
+                        android:id="@+id/rigTradeht"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/ic_left_arrow" />
+
+                    <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                        android:id="@+id/selectacompanytxttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="  PLEASE SELECT A COMPANY  "
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+
+                    <ImageView
+                        android:id="@+id/left"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/ic_right_arrow" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/selectedddlayyy3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pleaseselecctttt"
+                    android:layout_marginTop="10dp">
+
+
+                    <ImageView
+                        android:id="@+id/CallOutFeeInfoST"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/infor_icon"
+                        android:visibility="gone" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/RLST"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
+                        android:background="@drawable/border_black_solid_grey">
+
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                            android:id="@+id/tradeenameee11"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="CALL OUT FEE MAY APPLY"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rel_needqoutes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy3"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/rel_needhelp"
+                        android:background="@drawable/infor_icon" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/rel_needhelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/border_black_solid_yellow_two">
+
+                        <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                            android:id="@+id/tv_selecttedAreas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="Need a few quotes ?"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/selectedddlayyy3"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Do you want to Quote this job ?"
+                        android:textColor="#000000" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp">
+
+                        <Button
+                            android:id="@+id/QuoteYes"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_black_solid_white"
+                            android:text="YES"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <RelativeLayout
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent" />
+
+                        <Button
+                            android:id="@+id/QuoteNo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/residentialbtn"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_black_solid_white"
+                            android:text="NO"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

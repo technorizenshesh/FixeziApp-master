@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/FixeziApp-master/FixeziApp-master/app/src/main/res/layout/activity_book_tradesman.xml" value="0.25" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/FixeziApp-master/FixeziApp-master/app/src/main/res/layout/activity_enter_different_address.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/FixeziApp-master/FixeziApp-master/app/src/main/res/layout/activity_user.xml" value="0.20416666666666666" />
+        <entry key="..\:/Aksha_data/Akash_New_Running_Projects/FixeziApp-master/FixeziApp-master/app/src/main/res/menu/poupup_menu.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

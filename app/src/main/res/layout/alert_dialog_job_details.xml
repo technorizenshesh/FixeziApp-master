@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+      <LinearLayout
+        android:id="@+id/li"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:text="Select One ">
+
+         </TextView>
+
+          <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_12sdp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio_btn_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complete">
+
+            </RadioButton>
+
+
+             <RadioButton
+                android:id="@+id/radio_btn_incomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Incomplete">
+
+             </RadioButton>
+
+
+              <RadioButton
+                android:id="@+id/reschedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Reschedule">
+
+             </RadioButton>
+
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/li"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:id="@+id/cancle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_12sdp"
+            android:textColor="#880505"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            android:text="cancel ">
+
+        </TextView>
+
+         <TextView
+            android:id="@+id/OkayBTCR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_12sdp"
+            android:textColor="#880505"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            android:text="ok  ">
+
+        </TextView>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#fd3621</color>
+    <color name="colorAccent">#fd3621</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="grey">#e8e8e7</color>
+    <color name="greydark">#D5D5D5</color>
+    <color name="blueee">#66ccff</color>
+    <color name="green">#7CC25E</color>
+    <color name="remind_color">#5fb0ce</color>
+    <color name="greendar">#51d11a</color>
+    <color name="dark_green">#008000</color>
+    <color name="blue_sky">#04759E</color>
+    <color name="blue">#52B9FF</color>
+    <color name="transparent">#30000000</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFF54E</color>
+    <color name="yellsow">#00A69B</color>
+    <color name="seekclr">#E21E34</color>
+    <color name="seekline">#434343</color>
+    <color name="skyblue">#00A59A</color>
+    <color name="lightblue">#00A2E8</color>
+    <color name="colorGray">#3A3939</color>
+    <color name="colorBlue">#23489E</color>
+    <color name="colorBluefixezi">#0072BB</color>
+    <color name="bluebarfill">#18afb0</color>
+    <color name="graybarcolor">#e0e0e0</color>
+    <color name="bargray">#7f7f7f</color>
+    <color name="iosbluecolor">#49A2F0</color>
+</resources>

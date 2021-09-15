@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:paddingBottom="@dimen/_5sdp">
+
+    <include
+        android:id="@+id/datetimetoolbar"
+        layout="@layout/toolbar" />
+
+     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/datetimetoolbar"
+        android:scrollbars="vertical">
+
+         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/datetimetoolbar">
+
+              <RelativeLayout
+                android:id="@+id/rl_calender_layout_new_daily_entry_screen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffff">
+
+                <com.mustafaferhan.MFCalendarView
+                    android:id="@+id/mFCalendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:gravity="center_horizontal">
+
+                </com.mustafaferhan.MFCalendarView>
+
+
+            </RelativeLayout>
+
+            <TimePicker
+                android:id="@+id/timePicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone" />
+
+              <LinearLayout
+                android:id="@+id/CalloutfeeTextview"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/rl_calender_layout_new_daily_entry_screen"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_black_solid_yellow"
+                android:visibility="gone"
+                android:gravity="center_horizontal|center_vertical">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="24Hr Emergency Callout Fee"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/CallOutFeeInfoDT"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/tv1"
+                    android:background="@drawable/infor_icon" />
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/ss"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/CalloutfeeTextview"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/roundedcorners_gray">
+
+                <TextView
+                    android:id="@+id/Tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="IS SELECTED DATE FLEXIBLE ?"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+
+                <ImageView
+                    android:id="@+id/DateFlexInfoIM"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/Tv2"
+                    android:background="@drawable/infor_icon" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ss1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/ss"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp">
+
+                <Button
+                    android:id="@+id/yeslayyout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_black_solid_white"
+                    android:text="YES"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+
+                 <RelativeLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/nolayouttt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/residentialbtn"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_black_solid_white"
+                    android:text="NO"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_picker_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ss1"
+                android:weightSum="2"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/picktimetxtviewlayyy"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/ss1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_black_solid_blue">
+
+                    <TextView
+                        android:id="@+id/picktimetxtview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="Click Here To Select Time"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/sspicktime"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/picktimetxtviewlayyy"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/roundedcorners_gray">
+
+                    <TextView
+                        android:id="@+id/Tv3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="IS SELECTED TIME FLEXIBLE ?"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+                    <ImageView
+                        android:id="@+id/TimeFlexInfoIM"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/Tv3"
+                        android:background="@drawable/infor_icon" />
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ss2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/sspicktime"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp">
+
+                    <Button
+                        android:id="@+id/yeslayyout1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_black_solid_white"
+                        android:text="YES"
+                        android:textAllCaps="false"
+                        android:textSize="16sp" />
+
+                    <RelativeLayout
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/nolayouttt1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/residentialbtn"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_black_solid_white"
+                        android:text="NO"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/dialogacceptbtn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/time_picker_linear"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/skyblue"
+                android:text="Accept"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+         </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+
+    <include
+        android:id="@+id/profile_toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ContinueSTTV"
+        android:layout_below="@+id/profile_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <!--    <fixezi.MyUtils.MyFontBoldTextView
+                    android:id="@+id/txt_ttl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="fixezi'- The App of All Trades\nrun down"
+                    android:textColor="@color/black" />-->
+
+            <LinearLayout
+                android:id="@+id/tv_tradesmen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction1"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction2"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction3"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction4"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction5"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction6"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_6sdp"
+                        android:layout_height="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:src="@drawable/dot">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/text7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/tradmeninstruction7"
+                        android:textColor="#2C2829"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_chosing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_tradesmen"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:fontFamily="@font/droidderif"
+                android:padding="@dimen/_15sdp"
+                android:text="Thanks for choosing to use"
+                android:textColor="#2C2829"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/tv_chosing2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_chosing"
+                android:layout_gravity="center"
+                android:padding="@dimen/_4sdp"
+                android:text="Fixezi'- The App of All Trades."
+                android:textColor="#000000"
+                android:textSize="@dimen/_16sdp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="@dimen/_65sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_chosing2"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:src="@drawable/st_one" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+        android:id="@+id/ContinueSTTV"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@color/skyblue"
+        android:gravity="center"
+        android:text="Click Here To Continue"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tradesamn_toolbar">
+
+        <TextView
+            android:id="@+id/rut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/droidderif"
+            android:background="@color/black"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text=" 'Any Accepted job 'Can be Exported / Canclled / Forworded
+            and you can remove any 'Canclled / Rejected / Exported Job "
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RVAllJobs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rut"
+            android:layout_marginTop="10dp"
+            android:alwaysDrawnWithCache="true"
+            android:clipToPadding="false"
+            android:paddingBottom="5dp"
+            android:scrollbars="vertical" />
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/NoJobsFoundTV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/white"
+            android:text="No Jobs Found"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</RelativeLayout>

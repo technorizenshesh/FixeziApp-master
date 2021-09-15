@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context=".RescheduleJobs">
+
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tradesamn_toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RVReScheduleJobs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alwaysDrawnWithCache="true"
+            android:clipToPadding="false"
+            android:paddingBottom="5dp"
+            android:scrollbars="vertical" />
+
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/NoJobsFoundTV6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Jobs Found"
+            android:textColor="#000000"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

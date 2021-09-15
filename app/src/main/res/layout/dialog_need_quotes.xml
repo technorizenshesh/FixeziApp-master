@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_black_solid_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="1) Please choose your first tradesmen,then select 'book now' \n\n
+2) Go back to the 'Job information' screen &amp; select the same requirements.\n\n
+i.e The same trade,problem and date and change the time to 30min-1 hr difference than previous set time.(this is the trademen don't arrive at the same time)then select 'accept'\n\n
+3) On the 'select tradesmen' screen please select a diffrent tradesman then select 'book now'\n\n
+4) Repeat this process if you require 1 more quote." />
+
+    <Button
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/btn_di_ok"
+        android:background="@color/green"
+        android:text="OK"
+        android:textColor="@color/white"
+
+        />
+
+</LinearLayout>

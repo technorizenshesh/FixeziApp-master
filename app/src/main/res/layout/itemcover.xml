@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/parent_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/adapter_border"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Delevery"
+            android:textSize="18dp"
+            android:padding="10dp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/CoverImage"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:padding="10dp"
+            android:layout_gravity="center"/>
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/recommneded_by_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Delevery"
+            android:textSize="18dp"
+            android:padding="10dp"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/CancelRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#90000000" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/na_icon" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

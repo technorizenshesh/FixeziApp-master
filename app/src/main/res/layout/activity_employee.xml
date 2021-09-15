@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <include
+        android:id="@+id/ToolbarWM"
+        layout="@layout/toolbar_dash" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ToolbarWM">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_black_solid_yellow"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#000000"
+                    android:padding="3dp">
+
+                    <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Emergency Callouts"
+                        android:textColor="#ffffff"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:id="@+id/MinimizeIM2"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/minimize_icon" />
+
+                    <ImageView
+                        android:id="@+id/MaximizeIM2"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/maximize_icon"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/MessageTV22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="IF YOU RECEIVE A JOB THAT HAS BEEN BOOKED AS A AFTER HOURS/EMERGENCY YOU WILL NEED TO RING THAT JOB AS SOON AS POSSIBLE AND LET THEM KNOW YOUR EMERGENCY CHARGES."
+                    android:textColor="@color/black" />
+
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedcorners_gray">
+
+
+                <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                    android:id="@+id/ReceivedJobsTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/border_black_solid_red"
+                    android:gravity="center"
+                    android:text="Received Jobs"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:id="@+id/recived_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/rounded_button_white"
+                    android:gravity="center"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="1dp"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textColor="@color/red"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+
+            <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                android:id="@+id/DailyJobsWorkerTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedcorners_gray"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Daily Jobs"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                android:id="@+id/ScheduleJobsWorkerTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedcorners_gray"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Schedule Jobs"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedcorners_gray">
+
+                <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                    android:id="@+id/pendingjobWorkerTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Pending Job's"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                 <TextView
+                    android:id="@+id/tv_pending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/rounded_button_red"
+                    android:gravity="center"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="1dp"
+                    android:singleLine="true"
+                    android:text="5"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/roundedcorners_gray">
+
+                <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                    android:id="@+id/completejobWorkerTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+
+
+                    android:background="@drawable/roundedcorners_gray"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Completed Jobs"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_completed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/rounded_button_red"
+                    android:gravity="center"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="1dp"
+                    android:paddingRight="3dp"
+                    android:paddingBottom="1dp"
+                    android:singleLine="true"
+                    android:text="5"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:id="@+id/TV1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Sign in as user "
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+
+                <ImageView
+                    android:id="@+id/SignInAsUserInfoIM"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/TV1"
+                    android:background="@drawable/infor_icon" />
+
+
+                <CheckBox
+                    android:id="@+id/CheckboxSigninAsWorker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/skyblue">
+
+                <TextView
+                    android:id="@+id/ContinueAsWorkerTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="Continue"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

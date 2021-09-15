@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tradesamn_toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp">
+
+            <RelativeLayout
+                android:id="@+id/RLone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+
+                <ImageView
+                    android:id="@+id/ImageTradesman"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/profile"
+                    android:scaleType="fitXY" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLtwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
+
+                <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                    android:id="@+id/EditInfoTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="edit your information"
+                    android:textAllCaps="true"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/CheckboxTradesman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLthree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLtwo"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/BusinessNameTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your business name here"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLfour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLthree"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/TradingNameTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your trading name here"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RLnine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLfour"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/Ownersname"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type buisness owner's name"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RLten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLnine"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/businessAddress"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type buisness address"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLfive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLten"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/OfficePhoneTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your office phone here"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLsix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLfive"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/MobileNumberTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your mobile no here"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLseven"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLsix"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/EmailTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your email address here"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/RLseven"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp">
+
+                <EditText
+                    android:id="@+id/WebsiteNameTradesman"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/greydark"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:hint="Type your company website here"
+                    android:singleLine="true" />
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/RLSaveTradesman"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/RLeight"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/skyblue"
+                android:enabled="false">
+
+                <TextView
+                    android:id="@+id/SaveTradesman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Save"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

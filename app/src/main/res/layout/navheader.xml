@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearlayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_185sdp"
+    android:background="#E1FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+
+         <ImageView
+            android:id="@+id/log1"
+            android:layout_width="@dimen/_185sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/final_logoupdate"
+            android:scaleType="center" />
+
+    </RelativeLayout>
+
+
+    <!--   <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/flexilogo_small"/>-->
+
+
+</LinearLayout>

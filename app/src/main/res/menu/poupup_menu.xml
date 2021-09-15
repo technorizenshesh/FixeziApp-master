@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/one"
+        android:title="@string/landlord"/>
+    <item
+        android:id="@+id/real_state"
+        android:title="@string/real_estate_agent"/>
+    <item
+        android:id="@+id/famaily_member"
+        android:title="@string/family_member"/>
+    <item
+        android:id="@+id/friend"
+        android:title="@string/friend"/>
+    <item
+        android:id="@+id/tradesmen"
+        android:title="@string/tradesman"/>
+    <item
+        android:id="@+id/contractor"
+        android:title="@string/contractor"/>
+    <item
+        android:id="@+id/bill_payer"
+        android:title="@string/i_am_the_owner"/>
+<!--    <item-->
+<!--        android:id="@+id/self"-->
+<!--        android:title="Myself"/>-->
+</menu>

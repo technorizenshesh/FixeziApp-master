@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/forget_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Enter Email ID"/>
+
+        <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp">
+
+            <EditText
+                android:id="@+id/forgetemailtext"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/emailadressbg"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="10dp"
+                android:textColor="#000000"
+
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/forgetsubmitbtn"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:text="Submit"
+                android:textAllCaps="false"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_height="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent">
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

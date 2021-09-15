@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context=".JobRequestUser">
+
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#000000"
+        android:gravity="center"
+        android:layout_below="@+id/tradesamn_toolbar"
+        android:padding="7dp"
+        android:text="IF YOU ARE A TRADESMAN, WOULD YOU LIKE TO JOIN FIXEZI , AS A TRADESMAN?"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_msg">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RVIncomingJobRequest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alwaysDrawnWithCache="true"
+            android:clipToPadding="false"
+            android:paddingBottom="5dp"
+            android:scrollbars="vertical" />
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Incoming Request Found"
+            android:layout_centerInParent="true"
+            android:textColor="#000000"
+            android:id="@+id/NoIncomingTV"
+            android:visibility="gone"
+            android:background="#ffffff"
+            />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

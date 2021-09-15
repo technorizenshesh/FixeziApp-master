@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    >
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="28/3/1991"
+    android:textColor="#000000"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:id="@+id/TVV"
+    />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/TVV"
+        android:layout_marginTop="10dp"
+        android:id="@+id/RVTEST2"
+        />
+
+</RelativeLayout>

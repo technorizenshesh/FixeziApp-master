@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tradesamn_toolbar"
+        android:layout_margin="20dp">
+
+        <RelativeLayout
+            android:id="@+id/EditRL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Do You Wish To Edit"
+                android:textColor="#000000" />
+
+            <CheckBox
+                android:id="@+id/EditServiceLocationCB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/location_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:background="@drawable/border_black_solid_white"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:text="Location : "
+                android:textColor="#000"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/location_get"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:editable="false"
+                android:text="Choose Location"
+                android:textColor="#000"
+                android:textSize="@dimen/_12sdp"></EditText>
+
+
+            <ImageView
+                android:id="@+id/loca"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:src="@drawable/left_ssarrow">
+
+            </ImageView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location_search"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/border_black_solid_white"
+            android:orientation="horizontal"
+            android:padding="@dimen/_8sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Distance : "
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12sdp">
+
+            </TextView>
+
+             <SeekBar
+                android:id="@+id/seekBar_luminosite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:filterTouchesWhenObscured="false"
+                android:max="500"
+                android:maxWidth="5dp"
+                android:maxHeight="5dp"
+                android:minWidth="10dp"
+                android:minHeight="10dp"
+                android:progressDrawable="@drawable/custom_seekbar"
+                android:thumb="@drawable/custom_thumb" />
+
+            <TextView
+                android:id="@+id/seek_bar_text_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:text="0 km "
+                android:textColor="#000">
+
+            </TextView>
+
+        </LinearLayout>
+
+
+        <AutoCompleteTextView
+            android:id="@+id/ServiceLocation"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/EditRL"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey"
+            android:digits="0123456789.,"
+            android:hint="Type your servicing locations here"
+            android:inputType="numberDecimal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+
+        <ListView
+            android:id="@+id/ServiceLocationLV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/UpdateLocationBT"
+            android:layout_below="@+id/ServiceLocation"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/UpdateLocationBT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#00A59A"
+            android:text="Save Changes"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

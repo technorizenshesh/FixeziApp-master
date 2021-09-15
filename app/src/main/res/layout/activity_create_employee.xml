@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <include
+        android:id="@+id/ToolbarCreateUser"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/CreateUserTV"
+        android:layout_below="@+id/ToolbarCreateUser"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/CreateEmpMsgTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="5dp"
+            android:text="We give you 3 Employee Id's, If you need more Employee Id's they will have to be bought below"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+
+         <EditText
+            android:id="@+id/NameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_gray_solid"
+            android:hint="Enter Name"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/UsernameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_gray_solid"
+            android:hint="Enter Username"
+            android:padding="10dp" />
+
+
+         <EditText
+            android:id="@+id/PasswordET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_gray_solid"
+            android:hint="Enter Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+
+        <EditText
+            android:id="@+id/ConfirmPasswordET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_gray_solid"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+
+
+        <TextView
+            android:id="@+id/PurchaseIdTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="5dp"
+            android:text="Click here to purchase more Employee Id's"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+        android:id="@+id/CreateUserTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/skyblue"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Create Employee Id"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <ProgressBar
+        android:id="@+id/CreateEmployeePB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

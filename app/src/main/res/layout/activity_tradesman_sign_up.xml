@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg">
+
+    <include
+        android:id="@+id/ToolbarSU"
+        layout="@layout/toolbar"/>
+
+     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ToolbarSU">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/SignUpTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#000000"
+                android:gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:text="Get Started today, with a 6 month free trial. No credit card details needed."
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+
+            <com.kofigyan.stateprogressbar.StateProgressBar
+                android:id="@+id/your_state_progress_bar_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:spb_maxStateNumber="four"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:spb_stateBackgroundColor="#BDBDBD"
+                app:spb_stateForegroundColor="@color/skyblue"
+                app:spb_stateNumberBackgroundColor="#808080"
+                app:spb_stateNumberForegroundColor="#eeeeee"
+                app:spb_currentStateDescriptionColor="@color/skyblue"
+                app:spb_stateDescriptionColor="#808080" />
+
+            <EditText
+                android:id="@+id/BusinessNameSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Business Name"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/TradingNameSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Trading Name (Optional)"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+
+            <EditText
+                android:id="@+id/Abn_no"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Abn"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/ed_buisness_owner_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Business Owner's Name"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+
+            <EditText
+                android:id="@+id/ed_bussnessAddress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:hint="Business Address"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/OfficePhoneSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Office Phone Number"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+             <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/tap"
+                    android:elevation="@dimen/_20sdp">
+
+                </Spinner>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/spinner">
+
+                    <EditText
+                        android:id="@+id/MobilePhoneSU"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/tap"
+                        android:hint="Mobile Phone Number"
+                        android:inputType="number"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true" />
+
+
+                    <ImageView
+                        android:id="@+id/verify_otpimg"
+                        android:layout_width="@dimen/_22sdp"
+                        android:layout_height="@dimen/_22sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_18sdp"
+                        android:src="@drawable/ic_checkmark"
+                        android:visibility="gone">
+
+                    </ImageView>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/VerfiyTradesmanTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mobno"
+                android:layout_marginTop="10dp"
+                android:background="@color/skyblue"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Click Here To Verify Your Mobile Number"
+                android:textColor="#ffffff" />
+
+            <EditText
+                android:id="@+id/EmailSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Email Address"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+
+            <EditText
+                android:id="@+id/ConfirmEmailSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Confirm Email Address"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/CompanyUrlSU"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tap"
+                android:hint="Company Website Url (Optional)"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mobno"
+                    android:layout_marginTop="10dp"
+                    android:background="#000"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Please Enter Your Service Locations    "
+                    android:textColor="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/icon_location"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/infor_icon" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/grey">
+
+            </View>
+
+            <LinearLayout
+                android:id="@+id/location_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=" Location : "
+                    android:textColor="#000"
+                    android:textSize="@dimen/_12sdp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/location_get"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Choose Location"
+                    android:textColor="#2694EB"
+                    android:textSize="@dimen/_12sdp">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/loca"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:src="@drawable/left_ssarrow">
+
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:text="Distance"
+                    android:textColor="#000"
+                    android:textSize="@dimen/_12sdp">
+
+                </TextView>
+
+                <SeekBar
+                    android:id="@+id/seekBar_luminosite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    android:filterTouchesWhenObscured="false"
+                    android:max="100"
+                    android:maxWidth="5dp"
+                    android:maxHeight="5dp"
+                    android:minWidth="10dp"
+                    android:minHeight="10dp"
+                    android:progressDrawable="@drawable/custom_seekbar"
+                    android:thumb="@drawable/custom_thumb" />
+
+                <TextView
+                    android:id="@+id/seek_bar_text_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:text=" 0 km "
+                    android:textColor="#000">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/grey"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/RL101"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/RLExample"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/ExampleTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="Example -"
+                            android:paddingLeft="10dp"
+                            android:textColor="#000000"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/SelectedLocationsTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/ExampleTV"
+                            android:hint="6101- carlisle \n6102- bentley"
+                            android:paddingLeft="10dp"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
+
+                    </RelativeLayout>
+
+                    <com.cliffex.Fixezi.MyUtils.NonScrollListView
+                        android:id="@+id/LVServiceLocationSU"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <include layout="@layout/address_dailoge_screen"></include>
+
+            <Button
+                android:id="@+id/ContinueSU"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/skyblue"
+                android:enabled="true"
+                android:fontFamily="@font/droidderif"
+                android:text="Continue"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

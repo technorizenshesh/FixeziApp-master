@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/RLONE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:gravity="center_horizontal"
+            android:text="Welcome To"
+            android:textColor="#1E90FF"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="Fixezi- The App of All Trades"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/RLONE"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/rel4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/rel_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:fontFamily="@font/droidderif"
+                    android:lineSpacingMultiplier="1.1"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Do you have a problem that needs fixing around your home/business or property,and need the job booked, repaired, and finished without the stress of hunting down quality tradesmen ? \n \nWe realise how difficult it can be to find and hire qualified reliable and efficient tradesmen, so at Fixezi we have designed an app that takes the stress out of the whole process.\n\nWith a step by step booking system, and ratings of tradesman listed,we give you the choice to select qualified tradesmen to do your next job!"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/_13sdp"/>
+
+                 <LinearLayout
+                    android:id="@+id/tv_aa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rel_2"
+                    android:orientation="vertical">
+
+                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rel_2"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:gravity="center_horizontal"
+                        android:text="It's free to sign up and use. \n So Try ...\n "
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/_14sdp" />
+
+                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rel_2"
+                        android:background="#ffffff"
+                        android:fontFamily="@font/droidderif"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:text="Fixezi- The App of All Trades"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/_15sdp"
+                        android:textStyle="bold" />
+
+                      <ImageView
+                        android:layout_width="@dimen/_95sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_aa"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/st_one"/>
+
+                      <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                        android:id="@+id/ContinueSTTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@color/lightblue"
+                        android:gravity="center"
+                        android:text="Lets get started"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

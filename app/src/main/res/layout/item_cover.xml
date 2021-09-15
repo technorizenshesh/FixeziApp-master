@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/adapter_border"
+        android:orientation="vertical"
+        android:padding="@dimen/_8sdp">
+
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="user name"
+            android:textColor="#000">
+
+        </com.cliffex.Fixezi.MyUtils.MyFontBoldTextView>
+
+         <ImageView
+            android:id="@+id/CoverImage"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp" />
+
+         <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            android:id="@+id/recommneded_by_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="recommended"
+            android:textColor="#000">
+
+        </com.cliffex.Fixezi.MyUtils.MyFontBoldTextView>
+
+
+    </LinearLayout>
+
+     <RelativeLayout
+        android:id="@+id/CancelRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#90000000" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/na_icon" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

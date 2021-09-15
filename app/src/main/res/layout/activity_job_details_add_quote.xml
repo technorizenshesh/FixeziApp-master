@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JobDetailsAddQuote">
+
+    <include
+        android:id="@+id/tradesamn_toolbar"
+        layout="@layout/toolbar" />
+
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tradesamn_toolbar"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="7 Days "></RadioButton>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:text="14 Days ">
+
+        </RadioButton>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear1"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/droidderif"
+            android:text="Job 666"
+            android:textColor="@color/red">
+
+        </TextView>
+
+
+
+        <EditText
+            android:id="@+id/jobs_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/border_black_solid_white"
+            android:paddingStart="@dimen/_10sdp"
+            android:hint="Type Your Quote Here "
+            android:padding="@dimen/_65sdp"
+            android:paddingLeft="@dimen/_10sdp">
+
+
+        </EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/save_send_quote"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/price_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/border_black_solid_white"
+            android:hint="Price"
+            android:paddingLeft="@dimen/_10sdp">
+
+        </EditText>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/save_send_quote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/skyblue"
+        android:fontFamily="@font/droidderif"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"
+        android:text="Save &amp; send quote to user"
+        android:textColor="#fff"
+        android:textSize="@dimen/_14sdp">
+
+    </TextView>
+
+
+</RelativeLayout>

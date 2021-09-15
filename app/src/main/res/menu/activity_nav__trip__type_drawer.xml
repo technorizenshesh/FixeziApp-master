@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/house"
+            android:iconTintMode="screen"
+            android:title="Home"
+            app:showAsAction="always" />
+
+        <item
+            android:id="@+id/nav_ourstory"
+            android:icon="@drawable/our_history"
+            android:iconTintMode="screen"
+            android:title="Our Story"
+            app:showAsAction="always" />
+
+         <item
+            android:id="@+id/nav_video"
+            android:icon="@drawable/film"
+            android:iconTintMode="screen"
+            android:title="Website"
+            app:showAsAction="always" />
+
+         <item
+            android:id="@+id/nav_fb"
+            android:icon="@drawable/facebook"
+            android:iconTintMode="screen"
+            android:title="Fixezi Facebook"
+            app:showAsAction="always" />
+
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/phone"
+            android:iconTintMode="screen"
+            android:title="Contact info"
+            app:showAsAction="always" />
+    </group>
+
+</menu>

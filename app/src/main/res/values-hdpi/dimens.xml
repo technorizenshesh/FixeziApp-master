@@ -1,0 +1,14 @@
+<resources>
+
+    <dimen name="splash_logo">150dp</dimen>
+
+    <dimen name="splash_logo2_width">250dp</dimen>
+    <dimen name="splash_logo2_height">90dp</dimen>
+
+    <dimen name="login_logo">100dp</dimen>
+
+    <dimen name="new_logo_width">200dp</dimen>
+    <dimen name="new_logo_height">100dp</dimen>
+
+
+</resources>

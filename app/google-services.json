@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "208146660136",
+    "project_id": "fixezi-the-app-of-all-trades",
+    "storage_bucket": "fixezi-the-app-of-all-trades.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208146660136:android:62abe103f745e1a10fee1d",
+        "android_client_info": {
+          "package_name": "com.cliffex.Fixezi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208146660136-3ivtpfj7drjlvens3q9mntkbcjc9ogap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cliffex.Fixezi",
+            "certificate_hash": "8d3bb3b11ecb2abbfa2b31e9f53522c94ad515c5"
+          }
+        },
+        {
+          "client_id": "208146660136-a1k81eri4qp3edk6fo3mkihdsf9ddr1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cliffex.Fixezi",
+            "certificate_hash": "99ec9bf1cf79cdfb338cbec735e663eab4c16597"
+          }
+        },
+        {
+          "client_id": "208146660136-0jcp04r9smka3d36k23lb6pql4bso4eu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBjeb6xNXhEKlzFvKJ0rMPriYvBFZ3bt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208146660136-0jcp04r9smka3d36k23lb6pql4bso4eu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    buildToolsVersion '28.0.3'
+}
+
+dependencies {
+    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+}
