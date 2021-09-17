@@ -47,7 +47,7 @@ public class DataCode {
             "Holy See (vatican City State)", "Venezuela", "Viet Nam",
             "Wallis And Futuna", "Yemen", "Zambia", "Zimbabwe" };
 
-     public static final String[] countryAreaCodes = { "+1", "+44", "+60",
+     public static final String[] countryAreaCodes = { "+60","+1", "+44",
             "+61", "+64", "+65","+91"};
 
      public static final String[] countryCodes = { "AF", "AL", "DZ", "AD", "AO",
@@ -70,6 +70,6 @@ public class DataCode {
             "TZ", "TH", "TG", "TK", "TO", "TN", "TR", "TM", "TV", "AE", "UG",
             "GB", "UA", "UY", "US", "UZ", "VU", "VA", "VE", "VN", "WF", "YE",
             "ZM", "ZW",
-
     };
+
 }

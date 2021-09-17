@@ -656,7 +656,9 @@ public class EnterDifferentAddress extends AppCompatActivity {
                 Log.e("responseresponse","anError = "+anError.getErrorBody());
                 Log.e("responseresponse","anError = "+anError.getErrorDetail());
             }
+
         });
+
     }
 
     @Override
@@ -702,6 +704,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
                 }
             }
         }
+
         if (requestCode == 20) {
             if (resultCode == Activity.RESULT_OK) {
                 String Id = data.getStringExtra("Id");

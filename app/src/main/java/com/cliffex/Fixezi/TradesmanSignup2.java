@@ -1291,7 +1291,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
 
                     Log.e("SELETED Drivingd====", ImageUpload_drivnig + "");
                     BTUploadCompanyDetail1.setBackgroundResource(border_tourtoise_solide);
-                    BTUploadCompanyDetail1.setText("Image Upload");
+                    BTUploadCompanyDetail1.setText("Driver licence Uploaded");
                     BTUploadCompanyDetail1.setTextColor(R.color.white);
 
                     Log.e("asdfasfasfasd", "fddf = " + fddf2);

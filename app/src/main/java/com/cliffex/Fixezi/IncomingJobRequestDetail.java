@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,6 +37,7 @@ import com.cliffex.Fixezi.util.IabBroadcastReceiver;
 import com.cliffex.Fixezi.util.IabHelper;
 import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
+import com.cliffex.Fixezi.util.ProjectUtil;
 import com.cliffex.Fixezi.util.Purchase;
 import com.cliffex.Fixezi.util.TimePickerFragment;
 
@@ -64,11 +66,11 @@ public class IncomingJobRequestDetail extends
         IabBroadcastReceiver.IabBroadcastListener {
 
     Toolbar toolbar;
-    TextView toolbar_textview,ProblemDetail,FlexibleDateDetail,
-            FlexibleTimeDetail,PersonOnSiteDetail, JobAddressDetail, TimeFlexibilityTVDetail;
-    TextView qotesaccepted,tv_canceljob,HomeNmberDetail,MobileNmberDetail,JobRequestDetail,
-            FullNameDetail,FullAddressDetailUser,HomeNmberDetailUser,WorkNmberDetailUser,
-            MobileNmberDetailUser,EmailDetail;
+    TextView toolbar_textview, ProblemDetail, FlexibleDateDetail,
+            FlexibleTimeDetail, PersonOnSiteDetail, JobAddressDetail, TimeFlexibilityTVDetail;
+    TextView qotesaccepted, tv_canceljob, HomeNmberDetail, MobileNmberDetail, JobRequestDetail,
+            FullNameDetail, FullAddressDetailUser, HomeNmberDetailUser, WorkNmberDetailUser,
+            MobileNmberDetailUser, EmailDetail;
     RelativeLayout RLDetail;
     SessionTradesman sessionTradesman;
     Button AcceptJobBt, RejectJobBt, btn_reschedule;
@@ -109,7 +111,7 @@ public class IncomingJobRequestDetail extends
 
     boolean IsAlreadyPurchased = false;
     Purchase myGlobalPurchase;
-    private TextView text_number,billPayerUser,ralationUser;
+    private TextView text_number, billPayerUser, ralationUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +195,7 @@ public class IncomingJobRequestDetail extends
             public void onClick(View v) {
                 DialogFragment dFragment = new TimePickerFragment();
                 // Show the time picker dialog fragment
-                dFragment.show(getFragmentManager(), "Time Picker");
+                dFragment.show(getFragmentManager(),"Time Picker");
             }
         });
 
@@ -229,7 +231,6 @@ public class IncomingJobRequestDetail extends
             }
         });
 
-
         RejectJobBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,7 +239,7 @@ public class IncomingJobRequestDetail extends
         });
 
         if (InternetDetect.isConnected(this)) {
-            //System.out.println(">>>>>>>>>>>>problemID>>>>>>"+ProblemId);
+            // System.out.println(">>>>>>>>>>>>problemID>>>>>>"+ProblemId);
             new JsonTaskGetJobDetail().execute(ProblemId);
             JsonJobDetail(ProblemId);
         } else {
@@ -283,6 +284,7 @@ public class IncomingJobRequestDetail extends
                 } catch (IabHelper.IabAsyncInProgressException e) {
                     complain("Error querying inventory. Another async operation in progress.");
                 }
+
             }
         });
 
@@ -324,9 +326,7 @@ public class IncomingJobRequestDetail extends
                         dialog.dismiss();
                     }
                 });
-
                 dialog.show();
-
             }
         });
 
@@ -334,58 +334,23 @@ public class IncomingJobRequestDetail extends
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Log.e("","");
-                if(paymentPLan.equals("NoPlan")) {
+                Log.e("paymentPLan", "paymentPLan = " + paymentPLan);
+                if (paymentPLan.equals("NoPlan")) {
                     openNoPlanDialog();
-                } else if(WhichPlan.equals("Pay Per Job")){
-                    openNoPlanDialog();
+                } else if (paymentPLan.equalsIgnoreCase("Pay Per Job")) {
+                    acceptjobDialog();
+                } else if(paymentPLan.equalsIgnoreCase("add_to_wallet")) {
+                    acceptjobDialog();
                 }
 
-//                if (WhichPlan.equalsIgnoreCase("Pay Per Job")) {
-//                    if (IsAlreadyPurchased) {
-//                        if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
-//                            new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED",incomingRequestBean.getProblem().getUser_id());
-//                        } else {
-//                            Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        final Dialog dialog = new Dialog(IncomingJobRequestDetail.this);
-//                        dialog.setContentView(R.layout.dialog_accetalrt);
-//                        Button acceptBtGeneral = (Button) dialog.findViewById(R.id.acceptBtGeneral);
-//                        Button cancelBtGeneral = (Button) dialog.findViewById(R.id.cancelBtGeneral);
-//                        TextView MessageTV = (TextView) dialog.findViewById(R.id.MessageTV);
-//
-//                        String text = "Your are on a <font color='#AF6C66'>Pay Per Job</font> Plan. you have to accept this request in order to see the user details.";
-//
-//                        MessageTV.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-//
-//                        acceptBtGeneral.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                String payload = sessionTradesman.getId();
-//                                try {
-//                                    mHelper.launchPurchaseFlow(IncomingJobRequestDetail.this, Appconstants.SKU_PAY_PER_JOB, RC_REQUEST, mPurchaseFinishedListener, payload);
-//                                } catch (IabHelper.IabAsyncInProgressException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        });
-//
-//                        cancelBtGeneral.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                        dialog.show();
-//                    }
-//                } else {
+//                else {
 //                    if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
 //                        new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED", incomingRequestBean.getProblem().getUser_id());
 //                    } else {
 //                        Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
 //                    }
 //                }
+
             }
         });
 
@@ -394,7 +359,77 @@ public class IncomingJobRequestDetail extends
 
     }
 
+    private void jobPaymentDialog() {
+
+        final Dialog dialog = new Dialog(IncomingJobRequestDetail.this);
+        dialog.setContentView(R.layout.job_payment_dialog);
+        Button acceptBtGeneral = (Button) dialog.findViewById(R.id.acceptBtGeneral);
+        Button cancelBtGeneral = (Button) dialog.findViewById(R.id.cancelBtGeneral);
+        TextView MessageTV = (TextView) dialog.findViewById(R.id.MessageTV);
+
+        String text = "A payment of $9.95 will be deducted from your account";
+
+        MessageTV.setText(Html.fromHtml(text),TextView.BufferType.SPANNABLE);
+
+        acceptBtGeneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ProjectUtil.showProgressDialog(IncomingJobRequestDetail.this,false,"Please wait...");
+                if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
+                    new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED", incomingRequestBean.getProblem().getUser_id());
+                } else {
+                    Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        cancelBtGeneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void acceptjobDialog() {
+
+        final Dialog dialog = new Dialog(IncomingJobRequestDetail.this);
+        dialog.setContentView(R.layout.dialog_accetalrt);
+        Button acceptBtGeneral = (Button) dialog.findViewById(R.id.acceptBtGeneral);
+        Button cancelBtGeneral = (Button) dialog.findViewById(R.id.cancelBtGeneral);
+        TextView MessageTV = (TextView) dialog.findViewById(R.id.MessageTV);
+
+        String text = "Your are on a <font color='#AF6C66'>Pay Per Job</font> Plan. you have to accept this request in order to see the user details.";
+
+        MessageTV.setText(Html.fromHtml(text),TextView.BufferType.SPANNABLE);
+
+        acceptBtGeneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  dialog.dismiss();
+                  jobPaymentDialog();
+                  //                String payload = sessionTradesman.getId();
+//                try {
+//                    mHelper.launchPurchaseFlow(IncomingJobRequestDetail.this, Appconstants.SKU_PAY_PER_JOB, RC_REQUEST, mPurchaseFinishedListener, payload);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    e.printStackTrace();
+//                }
+            }
+        });
+
+        cancelBtGeneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     private void openNoPlanDialog() {
+
         final Dialog dialog = new Dialog(IncomingJobRequestDetail.this);
         dialog.setContentView(R.layout.noplan_dialog);
         Button btnAccept = (Button) dialog.findViewById(R.id.btnAccept);
@@ -415,7 +450,6 @@ public class IncomingJobRequestDetail extends
                 dialog.dismiss();
             }
         });
-
 
         dialog.show();
 
@@ -438,6 +472,7 @@ public class IncomingJobRequestDetail extends
                 }
             }
         });
+
         cancelBtGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -445,9 +480,7 @@ public class IncomingJobRequestDetail extends
             }
         });
 
-
         dialog.show();
-
 
         /*new EasyDialog.Builder(this)
                 .setTitle("Alert!")
@@ -476,6 +509,7 @@ public class IncomingJobRequestDetail extends
                     }
                 })
                 .build();*/
+
     }
 
     private void JsonJobDetail(String problem_id) {
@@ -490,9 +524,9 @@ public class IncomingJobRequestDetail extends
                         String responseData = response.body().string();
                         JSONArray jsonArray = new JSONArray(responseData);
                         JSONObject obj = jsonArray.getJSONObject(0);
-                        Log.e("sdfsfsdfsd","responseDataRetrofi = " + responseData);
+                        Log.e("sdfsfsdfsd", "responseDataRetrofi = " + responseData);
                         paymentPLan = obj.getString("plan_type");
-                        Log.e("sdfsfsdfsd","paymentPLan = " + paymentPLan);
+                        Log.e("sdfsfsdfsd", "paymentPLan = " + paymentPLan);
                         // String message=object.getString("message");
                         System.out.println("JObDetails_Response" + obj);
 
@@ -669,36 +703,36 @@ public class IncomingJobRequestDetail extends
                 int start = result.getProblem().getPersonOnSite().indexOf(' ');
                 String firstName = "";
 
-                if(start >= 0) {
+                if (start >= 0) {
                     firstName = result.getProblem().getPersonOnSite().substring(0, start);
                 }
 
                 PersonOnSiteDetail.setText(firstName + " #######");
 
-                Log.e("getStreetgetStreet","" + result.getProblem().getStreet());
+                Log.e("getStreetgetStreet", "" + result.getProblem().getStreet());
 
                 String[] str = result.getProblem().getStreet().split(",");
                 String finalString = "";
 
-                for(int i=0;i<str.length;i++) {
-                    if(i==0) {
+                for (int i = 0; i < str.length; i++) {
+                    if (i == 0) {
                         finalString = finalString + str[i].replaceAll("[a-zA-Z0-9]", "#");
                     } else {
                         finalString = finalString + ", " + str[i];
                     }
                 }
 
-                if(result.getProblem().getR_status() != null || !(result.getProblem().getR_status().equals(""))) {
+                if (result.getProblem().getR_status() != null || !(result.getProblem().getR_status().equals(""))) {
 
                     ralationUser.setText(result.getProblem().getR_status());
 
-                    if(result.getProblem().getR_id() != null || !(result.getProblem().getR_id().equals(""))) {
-                        if(result.getProblem().getR_id().equals("NO")) {
+                    if (result.getProblem().getR_id() != null || !(result.getProblem().getR_id().equals(""))) {
+                        if (result.getProblem().getR_id().equals("NO")) {
                             billPayerUser.setText("NO");
-                            billPayerUser.setTextColor(ContextCompat.getColor(IncomingJobRequestDetail.this,R.color.red));
+                            billPayerUser.setTextColor(ContextCompat.getColor(IncomingJobRequestDetail.this, R.color.red));
                         } else {
                             billPayerUser.setText("YES");
-                            billPayerUser.setTextColor(ContextCompat.getColor(IncomingJobRequestDetail.this,R.color.green));
+                            billPayerUser.setTextColor(ContextCompat.getColor(IncomingJobRequestDetail.this, R.color.green));
                         }
                     }
 
@@ -724,8 +758,8 @@ public class IncomingJobRequestDetail extends
                 String[] str1 = result.getHome_address().split(",");
                 String finalString1 = "";
 
-                for(int i=0;i<str1.length;i++) {
-                    if(i==0) {
+                for (int i = 0; i < str1.length; i++) {
+                    if (i == 0) {
                         finalString1 = finalString1 + str1[i].replaceAll("[a-zA-Z0-9]", "#");
                     } else {
                         finalString1 = finalString1 + ", " + str1[i];
@@ -819,22 +853,24 @@ public class IncomingJobRequestDetail extends
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            ProjectUtil.pauseProgressDialog();
             if (result == null) {
-
             } else if (result.equalsIgnoreCase("ACCEPTED")) {
-                try {
-                    mHelper.consumeAsync(myGlobalPurchase, mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                } /*if (WhichPlan.equalsIgnoreCase("Pay Per Job")) {
-                    try {
-                        mHelper.consumeAsync(myGlobalPurchase, mConsumeFinishedListener);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        complain("Error consuming gas. Another async operation in progress.");
-                    }
-                } else {
-                    finish();
-                } */
+                startActivity(new Intent(IncomingJobRequestDetail.this,TradesmanActivity.class));
+                finish();
+//                try {
+//                    mHelper.consumeAsync(myGlobalPurchase, mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//                } /* if (WhichPlan.equalsIgnoreCase("Pay Per Job")) {
+//                    try {
+//                        mHelper.consumeAsync(myGlobalPurchase, mConsumeFinishedListener);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        complain("Error consuming gas. Another async operation in progress.");
+//                    }
+//                } else {
+//                    finish();
+//                } */
             } else if (result.equalsIgnoreCase("REJECTED")) {
                 finish();
             }
@@ -1031,7 +1067,7 @@ public class IncomingJobRequestDetail extends
         bld.create().show();
     }
 
-/*  void saveData() {
+    /*  void saveData() {
         editor.putInt("tank", mTank);
         editor.apply();
         //CreditsTV.setText(mTank + " Credits");

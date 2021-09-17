@@ -186,7 +186,7 @@ public class UserActivity extends AppCompatActivity
         PreferenceConnector.writeString(UserActivity.this, PreferenceConnector.Address_Save1,"");
 
         if (!Address_Save.equals("")) {
-            Toast.makeText(getApplicationContext(),"after" + Address_Save, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(),"after" + Address_Save, Toast.LENGTH_SHORT).show();
         }
 
         // getLatLonFromAddress("1/32 Alday St, St James WA 6102, Australia");
@@ -493,7 +493,6 @@ public class UserActivity extends AppCompatActivity
         commbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Appconstants.Category = "COMMERCIAL";
                 commbtn.setBackgroundColor(Color.parseColor(redcolor));
                 commbtn.setTextColor(Color.parseColor("#ffffff"));

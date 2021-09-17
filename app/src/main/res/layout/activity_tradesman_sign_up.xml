@@ -122,18 +122,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="@dimen/_55sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="@dimen/_2sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/tap"
-                    android:elevation="@dimen/_20sdp">
+                 <Spinner
+                     android:id="@+id/spinner"
+                     android:layout_width="@dimen/_55sdp"
+                     android:layout_height="@dimen/_35sdp"
+                     android:layout_marginLeft="@dimen/_2sdp"
+                     android:layout_marginTop="10dp"
+                     android:layout_marginRight="@dimen/_2sdp"
+                     android:layout_weight="1"
+                     android:background="@drawable/tap"
+                     android:elevation="@dimen/_20sdp">
 
-                </Spinner>
+                 </Spinner>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

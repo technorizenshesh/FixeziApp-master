@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_12sdp"
-            android:text="Cancle "
+            android:text="Cancel "
             android:textColor="#880505"
             android:textSize="@dimen/_12sdp"
             android:textStyle="bold">

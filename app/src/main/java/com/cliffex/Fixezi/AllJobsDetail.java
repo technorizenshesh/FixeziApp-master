@@ -109,9 +109,7 @@ public class AllJobsDetail extends AppCompatActivity {
         start_jobs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 manage_waiting_timeApi("START");
-
                 start_jobs.setVisibility(View.GONE);
                 stop_jobs.setVisibility(View.VISIBLE);
                 resume_jobs.setVisibility(View.GONE);
@@ -159,11 +157,11 @@ public class AllJobsDetail extends AppCompatActivity {
                         int selectedId = radiogroup.getCheckedRadioButtonId();
                         radiobutton = (RadioButton) callFeeDialog.findViewById(selectedId);
 
-                        if (radiobutton.getText().equals("Complete")) {
+                        if (radiobutton.getText().toString().equals("Complete")) {
                             AlertDialogOption();
                         }
 
-                        if (radiobutton.getText().equals("Incomplete")) {
+                        if (radiobutton.getText().toString().equals("Incomplete")) {
 
                             AlertDialogOption1();
 
@@ -197,17 +195,15 @@ public class AllJobsDetail extends AppCompatActivity {
                         OkayBTCR.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                               callFeeDialog.dismiss();
+                                callFeeDialog.dismiss();
                             }
                         });
 
                         cancle_text.setOnClickListener(new View.OnClickListener() {
-
                             @Override
                             public void onClick(View v) {
-                            callFeeDialog.dismiss();
+                                callFeeDialog.dismiss();
                             }
-
                         });
 
                         callFeeDialog.show();
@@ -218,7 +214,7 @@ public class AllJobsDetail extends AppCompatActivity {
                 MyText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                   callFeeDialog.dismiss();
+                        callFeeDialog.dismiss();
                     }
                 });
 
@@ -308,7 +304,6 @@ public class AllJobsDetail extends AppCompatActivity {
                 });
     }
 
-
     private void AlertDialogOption1() {
 
         final Dialog callFeeDialog = new Dialog(AllJobsDetail.this);
@@ -319,41 +314,32 @@ public class AllJobsDetail extends AppCompatActivity {
         TextView cancle_text = (TextView) callFeeDialog.findViewById(R.id.cancle_text);
         TextView OkayBTCR = (TextView) callFeeDialog.findViewById(R.id.OkayBTCR);
         radiogroup = (RadioGroup) callFeeDialog.findViewById(R.id.radiogroup);
-
-
         radio_btn_complete = (RadioButton) callFeeDialog.findViewById(R.id.radio_btn_complete);
 
         radio_btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent in = new Intent(AllJobsDetail.this, JobDetailsAddQuote.class);
                 startActivity(in);
-
             }
         });
 
         OkayBTCR.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 callFeeDialog.dismiss();
             }
-
         });
 
         cancle_text.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 callFeeDialog.dismiss();
             }
-
         });
 
         callFeeDialog.show();
+
     }
 /*
     private void AlertDailogePending() {
@@ -415,7 +401,7 @@ public class AllJobsDetail extends AppCompatActivity {
 
                 JSONArray jsonArray = new JSONArray(response);
                 JSONObject object = jsonArray.getJSONObject(0);
-                
+
                 IncomingRequestBean incomingRequestBean = new IncomingRequestBean();
                 incomingRequestBean.setId(object.getString("id"));
                 incomingRequestBean.setName(object.getString("name"));

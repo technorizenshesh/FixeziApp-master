@@ -554,7 +554,7 @@
                 android:layout_below="@+id/l5"
                 android:layout_marginTop="10dp">
 
-                 <Button
+                <Button
                     android:id="@+id/BTUploadPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1243,23 +1243,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/driver_license"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true">
-
-                 <Button
-                    android:id="@+id/BTUploadCompanyDetail1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border_black_solid_white"
-                    android:padding="10dp"
-                    android:text="Upload Driving Licence "
-                    android:textAllCaps="false" />
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1324,6 +1307,23 @@
 
             </LinearLayout>
 
+             <RelativeLayout
+                 android:id="@+id/driver_license"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:clickable="true">
+
+                 <Button
+                     android:id="@+id/BTUploadCompanyDetail1"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:background="@drawable/border_black_solid_white"
+                     android:padding="10dp"
+                     android:text="Upload Driving Licence "
+                     android:textAllCaps="false" />
+
+             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/l7"
                 android:layout_width="fill_parent"
@@ -1335,7 +1335,10 @@
                     android:id="@+id/tv_term_conditions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="2dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/bgselect"
                     android:gravity="center"
                     android:text="Fixezi Contract"
@@ -1345,7 +1348,6 @@
                     android:textStyle="bold" />
 
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/usernamlayyyy"

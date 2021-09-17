@@ -13,8 +13,8 @@
             android:id="@+id/MessageTV"
             style="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="Your are on a Pay "
             android:textColor="@color/black" />
 

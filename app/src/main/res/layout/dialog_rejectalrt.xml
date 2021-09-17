@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="15dp">
 
-
     <RelativeLayout
         android:id="@+id/Rlone"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
             android:textColor="@color/black" />
 
     </RelativeLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +59,7 @@
                 android:textColor="#ffffff" />
 
         </RelativeLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 
 </RelativeLayout>

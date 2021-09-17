@@ -18,6 +18,7 @@
         android:resizeable="true"
         android:smallScreens="true"
         android:xlargeScreens="true" />
+
     <supports-screens
         android:anyDensity="true"
         android:compatibleWidthLimitDp="850"
@@ -65,7 +66,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.EmployeeTradeHomeAct"></activity>
+        <activity android:name=".activities.EmployeeTradeHomeAct"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ChooseCardAct"
             android:screenOrientation="portrait"></activity>
