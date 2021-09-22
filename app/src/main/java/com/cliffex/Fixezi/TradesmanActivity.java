@@ -37,6 +37,7 @@ import com.cliffex.Fixezi.util.IabHelper;
 import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
 import com.cliffex.Fixezi.util.Purchase;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
@@ -100,6 +101,7 @@ public class TradesmanActivity extends AppCompatActivity implements
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String WhichPlan = "";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
@@ -169,6 +171,12 @@ public class TradesmanActivity extends AppCompatActivity implements
         Appconstants.afterhours = "yes";
         Intent intent = getIntent();
         AfterHour = intent.getStringExtra("AfterHour");
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Hello Akash IDdsas");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         SetuUi();
 
@@ -253,8 +261,7 @@ public class TradesmanActivity extends AppCompatActivity implements
             OnHoldBt.setTextColor(Color.parseColor("#000000"));
             OnHoldBt.setBackgroundResource(R.drawable.border_black_solid_white);
 
-        }
-        else if (sessionTradesman.getKeyBusystatus().equalsIgnoreCase("1")) {
+        } else if (sessionTradesman.getKeyBusystatus().equalsIgnoreCase("1")) {
             OnHoldBt.setTextColor(Color.parseColor("#000000"));
             OnHoldBt.setBackgroundResource(R.drawable.border_black_solid_yellow_two);
 
@@ -281,14 +288,14 @@ public class TradesmanActivity extends AppCompatActivity implements
         });
 
         tvEmployeeJobs.setOnClickListener(v -> {
-            startActivity(new Intent(mContext,EmployeeTradeHomeAct.class));
+            startActivity(new Intent(mContext, EmployeeTradeHomeAct.class));
         });
 
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finishAffinity();
-                startActivity(new Intent(mContext,MainActivity.class));
+                startActivity(new Intent(mContext, MainActivity.class));
             }
         });
 
@@ -373,8 +380,8 @@ public class TradesmanActivity extends AppCompatActivity implements
         IncomingJobTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(TradesmanActivity.this,IncomingJobRequest.class);
-            startActivity(intent);
+                Intent intent = new Intent(TradesmanActivity.this, IncomingJobRequest.class);
+                startActivity(intent);
             }
         });
 
@@ -623,7 +630,7 @@ public class TradesmanActivity extends AppCompatActivity implements
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         finishAffinity();
-                        startActivity(new Intent(mContext,MainActivity.class));
+                        startActivity(new Intent(mContext, MainActivity.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -856,7 +863,6 @@ public class TradesmanActivity extends AppCompatActivity implements
                     incomingRequestBean.setStreet(object.getString("street"));
                     incomingRequestBean.setHousenoo(object.getString("housenoo"));
 
-
                     JSONArray ProblemArray = object.getJSONArray("problem");
                     JSONObject ProblemObject = ProblemArray.getJSONObject(0);
 
@@ -880,8 +886,7 @@ public class TradesmanActivity extends AppCompatActivity implements
                     incomingRequestBean.setProblem(problem);
                     incomingRequestListBeanList.add(incomingRequestBean);
 
-
-                    for (int j = 0; j < ProblemArray.length(); j++) {
+                    for (int j=0; j<ProblemArray.length();j++) {
                         JSONObject obj = ProblemArray.getJSONObject(j);
                         if (obj.getString("order_status").equals("PENDING")) {
                             count++;
@@ -891,6 +896,7 @@ public class TradesmanActivity extends AppCompatActivity implements
                             countAccepted++;
                         }
                     }
+
                     all = incomingRequestListBeanList.size();
 
                     Log.e("ListSize", "??" + incomingRequestListBeanList.size());
@@ -905,7 +911,6 @@ public class TradesmanActivity extends AppCompatActivity implements
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -926,6 +931,7 @@ public class TradesmanActivity extends AppCompatActivity implements
                         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         String currentDateStr = df.format(c.getTime());
                         Date currentDate = null, jobDate = null;
+
                         try {
 
                             currentDate = df.parse(currentDateStr);
@@ -951,9 +957,7 @@ public class TradesmanActivity extends AppCompatActivity implements
                 }
 
                 if (index == null) {
-
                 } else {
-
                     Intent intent = new Intent(TradesmanActivity.this, IsJobDone.class);
                     intent.putExtra("ProblemId", result.get(Integer.parseInt(index)).getProblem().getId());
                     startActivity(intent);
@@ -962,7 +966,7 @@ public class TradesmanActivity extends AppCompatActivity implements
         }
     }
 
-    private class JsonIncomingReq extends AsyncTask<String,String,List<IncomingRequestBean>> {
+    private class JsonIncomingReq extends AsyncTask<String, String, List<IncomingRequestBean>> {
 
         @Override
         protected void onPreExecute() {
@@ -973,7 +977,7 @@ public class TradesmanActivity extends AppCompatActivity implements
         protected List<IncomingRequestBean> doInBackground(String... paramss) {
             try {
                 URL url = new URL(HttpPAth.Urlpath + "get_bookingList_byid&");
-                Map<String,Object> params = new LinkedHashMap<>();
+                Map<String, Object> params = new LinkedHashMap<>();
                 params.put("Tradesman_id", sessionTradesman.getId());
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {

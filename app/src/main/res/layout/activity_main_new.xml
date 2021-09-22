@@ -96,6 +96,19 @@
                 android:textSize="@dimen/_14sdp" />
 
             <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+                android:id="@+id/tvFbLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="#000000"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="@dimen/_8sdp"
+                android:text="Facebook Login"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+
+            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
                 android:id="@+id/SignupTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

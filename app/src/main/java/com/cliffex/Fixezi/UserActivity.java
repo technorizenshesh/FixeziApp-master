@@ -50,6 +50,9 @@ import com.cliffex.Fixezi.MyUtils.GPSTracker;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.NonScrollListView;
+import com.cliffex.Fixezi.util.MyApp;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -57,6 +60,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialogSet;
@@ -152,7 +156,9 @@ public class UserActivity extends AppCompatActivity
     private RelativeLayout uplayy1;
     private LinearLayout select_date_rl, select_time_rl;
     private String status = "";
+    private FirebaseAnalytics mFirebaseAnalytics;
     public static String address = "",selectDate = "";
+    private Tracker mTracker;
     // private PlacesClient placesClient;
 
     public void fetchLatLonFromAddress(String strAddress) {
@@ -178,6 +184,13 @@ public class UserActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        MyApp application = (MyApp) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("User Screen Akash");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         Address_Save = PreferenceConnector.readString(UserActivity.this,
                 PreferenceConnector.Address_Save, "");
@@ -448,6 +461,13 @@ public class UserActivity extends AppCompatActivity
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mTracker.setTitle("Find Tradesmen Button Clicked");
+                mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Hello Akash ID");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
                 boolean isError = false;
 
@@ -846,6 +866,11 @@ public class UserActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "UserActivity");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "UserActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
 
         Log.e("asfdasdasdasdas","Appconstants.ServiceLocation = " + Appconstants.ServiceLocation);
         Log.e("asfdasdasdasdas","Appconstants.lat = " + Appconstants.lat);

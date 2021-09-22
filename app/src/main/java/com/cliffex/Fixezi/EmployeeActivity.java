@@ -22,6 +22,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class EmployeeActivity extends AppCompatActivity {
     TextView MessageTV2;
     Context mContext = EmployeeActivity.this;
     ImageView MinimizeIM, MaximizeIM;
+    private FirebaseAnalytics mFirebaseAnalytics;
     int countReschedule, countpending, countincompleted, countAccepted, countcancel, countcompleted;
     SessionWorker sessionWorker;
     TextView recived_count, tv_pending, tv_completed;
@@ -62,6 +65,13 @@ public class EmployeeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Hello Akash IDas");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         sessionWorker = new SessionWorker(this);
 

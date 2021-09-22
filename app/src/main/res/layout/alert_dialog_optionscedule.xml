@@ -19,9 +19,7 @@
             android:textColor="#000"
             android:textSize="@dimen/_14sdp"
             android:textStyle="bold">
-
          </TextView>
-
 
         <RadioGroup
             android:id="@+id/radiogroup"

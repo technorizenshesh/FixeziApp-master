@@ -11,8 +11,8 @@ android {
         applicationId "com.cliffex.Fixezi"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.9"
+        versionCode 11
+        versionName "11.0"
         multiDexEnabled true
         signingConfig signingConfigs.debug
         ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
@@ -98,13 +98,25 @@ android {
 //      implementation 'com.henryblue.mxvideoplayer:xvideoplayer:1.2.0'
         implementation 'jp.wasabeef:blurry:2.1.1'
         implementation 'de.hdodenhof:circleimageview:3.1.0'
-        implementation 'com.google.android.gms:play-services:12.0.1'
+        // implementation 'com.google.android.gms:play-services:12.0.1'
         implementation 'com.google.android.gms:play-services-maps:17.0.1'
         implementation 'com.google.android.gms:play-services-location:18.0.0'
         implementation 'com.google.firebase:firebase-core:16.0.1'
+
+        // Import the BoM for the Firebase platform
+        implementation platform('com.google.firebase:firebase-bom:28.4.1')
+
+        // Declare the dependency for the Analytics library
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation 'com.google.firebase:firebase-analytics'
+        // implementation 'com.google.android.gms:play-services-tagmanager:17.0.0'
 /*
         implementation 'com.google.android.gms:play-services-maps:16.1.0'
 */
+
+        implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+        implementation 'com.facebook.android:facebook-marketing:[4,5)'
+
         implementation 'com.github.f0ris.sweetalert:library:1.5.6'
         implementation 'com.henryblue.mxvideoplayer:xvideoplayer:1.2.0'
         implementation 'jp.wasabeef:blurry:2.1.1'
@@ -127,4 +139,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.google.android.gms:play-services-analytics-impl:17.0.1'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
 }

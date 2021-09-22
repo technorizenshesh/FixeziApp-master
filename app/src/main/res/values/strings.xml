@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Fixezi</string>
+
+    <string name="facebook_app_id">451958879334871</string>
+    <string name="fb_login_protocol_scheme">fb451958879334871</string>
+
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">DateTimePicker Example</string>
     <string name="edittext_hint"><font size="15">Hint here!</font></string>
@@ -131,6 +136,8 @@
     <string name="tradesman">Tradesman</string>
     <string name="contractor">Contractor</string>
     <string name="i_am_the_owner">I am the owner</string>
+
+
 
     <string-array name="imageFor">
         <item>1</item>

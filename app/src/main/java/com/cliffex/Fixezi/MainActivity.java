@@ -1,5 +1,8 @@
 package com.cliffex.Fixezi;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,8 +27,24 @@ import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.internal.NavigationMenuView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,6 +64,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -52,13 +73,19 @@ public class MainActivity extends AppCompatActivity implements
     TextView toolbar_title;
     private Toolbar toolbar;
     RelativeLayout NavigationUpIM;
-    TextView LoginUserTV,LoginAsTradesmanTV,SignupTV,quick_search_tv;
+    TextView LoginUserTV, LoginAsTradesmanTV, SignupTV, quick_search_tv, tvFbLogin;
     ImageView draw_head;
+    private CallbackManager callbackManager;
+    private FirebaseAuth mAuth;
+    Context mContext = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav__trip__type);
+        callbackManager = CallbackManager.Factory.create();
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         initComp();
 
@@ -96,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if(Appconstants.postCode == null) {
+        if (Appconstants.postCode == null) {
             if (InternetDetect.isConnected(this)) {
                 new JsonPostCode().execute();
             } else {
@@ -148,13 +175,85 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void initComp() {
+
         toolbar = (Toolbar) findViewById(R.id.m_toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        tvFbLogin = (TextView) findViewById(R.id.tvFbLogin);
         NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
         LoginUserTV = (TextView) findViewById(R.id.LoginUserTV);
         LoginAsTradesmanTV = (TextView) findViewById(R.id.LoginAsTradesmanTV);
         SignupTV = (TextView) findViewById(R.id.SignupTV);
         quick_search_tv = (TextView) findViewById(R.id.quick_search_tv);
+
+        tvFbLogin.setOnClickListener(v -> {
+            FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
+            FacebookSdk.sdkInitialize(mContext);
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+                }
+
+                @Override
+                public void onCancel() {
+                    Log.e("kjsgdfkjdgsf", "onCancel");
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    Log.e("kjsgdfkjdgsf", "error = " + error.getMessage());
+                }
+
+            });
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAuth.signOut();
+        LoginManager.getInstance().logOut();
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            String profilePhoto = "https://graph.facebook.com/" + token.getUserId() + "/picture?height=500";
+
+                            Log.e("kjsgdfkjdgsf", "profilePhoto = " + profilePhoto);
+                            Log.e("kjsgdfkjdgsf", "name = " + user.getDisplayName());
+                            Log.e("kjsgdfkjdgsf", "email = " + user.getEmail());
+                            Log.e("kjsgdfkjdgsf", "email = " + user.getPhoneNumber());
+                            Log.e("kjsgdfkjdgsf", "Userid = " + user.getUid());
+
+//                            socialLoginCall(user.getDisplayName(),
+//                                    user.getEmail(), profilePhoto,
+//                                    user.getUid());
+
+                        } else {
+//                            Toast.makeText(GetStartedActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private class JsonPostCode extends AsyncTask<String, String, String> {
@@ -233,28 +332,30 @@ public class MainActivity extends AppCompatActivity implements
 
                 break;
 
-             case R.id.LoginUserTV:
+            case R.id.LoginUserTV:
 
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(i);
 
                 break;
 
-             case R.id.LoginAsTradesmanTV:
+            case R.id.LoginAsTradesmanTV:
 
                 Intent intent = new Intent(getApplicationContext(), TradesmanLoginNew.class);
                 startActivity(intent);
 
                 break;
 
-              case R.id.quick_search_tv:
+            case R.id.quick_search_tv:
 
                 Intent intent1 = new Intent(getApplicationContext(), Activity_Quick_Search.class);
                 intent1.putExtra("status", "quick_search");
                 startActivity(intent1);
-
-
                 break;
+
+            default:
+                break;
+
         }
     }
 }

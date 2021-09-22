@@ -26,9 +26,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.util.ProjectUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -52,14 +55,15 @@ public class AllJobsDetail extends AppCompatActivity {
     Toolbar toolbar;
     TextView toolbar_textview, ProblemDetail, DateDetail, TimeDetail, FlexibleDateDetail,
             FlexibleTimeDetail, PersonOnSiteDetail, JobAddressDetail, TimeFlexibilityTVAJD;
-    TextView HomeNmberDetail, MobileNmberDetail, JobRequestDetail, FullNameDetail, FullAddressDetailUser, HomeNmberDetailUser, WorkNmberDetailUser, MobileNmberDetailUser, EmailDetail;
+    TextView HomeNmberDetail,MobileNmberDetail,JobRequestDetail,FullNameDetail,FullAddressDetailUser,
+            HomeNmberDetailUser,WorkNmberDetailUser,MobileNmberDetailUser,EmailDetail;
     LinearLayout RLDetail;
     RelativeLayout NavigationUpIM;
     SessionTradesman sessionTradesman;
-    TextView StatusDetailAJDTV, SubStatusDetailAJDTV;
+    TextView StatusDetailAJDTV,SubStatusDetailAJDTV;
     TextView AddNotesTV, ViewNotesTV;
     LinearLayout NoteOptionsLL;
-    String ProblemId = "";
+    String ProblemId = "",userId="",subStatus="",reason="",rateType="";
     private TextView start_jobs;
     private TextView IsJobDoneTV;
     private TextView stop_jobs;
@@ -135,7 +139,6 @@ public class AllJobsDetail extends AppCompatActivity {
             }
         });
 
-
         IsJobDoneTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,7 +168,7 @@ public class AllJobsDetail extends AppCompatActivity {
 
                             AlertDialogOption1();
 
-                            SweetAlertDialog alertDialog = new SweetAlertDialog(AllJobsDetail.this, SweetAlertDialog.NORMAL_TYPE);
+                            SweetAlertDialog alertDialog = new SweetAlertDialog(AllJobsDetail.this,SweetAlertDialog.NORMAL_TYPE);
                             alertDialog.setTitleText("fixezi");
                             alertDialog.setContentText("Jobs marked as incomplete will be sent to 'jobs pending' folder ");
                             alertDialog.show();
@@ -195,6 +198,13 @@ public class AllJobsDetail extends AppCompatActivity {
                         OkayBTCR.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                int genid = radiogroup.getCheckedRadioButtonId();
+                                RadioButton radioButton = (RadioButton) callFeeDialog.findViewById(genid);
+                                Log.e("radioButton","radioButton = " + radioButton.getText().toString());
+                                reason = radioButton.getText().toString();
+                                subStatus = "0";
+                                Log.e("radioButton","reason = " + reason);
+                                completeProblem("0");
                                 callFeeDialog.dismiss();
                             }
                         });
@@ -222,7 +232,6 @@ public class AllJobsDetail extends AppCompatActivity {
 
             }
         });
-
 
         NoteOptionsLL = (LinearLayout) findViewById(R.id.NoteOptionsLL);
         ViewNotesTV = (TextView) findViewById(R.id.ViewNotesTV);
@@ -254,12 +263,46 @@ public class AllJobsDetail extends AppCompatActivity {
         ProblemId = extra.getString("ProblemId");
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonTaskGetJobDetail().execute(ProblemId);
-
         } else {
             Toast.makeText(AllJobsDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void completeProblem(String status) {
+        ProjectUtil.showProgressDialog(AllJobsDetail.this,false,"Please wait...");
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("user_id",userId);
+        params.put("problem_id",ProblemId);
+        params.put("sub_status",subStatus);
+        params.put("status",status);
+        params.put("reason",reason);
+        params.put("rate_type",rateType);
+
+        Log.e("completeProblem","completeProblem = " + params);
+
+        AndroidNetworking.post(HttpPAth.Urlpath + "problem_completed_by_user")
+                .addBodyParameter(params)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        startActivity(new Intent(AllJobsDetail.this,TradesmanActivity.class));
+                        finish();
+                        Log.e("completeProblem","completeProblem = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                        Log.e("completeProblem","ANError = " + anError.getErrorBody());
+                        Log.e("completeProblem","ANError = " + anError.getErrorDetail());
+                    }
+                });
 
     }
 
@@ -271,36 +314,26 @@ public class AllJobsDetail extends AppCompatActivity {
         progressDialog.show();
 
         AndroidNetworking.get("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?" + "manage_waiting_time&problem_id=" + ProblemId + "&waiting_status=" + start + "&timezone=" + "Asia")
-                .addPathParameter("pageNumber", "0")
-                .addQueryParameter("limit", "3")
-                .addHeaders("token", "1234")
+                .addPathParameter("pageNumber","0")
+                .addQueryParameter("limit","3")
+                .addHeaders("token","1234")
                 .setTag("test")
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
-
                             String result = response.getString("result");
-
                             if (result.equalsIgnoreCase("successfull")) {
-
                                 progressDialog.dismiss();
-
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
-
                     @Override
-                    public void onError(ANError error) {
-                    }
+                    public void onError(ANError error) {}
                 });
     }
 
@@ -319,7 +352,7 @@ public class AllJobsDetail extends AppCompatActivity {
         radio_btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(AllJobsDetail.this, JobDetailsAddQuote.class);
+                Intent in = new Intent(AllJobsDetail.this,JobDetailsAddQuote.class);
                 startActivity(in);
             }
         });
@@ -341,16 +374,14 @@ public class AllJobsDetail extends AppCompatActivity {
         callFeeDialog.show();
 
     }
-/*
-    private void AlertDailogePending() {
 
+    /*
+    private void AlertDailogePending() {
         final Dialog callFeeDialog = new Dialog(AllJobsDetail.this);
         callFeeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         callFeeDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         callFeeDialog.setContentView(R.layout.pendingalert);
         callFeeDialog.show();
-
-
     }*/
 
     private class JsonTaskGetJobDetail extends AsyncTask<String, String, IncomingRequestBean> {
@@ -358,12 +389,10 @@ public class AllJobsDetail extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
         protected IncomingRequestBean doInBackground(String... paramss) {
-
 
             try {
                 URL url = new URL(HttpPAth.Urlpath + "get_problem_id_again_Tradesmandata&");
@@ -418,11 +447,15 @@ public class AllJobsDetail extends AppCompatActivity {
                 incomingRequestBean.setHousenoo(object.getString("housenoo"));
                 incomingRequestBean.setHome_address(object.getString("home_address"));
 
-
                 JSONArray ProblemArray = object.getJSONArray("problem");
                 JSONObject ProblemObject = ProblemArray.getJSONObject(0);
 
                 IncomingRequestBean.Problem problem = new IncomingRequestBean.Problem();
+
+                userId = ProblemObject.getString("user_id");
+                subStatus = ProblemObject.getString("sub_status");
+                reason = ProblemObject.getString("reason");
+                rateType = ProblemObject.getString("rate_type");
 
                 problem.setId(ProblemObject.getString("id"));
                 problem.setDate(ProblemObject.getString("date"));
@@ -446,7 +479,6 @@ public class AllJobsDetail extends AppCompatActivity {
                 incomingRequestBean.setProblem(problem);
 
                 return incomingRequestBean;
-
 
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
@@ -482,7 +514,7 @@ public class AllJobsDetail extends AppCompatActivity {
                 PersonOnSiteDetail.setText(result.getProblem().getPersonOnSite());
                 JobAddressDetail.setText(result.getProblem().getJob_Address());
 
-                //  JobAddressDetail.setText(result.getProblem().getHousenoo() + ", " + result.getProblem().getStreet() + ", " + result.getPost_code() + ", " + result.getCity());
+                // JobAddressDetail.setText(result.getProblem().getHousenoo() + ", " + result.getProblem().getStreet() + ", " + result.getPost_code() + ", " + result.getCity());
                 HomeNmberDetail.setText(result.getProblem().getHome_address());
                 MobileNmberDetail.setText(result.getProblem().getMobile_Number());
                 JobRequestDetail.setText(result.getProblem().getJob_Request());
