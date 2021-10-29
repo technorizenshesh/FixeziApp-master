@@ -109,9 +109,9 @@
                     android:textStyle="bold" />
 
                 <CheckBox
+                    android:id="@+id/isCollect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
                 </CheckBox>
 
 
@@ -144,11 +144,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="1dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_toLeftOf="@+id/v1"
                     android:background="@drawable/border_black_solid_white"
                     android:text="Yes"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/afterhoursNObtn"

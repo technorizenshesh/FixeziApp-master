@@ -19,7 +19,7 @@ public interface LoadInterface {
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?mobile_verify")
     Call<ResponseBody> otpverify(@Field("mobile") String mobile);
-    //http://fixezi.com.au/FIXEZI/webserv.php?mobile_verify&mobile=8982891432
+    // http://fixezi.com.au/FIXEZI/webserv.php?mobile_verify&mobile=8982891432
 
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?update_problem")
@@ -27,11 +27,10 @@ public interface LoadInterface {
                                   @Field("time") String time,
                                   @Field("problem_id") String problem_id);
 
-
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?get_problem_id_again_userdata&")
     Call<ResponseBody> jobDetails(@Field("problem_id") String problem_id);
-    //https://fixezi.com.au/FIXEZI/webserv.php?get_problem_id_again_userdata&problem_id=46
+    // https://fixezi.com.au/FIXEZI/webserv.php?get_problem_id_again_userdata&problem_id=46
 
 
     @FormUrlEncoded

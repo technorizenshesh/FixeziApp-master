@@ -28,11 +28,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.Model.ServiceLocationBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.util.ProjectUtil;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -53,6 +57,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -63,6 +68,7 @@ public class EditServiceLocation extends AppCompatActivity {
     SessionTradesman sessionTradesman;
     TextView toolbar_textview;
     ListView ServiceLocationLV;
+    String latitude = "", longitude = "";
     AutoCompleteTextView ServiceLocation;
     List<ServiceLocationBean> serviceLocationBeanArrayList;
     Button UpdateLocationBT;
@@ -75,6 +81,7 @@ public class EditServiceLocation extends AppCompatActivity {
     private TextView seek_bar_text_distance;
     private SeekBar seekBar;
     private String Select_radius;
+    Context mContext = EditServiceLocation.this;
     private String Select_address_Raedus;
 
     @Override
@@ -119,7 +126,7 @@ public class EditServiceLocation extends AppCompatActivity {
                 Intent in = new Intent(EditServiceLocation.this, Select_Radius.class);
                 startActivityForResult(in, 2);
 
-                //AddressAlertDailoge();
+                // AddressAlertDailoge();
             }
         });
 
@@ -143,21 +150,16 @@ public class EditServiceLocation extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-
                     ServiceLocationLV.setEnabled(true);
                     ServiceLocation.setEnabled(true);
                     UpdateLocationBT.setEnabled(true);
                     location_search.setEnabled(true);
-
-
                 } else {
-
                     ServiceLocationLV.setEnabled(false);
                     ServiceLocation.setEnabled(false);
                     UpdateLocationBT.setEnabled(false);
                     location_search.setEnabled(false);
                 }
-
 
             }
         });
@@ -166,38 +168,39 @@ public class EditServiceLocation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (serviceLocationBeanArrayList.isEmpty()) {
-
-                    Log.e("ISEMPT", "YES");
-                    Toast.makeText(EditServiceLocation.this, "Please Select a Service Location", Toast.LENGTH_SHORT).show();
-
+                if (InternetDetect.isConnected(EditServiceLocation.this)) {
+                    updateServiceAddress();
+                    // new JsonTaskUpdate().execute(sessionTradesman.getId(), Select_address_Raedus, Select_radius, latitude, longitude);
                 } else {
-
-                    StringBuilder s = new StringBuilder();
-
-                    for (int i = 0; i < serviceLocationBeanArrayList.size(); i++) {
-
-
-                        if (i == 0) {
-                            s.append(serviceLocationBeanArrayList.get(i).getName());
-                            continue;
-                        }
-                        s.append("," + serviceLocationBeanArrayList.get(i).getName());
-
-                    }
-
-                    String AllServiceLocation = s.toString();
-
-                    Log.e("VALUE", AllServiceLocation);
-
-                    if (InternetDetect.isConnected(EditServiceLocation.this)) {
-
-                        new JsonTaskUpdate().execute(sessionTradesman.getId(), AllServiceLocation);
-
-                    } else {
-                        Toast.makeText(EditServiceLocation.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(EditServiceLocation.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
                 }
+
+//                if (serviceLocationBeanArrayList.isEmpty()) {
+//
+//                    Log.e("ISEMPT", "YES");
+//                    Toast.makeText(EditServiceLocation.this, "Please Select a Service Location", Toast.LENGTH_SHORT).show();
+//
+//                } else {
+//
+//                    StringBuilder s = new StringBuilder();
+//
+//                    for (int i = 0; i < serviceLocationBeanArrayList.size(); i++) {
+//
+//
+//                        if (i == 0) {
+//                            s.append(serviceLocationBeanArrayList.get(i).getName());
+//                            continue;
+//                        }
+//                        s.append("," + serviceLocationBeanArrayList.get(i).getName());
+//
+//                    }
+//
+//                    String AllServiceLocation = s.toString();
+//
+//                    Log.e("VALUE", AllServiceLocation);
+//
+//
+//                }
             }
         });
 
@@ -257,14 +260,12 @@ public class EditServiceLocation extends AppCompatActivity {
                 return false;
             }
 
-
         });
 
-
         if (InternetDetect.isConnected(this)) {
-            new JsonTaskGetServiceLocation().execute();
+            getEditAddress();
+            // new JsonTaskGetServiceLocation().execute();
         } else {
-
             Toast.makeText(EditServiceLocation.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
@@ -299,14 +300,20 @@ public class EditServiceLocation extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2) {
-
             try {
-
                 seekBar.setProgress(0); // call these two methods before setting progress.
                 seekBar.setMax(100);
 
                 Select_radius = data.getStringExtra("Select_radius");
                 Select_address_Raedus = data.getStringExtra("Select_address_Raedus");
+                latitude = data.getStringExtra("lat");
+                longitude = data.getStringExtra("lon");
+
+                Log.e("dasdasdasdasd", "Select_radius = " + Select_radius);
+                Log.e("dasdasdasdasd", "Select_address_Raedus = " + Select_address_Raedus);
+                Log.e("dasdasdasdasd", "latitude = " + latitude);
+                Log.e("dasdasdasdasd", "longitude = " + longitude);
+
                 location_get.setText(Select_address_Raedus);
                 seek_bar_text_distance.setText(Select_radius + "km");
                 seekBar.setEnabled(false);
@@ -317,13 +324,56 @@ public class EditServiceLocation extends AppCompatActivity {
                     }
                 });
 
-
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
 
         }
+
+    }
+
+    private void getEditAddress() {
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+        AndroidNetworking.get(HttpPAth.Urlpath + "get_tradesman_service_locatin_byid&tradesman_id=" + sessionTradesman.getId())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        Log.e("fasdfasdasd", "response = " + response);
+
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            JSONObject jsonResult = jsonArray.getJSONObject(0);
+
+                            location_get.setText(jsonResult.getString("parth_address"));
+
+                            latitude = jsonResult.getString("lat");
+                            longitude = jsonResult.getString("lon");
+
+                            seek_bar_text_distance.setText(jsonResult.getString("radius") + "km");
+                            seekBar.setEnabled(false);
+                            seekBar.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        seekBar.setProgress(parseInt(jsonResult.getString("radius")));
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
     }
 
     private class JsonTaskGetServiceLocation extends AsyncTask<String, String, List<ServiceLocationBean>> {
@@ -340,9 +390,9 @@ public class EditServiceLocation extends AppCompatActivity {
 
                 Log.e("JsonGet Service", "????" + obj);
 
-
                 JSONArray jsonArray = new JSONArray(obj);
                 serviceLocationBeanArrayList = new ArrayList<>();
+
                 for (int i = 0; i < jsonArray.length(); i++) {
 
                     JSONObject object = jsonArray.getJSONObject(i);
@@ -355,12 +405,9 @@ public class EditServiceLocation extends AppCompatActivity {
                     serviceLocationBeanArrayList.add(serviceLocationBean);
 
                 }
-
                 return serviceLocationBeanArrayList;
-
             } catch (Exception e) {
                 System.out.println("errror in Forget task " + e);
-
             }
             return null;
         }
@@ -368,11 +415,8 @@ public class EditServiceLocation extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<ServiceLocationBean> result) {
             super.onPostExecute(result);
-
             if (result == null) {
-
             } else {
-
                 ListViewAdapter adapter = new ListViewAdapter(EditServiceLocation.this, result);
                 ServiceLocationLV.setAdapter(adapter);
             }
@@ -389,12 +433,10 @@ public class EditServiceLocation extends AppCompatActivity {
         Address_Save = PreferenceConnector.readString(EditServiceLocation.this, PreferenceConnector.Address_Save, "");
 
         if (!Address_Save.equals("")) {
-
             location_get.setText(Address_Save);
         }
 
     }
-
 
     private class ListViewAdapter extends BaseAdapter {
 
@@ -464,24 +506,48 @@ public class EditServiceLocation extends AppCompatActivity {
                             serviceLocationBeanList.remove(position);
                             notifyDataSetChanged();
                         } else {
-                            /*new JsonTaskDelete().execute(serviceLocationBeanList.get(position).getId());*/
+                            /* new JsonTaskDelete().execute(serviceLocationBeanList.get(position).getId());*/
                             serviceLocationBeanList.remove(position);
                             notifyDataSetChanged();
                         }
                     }
 
-
                 }
 
             });
-
-
             return view;
         }
 
-
     }
 
+    private void updateServiceAddress() {
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("tradesman_id", sessionTradesman.getId());
+        hashMap.put("lat", latitude);
+        hashMap.put("lon", longitude);
+        hashMap.put("parth_address", Select_address_Raedus);
+        hashMap.put("radius", Select_radius);
+
+        Log.e("afasfdsfdsgfds", "hashMap = " + hashMap);
+
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+        AndroidNetworking.post(HttpPAth.Urlpath + "update_service_address")
+                .addBodyParameter(hashMap)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
+    }
 
     private class JsonTaskUpdate extends AsyncTask<String, String, String> {
 
@@ -493,9 +559,14 @@ public class EditServiceLocation extends AppCompatActivity {
 
             Url = HttpPAth.Urlpath + "Upadte_tradesman_service_locatin&tradesman_id=" +
 
-                    params[0] + "&service_locatin=" + params[1];
+                    params[0] + "&parth_address=" + params[1] + "&radius=" + params[2] +
+                    "&lat=" + params[3] + "&lon=" + params[4];
+
+            Log.e("adasdsdasd", "URL before save = " + Url);
 
             Url = Url.replaceAll(" ", "%20");
+
+            Log.e("adasdsdasd", "URL After save = " + Url);
 
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(Url);

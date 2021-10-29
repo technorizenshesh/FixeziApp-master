@@ -84,6 +84,7 @@ public class TradesmanSignUp extends AppCompatActivity {
     ProgressDialog progressDialog;
     TextView VerfiyTradesmanTV;
     TextView SignUpTV;
+    boolean isNumberVerifyied = false;
     private String Address_Save;
     private LinearLayout location_search;
     private TextView done_text;
@@ -125,14 +126,16 @@ public class TradesmanSignUp extends AppCompatActivity {
     private String code_select_string;
     private ImageView verify_otpimg;
     private String status_otp = "false";
-    private String otp_status;
-    private String OTPStatus;
+    private String otp_status = "";
+    private String OTPStatus, lat, lon;
     private ImageView icon_location;
     private View dialogueView;
     StateProgressBar stateProgressBar;
     public static boolean isVerifyMobile = false;
-    String[] step = {"Details","Verify","Upload","Complete"};
+    String[] step = {"Details", "Verify", "Upload", "Complete"};
     public static final int MY_PERMISSIONS_REQUEST_WRITE_FIELS = 102;
+    private String longitude = "", latitude = "";
+    private String selectedTradeIds = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,11 +169,12 @@ public class TradesmanSignUp extends AppCompatActivity {
         stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
 
         if (OTPStatus.equalsIgnoreCase("verify")) {
+            otp_status = "true";
             verify_otpimg.setVisibility(View.VISIBLE);
             stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
         }
 
-        status_otp = PreferenceConnector.readString(TradesmanSignUp.this,PreferenceConnector.otp_status,"");
+        status_otp = PreferenceConnector.readString(TradesmanSignUp.this, PreferenceConnector.otp_status, "");
         seekBar = (SeekBar) findViewById(R.id.seekBar_luminosite);
 
         seekBar.setEnabled(false);
@@ -300,19 +304,18 @@ public class TradesmanSignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED ||
                         ContextCompat.checkSelfPermission(getApplicationContext(),
                                 Manifest.permission.INTERNET)
-                                != PackageManager.PERMISSION_GRANTED||
+                                != PackageManager.PERMISSION_GRANTED ||
                         ContextCompat.checkSelfPermission(getApplicationContext(),
                                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED||
+                                != PackageManager.PERMISSION_GRANTED ||
                         ContextCompat.checkSelfPermission(getApplicationContext(),
                                 Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED)
-                {
+                                != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignUp.this,
                             Manifest.permission.ACCESS_COARSE_LOCATION) && ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignUp.this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
@@ -325,7 +328,7 @@ public class TradesmanSignUp extends AppCompatActivity {
                                         Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,},
                                 MY_PERMISSIONS_REQUEST_WRITE_FIELS);
                     }
-                }else{
+                } else {
                     Intent in = new Intent(TradesmanSignUp.this, GooglePlacesAutocompleteActivity.class);
                     startActivity(in);
                     Toast.makeText(getApplicationContext(), "Success!!!", Toast.LENGTH_SHORT).show();
@@ -333,7 +336,7 @@ public class TradesmanSignUp extends AppCompatActivity {
             }
         });
 
-        location_search.setOnClickListener( new View.OnClickListener() {
+        location_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(TradesmanSignUp.this, Select_Radius.class);
@@ -345,12 +348,10 @@ public class TradesmanSignUp extends AppCompatActivity {
         Address_Save1 = PreferenceConnector.readString(TradesmanSignUp.this, PreferenceConnector.Address_Save1, "");
 
         if (!Address_Save.equals("")) {
-
             ed_bussnessAddress.setText(Address_Save);
         }
 
         if (!Select_radius1.equals("")) {
-
             location_get.setText(Select_adress1);
         }
 
@@ -406,7 +407,7 @@ public class TradesmanSignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MobilePhoneSU_string = MobilePhoneSU.getText().toString().trim();
-                if(!MobilePhoneSU_string.isEmpty()) {
+                if (!MobilePhoneSU_string.isEmpty()) {
                     SendOtpApi(MobilePhoneSU_string);
                 } else {
                     Toast.makeText(mContext, "Please enter a valid mobile number", Toast.LENGTH_SHORT).show();
@@ -427,7 +428,6 @@ public class TradesmanSignUp extends AppCompatActivity {
                             s.append(SelectedPostCode.get(i));
                             continue;
                         }
-
                         s.append("," + SelectedPostCode.get(i));
                     }
 
@@ -445,6 +445,12 @@ public class TradesmanSignUp extends AppCompatActivity {
                     Appconstants.servicelocation = AllServiceLocations;
 
                     Intent intent = new Intent(TradesmanSignUp.this, TradesmanSignup2.class);
+                    intent.putExtra("service", Select_address_Raedus);
+                    intent.putExtra("abn", Abn_no.getText().toString().trim());
+                    intent.putExtra("lat", latitude);
+                    intent.putExtra("lon", longitude);
+                    intent.putExtra("radius", Select_radius);
+                    intent.putExtra("selecttrade", selectedTradeIds);
                     startActivity(intent);
 
                 }
@@ -453,64 +459,55 @@ public class TradesmanSignUp extends AppCompatActivity {
 
             private boolean Validate() {
 
-                if (BusinessNameSU.getText().toString().equalsIgnoreCase("")) {
+                Log.e("otp_statusotp_status", "otp_status = " + otp_status);
 
+                if (BusinessNameSU.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(TradesmanSignUp.this, "Enter Business Name", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (OfficePhoneSU.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter Office Number", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (Abn_no.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter ABN ", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (MobilePhoneSU.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (ed_buisness_owner_name.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter Buisness Owner Name", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (ed_bussnessAddress.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter Buisness Address", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (EmailSU.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter Email Address", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!Appconstants.isValidEmail(EmailSU.getText().toString().trim())) {
-
                     Toast.makeText(TradesmanSignUp.this, "Enter valid email", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (ConfirmEmailSU.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanSignUp.this, "Please Confirm Email Address", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!(EmailSU.getText().toString().trim().equals(ConfirmEmailSU.getText().toString().trim()))) {
-
                     Toast.makeText(TradesmanSignUp.this, "Email Address does not match", Toast.LENGTH_SHORT).show();
                     return false;
-
+                } else if (TextUtils.isEmpty(location_get.getText().toString().trim())) {
+                    Toast.makeText(mContext, "Please Choose Location", Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if (otp_status.equalsIgnoreCase("false")) {
+                    Toast.makeText(TradesmanSignUp.this, "Please verify your phone number", Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if (otp_status.equalsIgnoreCase("")) {
+                    Toast.makeText(TradesmanSignUp.this, "Please verify your phone number", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-
                 return true;
             }
 
         });
 
         if (Appconstants.postCode == null) {
-            if(InternetDetect.isConnected(this)) {
+            if (InternetDetect.isConnected(this)) {
                 new JsontaskPostCode().execute();
             } else {
                 Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
@@ -532,14 +529,14 @@ public class TradesmanSignUp extends AppCompatActivity {
         String s = mobilePhoneSU_string;
         s = s.replaceFirst("^0*", "");
 
-        Log.e("sss",s);
+        Log.e("sss", s);
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(TradesmanSignUp.this);
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
 
-        Log.e("link_tradman","https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile="+code_select_string+s);
+        Log.e("link_tradman", "https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile=" + code_select_string + s);
 
         AndroidNetworking.get("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile=" + code_select_string + s)
                 .addPathParameter("pageNumber", "0")
@@ -580,7 +577,7 @@ public class TradesmanSignUp extends AppCompatActivity {
                         // handle error
                     }
                 });
-             }
+    }
 
     @Override
     public void onBackPressed() {
@@ -613,20 +610,24 @@ public class TradesmanSignUp extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2) {
-
             try {
+
                 Select_radius = data.getStringExtra("Select_radius");
                 Select_address_Raedus = data.getStringExtra("Select_address_Raedus");
+
                 location_get.setText(Select_address_Raedus);
+                Appconstants.servicelocation = Select_address_Raedus;
+                latitude = data.getStringExtra("lat");
+                longitude = data.getStringExtra("lon");
+                Log.e("sdfdsafdsgdsgfdsfgsfd", "Select_address_Raedus = " + Appconstants.servicelocation);
                 seek_bar_text_distance.setText(Select_radius + "km");
                 seekBar.setEnabled(false);
                 seekBar.setProgress(parseInt(Select_radius));
-            } catch (Exception e) {
 
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -653,14 +654,15 @@ public class TradesmanSignUp extends AppCompatActivity {
 
         super.onResume();
 
-        if(isVerifyMobile) {
+        if (isVerifyMobile) {
             stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
-            PreferenceConnector.writeString(TradesmanSignUp.this, PreferenceConnector.OTPStatus,"verify");
+            PreferenceConnector.writeString(TradesmanSignUp.this, PreferenceConnector.OTPStatus, "verify");
         } else {
             stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
         }
 
         if (status_otp.equalsIgnoreCase("true")) {
+            otp_status = "true";
             verify_otpimg.setVisibility(View.VISIBLE);
             stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
         }

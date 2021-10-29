@@ -89,7 +89,6 @@ public class EditTrade extends AppCompatActivity {
         toolbar_textview.setText("Edit/Add Trade");
         setSupportActionBar(toolbar);
 
-
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -335,7 +334,6 @@ public class EditTrade extends AppCompatActivity {
                     serviceLocationBeanArrayList.add(serviceLocationBean);
 
                 }
-
 
                 return serviceLocationBeanArrayList;
 

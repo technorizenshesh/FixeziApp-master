@@ -1,12 +1,14 @@
 package com.cliffex.Fixezi;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.MyFontBoldTextView;
@@ -30,6 +32,9 @@ public class TrademanTermsActivity extends AppCompatActivity {
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
 
         toolbar_title.setText("Tradesmen");
+
+        Typeface typeface = ResourcesCompat.getFont(TrademanTermsActivity.this,R.font.montserrat_medium);
+        toolbar_title.setTypeface(typeface);
 
         NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
 

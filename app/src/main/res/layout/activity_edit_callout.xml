@@ -25,9 +25,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_arrow_left_white_24dp" />
 
-
         </RelativeLayout>
-
 
         <TextView
             android:id="@+id/toolbar_title_EC"
@@ -40,7 +38,6 @@
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
-
 
         <RelativeLayout
             android:id="@+id/RLINVI"
@@ -56,12 +53,9 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_arrow_left_white_24dp" />
 
-
         </RelativeLayout>
 
-
     </RelativeLayout>
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -71,14 +65,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:orientation="vertical">
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,7 +90,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
 
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -110,15 +104,12 @@
                     android:textColor="#000000"
                     android:textSize="16sp" />
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true" />
 
-
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -146,7 +137,10 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="1dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_toLeftOf="@+id/v1"
                     android:background="@drawable/border_black_solid_white"
                     android:enabled="false"
@@ -158,7 +152,10 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="1dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
                     android:layout_toRightOf="@+id/v1"
                     android:background="@drawable/border_black_solid_white"
                     android:enabled="false"
@@ -340,17 +337,17 @@
                     android:text="I only work off fixed price "
                     android:textColor="@color/black" />
 
-                 <CheckBox
+                <CheckBox
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp">
 
-                 </CheckBox>
+                </CheckBox>
 
             </LinearLayout>
 
-         </LinearLayout>
+        </LinearLayout>
 
-         <Button
+        <Button
             android:id="@+id/UpdateCalloutBT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

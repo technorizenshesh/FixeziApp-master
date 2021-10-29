@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg">
 
-      <include
-          android:id="@+id/tradesman_profile_toolbar"
-          layout="@layout/toolbar_dash" />
+    <include
+        android:id="@+id/tradesman_profile_toolbar"
+        layout="@layout/toolbar_dash" />
 
       <ScrollView
         android:layout_width="match_parent"

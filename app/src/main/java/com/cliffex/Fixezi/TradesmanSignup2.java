@@ -1,5 +1,6 @@
 package com.cliffex.Fixezi;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -54,6 +55,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.Model.CategoryBean;
+import com.cliffex.Fixezi.Model.CustomeModelSelectedCat;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.Base64Decode;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
@@ -65,6 +67,7 @@ import com.cliffex.Fixezi.util.Compress;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 
 import org.apache.http.HttpResponse;
@@ -91,34 +94,42 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
 import static com.cliffex.Fixezi.R.drawable.btn_skyblue;
 
+import okhttp3.OkHttpClient;
+
 public class TradesmanSignup2 extends AppCompatActivity {
 
     private static final int camera = 1, gallery = 2, camera2 = 3,
-            gallery2 = 4, camera3 = 5, gallery3 = 6,camera_driving = 10,gallery_driving=11;
+            gallery2 = 4, camera3 = 5, gallery3 = 6, camera_driving = 10, gallery_driving = 11;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_FIELS = 102;
-
+    private static final int PERMISSION_ID = 1234;
+    String serviceLocation = "";
+    ArrayList<CustomeModelSelectedCat> selectTradeWithIdAndNameList = new ArrayList<>();
     /* Toolbar trade_toolbar2 = new Toolbar(this); */
-    EditText TradesmanUsername,TradesmanPassword,TradesmanConfirmPassword,ETCompanyDetail;
-    Button afterhoursYESbtn,afterhoursNObtn,commercialbtn,residentialbtn,bothbtn,backbtn,confirmbtn,BTUploadPhoto;
-    TextView toolbar_title, tvTermCon, selecttradeTV,SelectedLocationsTV,ExampleTV;
+    EditText TradesmanUsername, TradesmanPassword, TradesmanConfirmPassword, ETCompanyDetail;
+    Button afterhoursYESbtn, afterhoursNObtn, commercialbtn, residentialbtn, bothbtn, backbtn, confirmbtn, BTUploadPhoto;
+    TextView toolbar_title, tvTermCon, selecttradeTV, SelectedLocationsTV, ExampleTV;
     RelativeLayout SelectTradeSignUpTradesman;
     ArrayList<CategoryBean> catarray = new ArrayList<>();
-    String redcolor = "#fd3621",ImageUpload_details,profileCompLogo;
+    String redcolor = "#fd3621", ImageUpload_details, profileCompLogo;
     String[] mainCategoryArray = null;
     String[] posID;
+    CheckBox cbIsCollect;
     Context mContext = TradesmanSignup2.this;
     GoogleCloudMessaging gcm;
     String RegId = "";
+    ArrayList<String> selectTradesIds = new ArrayList<>();
     RelativeLayout NavigationUpIM;
     Uri fileUri;
     String CompanyUpload = "", chargesvalue = "";
     ProgressDialog progressDialog;
     ArrayList<String> Selecteddata;
-    ImageView TradesmanConditionsIm,ClearImageIM;
+    ArrayList<String> selectedTradesIdOnly = new ArrayList<>();
+    ImageView TradesmanConditionsIm, ClearImageIM;
     Button BTUploadCompanyDetail;
     String PhotoOrString = "", fileUriPath;
     boolean IsTermsOpen = true;
@@ -153,7 +164,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
     private ArrayList<File> your_array_list = new ArrayList<File>();
     private String image_final_list;
     private File image_final_list1;
-    private List<File> fddf,fddf2;
+    private List<File> fddf, fddf2;
     private Uri selectedImageDriving;
     private String ImageUpload_drivnig;
     private Uri fileUri1;
@@ -167,11 +178,14 @@ public class TradesmanSignup2 extends AppCompatActivity {
     private Toolbar colorPrimaryDark;
     private Toolbar ToolbarSU;
     StateProgressBar stateProgressBar;
-    String[] step = {"Details","Verify","Upload","Complete"};
+    String[] step = {"Details", "Verify", "Upload", "Complete"};
+    private String abn = "";
+    private String latitude = "", longitude = "", radius = "";
+    private String tradeSelectedFinalIds;
 
     private static File getOutputMediaFile(int type) {
         File mediaStorageDir = new File(android.os.Environment.getExternalStorageDirectory(), "/fixezi");
-        if (!mediaStorageDir.exists()){
+        if (!mediaStorageDir.exists()) {
 
             if (!mediaStorageDir.mkdirs()) {
                 Log.d("Hello Camera", "Oops! Failed create Hello Camera directory");
@@ -224,6 +238,26 @@ public class TradesmanSignup2 extends AppCompatActivity {
         return file;
     }
 
+    private boolean checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSION_ID
+        );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         progressDialog = new ProgressDialog(this);
@@ -233,6 +267,17 @@ public class TradesmanSignup2 extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tademan_signup2);
+
+        serviceLocation = getIntent().getStringExtra("service");
+        abn = getIntent().getStringExtra("abn");
+        latitude = getIntent().getStringExtra("lat");
+        longitude = getIntent().getStringExtra("lon");
+        radius = getIntent().getStringExtra("radius");
+
+        Log.e("fasdasdasf", "serviceLocation = " + serviceLocation);
+        Log.e("fasdasdasf", "latitude = " + latitude);
+        Log.e("fasdasdasf", "longitude = " + longitude);
+        Log.e("fasdasdasf", "radius = " + radius);
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
             if (!TextUtils.isEmpty(token)) {
@@ -254,13 +299,14 @@ public class TradesmanSignup2 extends AppCompatActivity {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
 
-         /*  trade_toolbar2 = */
+        /*  trade_toolbar2 = */
 
-         // finally change the color
-         ToolbarSU = (Toolbar) findViewById(R.id.trade_toolbar2);
+        // finally change the color
+        ToolbarSU = (Toolbar) findViewById(R.id.trade_toolbar2);
 
-         toolbar_title = ToolbarSU.findViewById(R.id.toolbar_title);
-         NavigationUpIM =  ToolbarSU.findViewById(R.id.NavigationUpIM);
+        toolbar_title = ToolbarSU.findViewById(R.id.toolbar_title);
+        NavigationUpIM = ToolbarSU.findViewById(R.id.NavigationUpIM);
+        cbIsCollect = findViewById(R.id.isCollect);
 
         stateProgressBar = (StateProgressBar) findViewById(R.id.your_state_progress_bar_id);
         stateProgressBar.setStateDescriptionData(step);
@@ -270,15 +316,16 @@ public class TradesmanSignup2 extends AppCompatActivity {
         stateProgressBar.setStateDescriptionSize(15f);
         stateProgressBar.setDescriptionTopSpaceIncrementer(10f);
 
-        driving_licnecelinear = (LinearLayout)findViewById(R.id.driving_licnecelinear);
+        driving_licnecelinear = (LinearLayout) findViewById(R.id.driving_licnecelinear);
 
         driving_licnecelinear.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {}
+            public void onClick(View v) {
+            }
         });
 
         tvTermCon = findViewById(R.id.tv_term_conditions);
-        driver_license  = findViewById(R.id.driver_license);
+        driver_license = findViewById(R.id.driver_license);
         SelectedLocationsTV = findViewById(R.id.SelectedLocationsTV);
         ExampleTV = findViewById(R.id.ExampleTV);
         TradesmanConditionsIm = findViewById(R.id.TradesmanConditionsIm);
@@ -294,7 +341,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
         contarct_licence_camera = findViewById(R.id.contarct_licence_camera);
         gallary_image = findViewById(R.id.gallary_image);
         imag_rl = findViewById(R.id.imag_rl);
-        CompanyDetailre   = (RelativeLayout)findViewById(R.id.CompanyDetailre);
+        CompanyDetailre = (RelativeLayout) findViewById(R.id.CompanyDetailre);
         licence_select = findViewById(R.id.licence_select);
         contract_linear = findViewById(R.id.contract_linear);
         cheakboxcontarct = findViewById(R.id.cheakboxcontarct);
@@ -317,9 +364,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
         initComp();
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonGCMTask().execute();
-
         } else {
             Toast.makeText(TradesmanSignup2.this, "Please Connect to Internet", Toast.LENGTH_SHORT);
         }
@@ -331,7 +376,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
         BTUploadCompanyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(PhotoOrString.equalsIgnoreCase("String")) {
+                if (PhotoOrString.equalsIgnoreCase("String")) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(TradesmanSignup2.this);
                     builder1.setTitle("fixezi Team");
                     builder1.setMessage("You can either upload image of your company detail or enter text of company detail.");
@@ -346,9 +391,13 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                     // alert11.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext,R.color.skyblue));
-                    alert11.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mContext,R.color.skyblue));
+                    alert11.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mContext, R.color.skyblue));
                 } else {
-                    gotoAddProfileImage3(camera2, gallery2);
+                    if (checkPermissions()) {
+                        gotoAddProfileImage3(camera2, gallery2);
+                    } else {
+                        requestPermissions();
+                    }
                 }
             }
         });
@@ -374,14 +423,16 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                     // alert11.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(mContext,R.color.skyblue));
-                    alert11.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mContext,R.color.skyblue));
+                    alert11.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(mContext, R.color.skyblue));
                 }
             }
         });
 
         ETCompanyDetail.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (ETCompanyDetail.getText().toString().equalsIgnoreCase("")) {
@@ -390,8 +441,10 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     PhotoOrString = "String";
                 }
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         ClearImageIM.setOnClickListener(new View.OnClickListener() {
@@ -515,12 +568,11 @@ public class TradesmanSignup2 extends AppCompatActivity {
                         SelectProblemList.setAdapter(adapter2);
                         SelectProblemList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                         SelectProblemList.setItemsCanFocus(false);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(TradesmanSignup2.this, "please wait !!!", Toast.LENGTH_SHORT).show();
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -536,10 +588,10 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     public void onClick(View v) {
 
                         if (Selecteddata.isEmpty()) {
-
                         } else {
 
                             StringBuilder s = new StringBuilder();
+                            StringBuilder s1 = new StringBuilder();
                             for (int i = 0; i < Selecteddata.size(); i++) {
                                 if (i == 0) {
                                     s.append(Selecteddata.get(i));
@@ -548,12 +600,24 @@ public class TradesmanSignup2 extends AppCompatActivity {
                                 s.append("," + Selecteddata.get(i));
                             }
 
+                            for (int i = 0; i < Selecteddata.size(); i++) {
+                                for (int j = 0; j < selectTradeWithIdAndNameList.size(); j++) {
+                                    if (Selecteddata.get(i).trim().equalsIgnoreCase(selectTradeWithIdAndNameList.get(j).getName().trim())) {
+                                        s1.append("," + selectTradeWithIdAndNameList.get(j).getId());
+                                    }
+                                }
+                            }
+
                             String AllFollowerID = s.toString();
+                            tradeSelectedFinalIds = s1.deleteCharAt(0).toString();
+
+                            Log.e("AllFollowerID", "??" + tradeSelectedFinalIds);
                             Log.e("AllFollowerID", "??" + AllFollowerID);
                             Log.e("SelecteddataSize", "??" + Selecteddata.size());
                             select_tradestv.setText("Select Your Trades" + " " + Selecteddata.size());
                             selecttradeTV.setText(AllFollowerID);
                             Appconstants.selecttrade = AllFollowerID;
+                            Log.e("asfdasfasf", "Selected Trade = " + Appconstants.selecttrade);
                             selecttradeTV.setTextColor(Color.WHITE);
                             slectlinear.setBackgroundColor(Color.parseColor(redcolor));
                             texttrade.setText("Upload contractor licence image for" + " (" + Selecteddata.size() + ") " + "trades");
@@ -563,7 +627,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                                 getSets = new ArrayList<GetSet>();
                                 imageFor = getResources().getStringArray(R.array.imageFor);
 
-                                for(int i = 0; i < Selecteddata.size(); i++) {
+                                for (int i = 0; i < Selecteddata.size(); i++) {
                                     GetSet inflate = new GetSet();
                                     inflate.setUid(String.valueOf(i));
                                     inflate.setLabel("Image");
@@ -579,11 +643,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
 
                                 try {
                                     fddf2 = getSets.get(position).getArrayList();
-                                } catch (Exception e) {}
+                                } catch (Exception e) {
+                                }
 
                                 if (fddf2 == null) {
                                 } else if (ImageUpload_details == null) {
-                                } else if (ImageUpload_drivnig ==null) {
+                                } else if (ImageUpload_drivnig == null) {
                                 } else {
                                     stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
                                 }
@@ -631,35 +696,46 @@ public class TradesmanSignup2 extends AppCompatActivity {
         BTUploadPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ContextCompat.checkSelfPermission(getApplicationContext(),
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED ||
-                        ContextCompat.checkSelfPermission(getApplicationContext(),
-                                android.Manifest.permission.INTERNET)
-                                != PackageManager.PERMISSION_GRANTED||
-                        ContextCompat.checkSelfPermission(getApplicationContext(),
-                                android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED||
-                        ContextCompat.checkSelfPermission(getApplicationContext(),
-                                android.Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) && ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
-                            android.Manifest.permission.CAMERA) && ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                           ) {
-                        gotoAddProfileImage(camera, gallery);
-                    } else {
-                        ActivityCompat.requestPermissions(TradesmanSignup2.this,
-                                new String[]{
-                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE,},
-                                MY_PERMISSIONS_REQUEST_WRITE_FIELS);
-                    }
-                } else {
+
+                //                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+//                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                        != PackageManager.PERMISSION_GRANTED ||
+//                        ContextCompat.checkSelfPermission(getApplicationContext(),
+//                                android.Manifest.permission.INTERNET)
+//                                != PackageManager.PERMISSION_GRANTED ||
+//                        ContextCompat.checkSelfPermission(getApplicationContext(),
+//                                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//                                != PackageManager.PERMISSION_GRANTED ||
+//                        ContextCompat.checkSelfPermission(getApplicationContext(),
+//                                android.Manifest.permission.CAMERA)
+//                                != PackageManager.PERMISSION_GRANTED) {
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
+//                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE) && ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
+//                            android.Manifest.permission.CAMERA) && ActivityCompat.shouldShowRequestPermissionRationale(TradesmanSignup2.this,
+//                            android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//                    ) {
+//                        gotoAddProfileImage(camera, gallery);
+//                    } else {
+//                        ActivityCompat.requestPermissions(TradesmanSignup2.this,
+//                                new String[]{
+//                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                        Manifest.permission.CAMERA,
+//                                        android.Manifest.permission.READ_EXTERNAL_STORAGE,},
+//                                MY_PERMISSIONS_REQUEST_WRITE_FIELS);
+//                    }
+//                } else {
+//                    gotoAddProfileImage(camera, gallery);
+//                    Toast.makeText(getApplicationContext(), "Success!!!", Toast.LENGTH_SHORT).show();
+//                }
+
+                if (checkPermissions()) {
                     gotoAddProfileImage(camera, gallery);
-                    Toast.makeText(getApplicationContext(), "Success!!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    requestPermissions();
                 }
+
             }
+
         });
 
         backbtn.setOnClickListener(new View.OnClickListener() {
@@ -680,6 +756,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                 if (cheak_houry_charges.isChecked() || hourly_charges_client.isChecked()) {
                     boolean isError = false;
                     Appconstants.selecttrade = selecttradeTV.getText().toString();
+                    Log.e("asfdasfasf", "Selected Trade = " + Appconstants.selecttrade);
                     Appconstants.TradesmanUsername = TradesmanUsername.getText().toString();
                     Appconstants.TradesmanPassword = TradesmanPassword.getText().toString();
                     Appconstants.TradesmanConfirmPassword = TradesmanConfirmPassword.getText().toString();
@@ -727,7 +804,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                         confirmbtn.setEnabled(true);
                         isError = true;
                         errorToast("Password does not match");
-                    } else if (fddf==null) {
+                    } else if (fddf == null) {
                         confirmbtn.setEnabled(true);
                         isError = true;
                         errorToast("Please Select Trades Image ");
@@ -744,7 +821,11 @@ public class TradesmanSignup2 extends AppCompatActivity {
                         isError = true;
                         errorToast("Please Select Licence  ");
                     } else {
-                        TradesmanSignUpUpdate(RegId, (ArrayList<File>) fddf);
+                        if (InternetDetect.isConnected(TradesmanSignup2.this)) {
+                            TradesmanSignUpUpdate(RegId, (ArrayList<File>) fddf);
+                        } else {
+                            errorToast("Check Internet connection");
+                        }
                     }
 
                 /*    if (!isError) {
@@ -841,10 +922,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
         CameraImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri1 = getOutputMediaFileUri(1);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri1);
-                startActivityForResult(cameraIntent, camera2);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, camera2);
+//             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//             fileUri1 = getOutputMediaFileUri(1);
+//             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri1);
+//             startActivityForResult(cameraIntent, camera2);
                 dialog.dismiss();
             }
         });
@@ -852,10 +935,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
         GalleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery2);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, gallery2);
+//              Intent intent = new Intent();
+//              intent.setType("image/*");
+//              intent.setAction(Intent.ACTION_PICK);
+//              startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery2);
                 dialog.dismiss();
             }
         });
@@ -867,7 +952,46 @@ public class TradesmanSignup2 extends AppCompatActivity {
         Log.e("imgFile4567", "" + imgFile4567);
         fileArrayHash.put("contractor_img[]", imgFile4567);
 
-        ProjectUtil.showProgressDialog(mContext,false,"PLease wait...");
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "business_name = " + Appconstants.buisinessnameeS);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "trading_name = " + Appconstants.tradingnameS);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "businessOwnerrnName = " + Appconstants.buisness_owner_name);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "businessAddress = " + Appconstants.buisness_address);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "office_no = " + Appconstants.tradeofiicenoS);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "mobile_no = " + Appconstants.trademobileee);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "email = " + Appconstants.tradeemailS);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "website_url = " + Appconstants.companywebsiteS);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "after_hours = " + Appconstants.afterhours);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "select_trade = " + Appconstants.selecttrade);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "service_locatin = " + serviceLocation);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "work_location = " + Appconstants.doyouwork);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "company_profile_ratio = " + Appconstants.companyProfileRatio);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "username = " + Appconstants.TradesmanUsername);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "password = " + Appconstants.TradesmanPassword);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "hour_min = " + chargesvalue);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "abn = " + abn);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "radius = " + radius);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "latitude = " + latitude);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "longitude = " + longitude);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "registration_id = " + regId);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "company_upload_ratio = " + Appconstants.companyDesRatio);
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "company_detail_upload = " + new File(ImageUpload_details) + "");
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "profile_pic = " + new File(profileCompLogo) + "");
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "FileArray = " + fileArrayHash + "");
+        Log.e("sdfdsafdsgdsgfdsfgsfd", "driver_licence_img = " + new File(ImageUpload_drivnig) + "");
+
+        String isCollect;
+        if (cbIsCollect.isChecked()) isCollect = "Yes";
+        else isCollect = "No";
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .build();
+
+        AndroidNetworking.initialize(TradesmanSignup2.this, okHttpClient);
 
         AndroidNetworking.upload("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?" + "tradesman_sign_up")
                 .addMultipartParameter("business_name", Appconstants.buisinessnameeS)
@@ -876,17 +1000,26 @@ public class TradesmanSignup2 extends AppCompatActivity {
                 .addMultipartParameter("businessAddress", Appconstants.buisness_address)
                 .addMultipartParameter("office_no", Appconstants.tradeofiicenoS)
                 .addMultipartParameter("mobile_no", Appconstants.trademobileee)
+                .addMultipartParameter("abn", abn)
                 .addMultipartParameter("email", Appconstants.tradeemailS)
                 .addMultipartParameter("website_url", Appconstants.companywebsiteS)
                 .addMultipartParameter("after_hours", Appconstants.afterhours)
                 .addMultipartParameter("select_trade", Appconstants.selecttrade)
-                .addMultipartParameter("service_locatin", Appconstants.servicelocation)
+                .addMultipartParameter("select_trade_id", tradeSelectedFinalIds)
+                .addMultipartParameter("service_locatin", serviceLocation)
+                .addMultipartParameter("parth_address", serviceLocation)
                 .addMultipartParameter("work_location", Appconstants.doyouwork)
                 .addMultipartParameter("company_profile_ratio", Appconstants.companyProfileRatio)
                 .addMultipartParameter("username", Appconstants.TradesmanUsername)
                 .addMultipartParameter("password", Appconstants.TradesmanPassword)
                 .addMultipartParameter("hour_min", chargesvalue)
                 .addMultipartParameter("registration_id", regId)
+                .addMultipartParameter("radius", radius)
+                .addMultipartParameter("latitude", latitude)
+                .addMultipartParameter("longitude", longitude)
+                .addMultipartParameter("lat", latitude)
+                .addMultipartParameter("long", longitude)
+                .addMultipartParameter("IsCallout", isCollect)
                 .addMultipartParameter("company_upload_ratio", Appconstants.companyDesRatio)
                 .addMultipartFile("company_detail_upload", new File(ImageUpload_details))
                 .addMultipartFile("profile_pic", new File(profileCompLogo))
@@ -902,7 +1035,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                         try {
                             JSONObject jresponse = new JSONObject(String.valueOf(response));
                             result = jresponse.getString("result");
-                            Toast.makeText(TradesmanSignup2.this, ""+result, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TradesmanSignup2.this, "" + result, Toast.LENGTH_SHORT).show();
                             Log.e("result11", String.valueOf(result));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -933,8 +1066,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                             AlertDialog alert11 = builder1.create();
                             alert11.show();
 
-                        }
-                        else {
+                        } else {
                             Toast.makeText(TradesmanSignup2.this, "Email Already Exit ", Toast.LENGTH_SHORT).show();
                         }
 
@@ -946,8 +1078,10 @@ public class TradesmanSignup2 extends AppCompatActivity {
                         ProjectUtil.pauseProgressDialog();
                         Toast.makeText(TradesmanSignup2.this, "error >>" + error, Toast.LENGTH_SHORT).show();
                     }
+
                 });
-              }
+
+    }
 
     private void errorToast(String x) {
         Toast.makeText(getApplicationContext(), x, Toast.LENGTH_SHORT).show();
@@ -988,10 +1122,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
         CameraImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri1 = getOutputMediaFileUri(1);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri1);
-                startActivityForResult(cameraIntent, camera_driving);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, camera_driving);
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                fileUri1 = getOutputMediaFileUri(1);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri1);
+//                startActivityForResult(cameraIntent, camera_driving);
                 dialog.dismiss();
             }
         });
@@ -999,10 +1135,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
         GalleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery_driving);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, gallery_driving);
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery_driving);
                 dialog.dismiss();
             }
         });
@@ -1016,17 +1154,19 @@ public class TradesmanSignup2 extends AppCompatActivity {
         if (InternetDetect.isConnected(getApplicationContext())) {
             AsyncCategory asyncCategory = new AsyncCategory();
             asyncCategory.execute();
-        } else {}
+        } else {
+        }
 
         try {
             fddf2 = getSets.get(position).getArrayList();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         if (fddf2 == null) {
             return;
         } else if (ImageUpload_details == null) {
             return;
-        } else if (ImageUpload_drivnig ==null) {
+        } else if (ImageUpload_drivnig == null) {
             return;
         } else if (cheak_houry_charges.isChecked() || hourly_charges_client.isChecked()) {
             stateProgressBar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
@@ -1079,10 +1219,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
         CameraImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri(1);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(cameraIntent, camera);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, camera);
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                fileUri = getOutputMediaFileUri(1);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                startActivityForResult(cameraIntent, camera);
                 dialog.dismiss();
             }
         });
@@ -1090,10 +1232,13 @@ public class TradesmanSignup2 extends AppCompatActivity {
         GalleryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, gallery);
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_PICK);
+//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery);
                 dialog.dismiss();
             }
         });
@@ -1114,7 +1259,7 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                     String path = getRealPathFromURI(getImageUri(mContext, thumbnail));
 
-                    Compress.get(mContext).setQuality(20)
+                    Compress.get(mContext).setQuality(80)
                             .execute(new Compress.onSuccessListener() {
                                 @Override
                                 public void response(boolean status, String message, File file) {
@@ -1128,40 +1273,81 @@ public class TradesmanSignup2 extends AppCompatActivity {
                 }
 
                 case gallery: {
-                    selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String FinalPath = cursor.getString(columnIndex);
-                    cursor.close();
-                    profileCompLogo = FinalPath;
+                    if (data != null) {
+                        selectedImage = data.getData();
+                        Uri contentURI = data.getData();
+                        try {
+                            String path = getRealPathFromURI(contentURI);
+                            // setImageFromCameraGallery(new File(path));
+                            Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                                @Override
+                                public void response(boolean status, String message, File file) {
+                                    profileCompLogo = file.getAbsolutePath();
+                                    BTUploadPhoto.setBackgroundResource(border_tourtoise_solide);
+                                    BTUploadPhoto.setText("Image Upload");
+                                }
+                            }).CompressedImage(path);
+                        } catch (Exception e) {
+                            Log.e("hjagksads", "image = " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    //                    selectedImage = data.getData();
+//                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String FinalPath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    profileCompLogo = FinalPath;
                     Log.e("sadasadasd", "ImageUpload_details = " + ImageUpload_details);
-                    BTUploadPhoto.setBackgroundResource(border_tourtoise_solide);
-                    BTUploadPhoto.setText("Image Upload");
-                    Log.e("PATH", "" + FinalPath);
+                    // Log.e("PATH", "" + FinalPath);
                     break;
                 }
 
                 case gallery3:
-                    selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String FinalPath = cursor.getString(columnIndex);
-                    cursor.close();
-                    Log.e("PATH", "" + FinalPath);
-                    Intent intent = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent.putExtra("ImagePath", FinalPath);
-                    startActivityForResult(intent, 1000);
+                    if (data != null) {
+                        selectedImage = data.getData();
+                        Uri contentURI = data.getData();
+                        try {
+                            String path = getRealPathFromURI(contentURI);
+                            // setImageFromCameraGallery(new File(path));
+                            Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                                @Override
+                                public void response(boolean status, String message, File file) {
+                                    Intent intent = new Intent(TradesmanSignup2.this, CropActivity.class);
+                                    intent.putExtra("ImagePath", file.getAbsolutePath());
+                                    startActivityForResult(intent, 1000);
+                                }
+                            }).CompressedImage(path);
+                        } catch (Exception e) {
+                            Log.e("hjagksads", "image = " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+//                    cursor.moveToFirst();
+//                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                    String FinalPath = cursor.getString(columnIndex);
+//                    cursor.close();
+//                    Log.e("PATH", "" + FinalPath);
                     Toast.makeText(this, "Select image 1", Toast.LENGTH_SHORT).show();
                     break;
 
                 case camera3:
-                    Intent intent2 = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent2.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent2, 1000);
+                    Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                    // Uri uri = getImageUri(mContext, thumbnail);
+                    String path = getRealPathFromURI(getImageUri(mContext, thumbnail));
+
+                    Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                        @Override
+                        public void response(boolean status, String message, File file) {
+                            Intent intent2 = new Intent(TradesmanSignup2.this, CropActivity.class);
+                            intent2.putExtra("ImagePath", path);
+                            startActivityForResult(intent2, 1000);
+                        }
+                    }).CompressedImage(path);
                     break;
 
                 case 1000:
@@ -1248,24 +1434,49 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     break;
 
                 case gallery_driving:
-                    selectedImageDriving = data.getData();
-                    String[] filePathColumn1 = {MediaStore.Images.Media.DATA};
-                    Cursor cursor1 = getContentResolver().query(selectedImageDriving, filePathColumn1, null, null, null);
-                    cursor1.moveToFirst();
-                    int columnIndex1 = cursor1.getColumnIndex(filePathColumn1[0]);
-                    String FinalPath1 = cursor1.getString(columnIndex1);
-                    cursor1.close();
-                    Log.e("PATH", "" + FinalPath1);
-                    Intent intent12 = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent12.putExtra("ImagePath", FinalPath1);
-                    startActivityForResult(intent12, 2000);
+                    if (data != null) {
+                        selectedImageDriving = data.getData();
+                        Uri contentURI = data.getData();
+                        try {
+                            String path1 = getRealPathFromURI(contentURI);
+                            // setImageFromCameraGallery(new File(path));
+                            Compress.get(mContext)
+                                    .setQuality(80)
+                                    .execute(new Compress.onSuccessListener() {
+                                        @Override
+                                        public void response(boolean status, String message, File file) {
+                                            Intent intent12 = new Intent(TradesmanSignup2.this, CropActivity.class);
+                                            intent12.putExtra("ImagePath", file.getAbsolutePath());
+                                            startActivityForResult(intent12, 2000);
+                                        }
+                                    }).CompressedImage(path1);
+                        } catch (Exception e) {
+                            Log.e("hjagksads", "image = " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+//                    String[] filePathColumn1 = {MediaStore.Images.Media.DATA};
+//                    Cursor cursor1 = getContentResolver().query(selectedImageDriving, filePathColumn1, null, null, null);
+//                    cursor1.moveToFirst();
+//                    int columnIndex1 = cursor1.getColumnIndex(filePathColumn1[0]);
+//                    String FinalPath1 = cursor1.getString(columnIndex1);
+//                    cursor1.close();
+//                    Log.e("PATH", "" + FinalPath1);
                     Toast.makeText(this, "Select image 1", Toast.LENGTH_SHORT).show();
                     break;
 
                 case camera_driving:
-                    Intent intent33 = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent33.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent33, 2000);
+                    Bitmap thumbnail1 = (Bitmap) data.getExtras().get("data");
+                    Uri uri1 = getImageUri(mContext, thumbnail1);
+                    String path2 = getRealPathFromURI(uri1);
+                    Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                        @Override
+                        public void response(boolean status, String message, File file) {
+                            Intent intent33 = new Intent(TradesmanSignup2.this, CropActivity.class);
+                            intent33.putExtra("ImagePath", path2);
+                            startActivityForResult(intent33, 2000);
+                        }
+                    }).CompressedImage(path2);
                     break;
 
                 case 2000:
@@ -1348,25 +1559,47 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     break;
 
                 case gallery2:
-                    selected_details = data.getData();
-                    String[] filePathColumn12 = {MediaStore.Images.Media.DATA};
-                    Cursor cursor12 = getContentResolver().query(selected_details, filePathColumn12, null, null, null);
-                    cursor12.moveToFirst();
-                    int columnIndex12 = cursor12.getColumnIndex(filePathColumn12[0]);
-                    String FinalPath23 = cursor12.getString(columnIndex12);
-                    cursor12.close();
-                    Log.e("PATH", "" + FinalPath23);
-                    Intent intent121 = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent121.putExtra("ImagePath", FinalPath23);
-                    startActivityForResult(intent121, 3000);
+                    if (data != null) {
+                        selected_details = data.getData();
+                        Uri contentURI = data.getData();
+                        try {
+                            String pat3 = getRealPathFromURI(contentURI);
+                            // setImageFromCameraGallery(new File(path));
+                            Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                                @Override
+                                public void response(boolean status, String message, File file) {
+                                    Intent intent121 = new Intent(TradesmanSignup2.this, CropActivity.class);
+                                    intent121.putExtra("ImagePath", file.getAbsolutePath());
+                                    startActivityForResult(intent121, 3000);
+                                }
+                            }).CompressedImage(pat3);
+                        } catch (Exception e) {
+                            Log.e("hjagksads", "image = " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                    //                    String[] filePathColumn12 = {MediaStore.Images.Media.DATA};
+//                    Cursor cursor12 = getContentResolver().query(selected_details, filePathColumn12, null, null, null);
+//                    cursor12.moveToFirst();
+//                    int columnIndex12 = cursor12.getColumnIndex(filePathColumn12[0]);
+//                    String FinalPath23 = cursor12.getString(columnIndex12);
+//                    cursor12.close();
+//                    Log.e("PATH", "" + FinalPath23);
                     Toast.makeText(this, "Select image 1", Toast.LENGTH_SHORT).show();
-
                     break;
 
                 case camera2:
-                    Intent intent331 = new Intent(TradesmanSignup2.this, CropActivity.class);
-                    intent331.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent331, 3000);
+                    Bitmap thumbnail2 = (Bitmap) data.getExtras().get("data");
+                    Uri uri2 = getImageUri(mContext, thumbnail2);
+                    String pat3 = getRealPathFromURI(uri2);
+                    Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+                        @Override
+                        public void response(boolean status, String message, File file) {
+                            Intent intent331 = new Intent(TradesmanSignup2.this, CropActivity.class);
+                            intent331.putExtra("ImagePath", file.getAbsolutePath());
+                            startActivityForResult(intent331, 3000);
+                        }
+                    }).CompressedImage(pat3);
                     break;
 
                 case 3000:
@@ -1536,6 +1769,9 @@ public class TradesmanSignup2 extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
+
+            Log.e("asdgfladkjgasd", "CategoryBean = " + s);
+
             Collections.sort(catarray, new Comparator<CategoryBean>() {
                 @Override
                 public int compare(CategoryBean v1, CategoryBean v2) {
@@ -1548,15 +1784,27 @@ public class TradesmanSignup2 extends AppCompatActivity {
             mainCategoryArray = new String[catarray.size()];
             posID = new String[catarray.size()];
 
+            selectTradesIds = new ArrayList<>();
+            selectTradeWithIdAndNameList = new ArrayList<>();
             int index = 0;
             for (CategoryBean value : catarray) {
                 mainCategoryArray[index] = value.getName();
                 posID[index] = value.getId();
+                selectTradesIds.add(value.getId());
+                selectTradeWithIdAndNameList.add(new CustomeModelSelectedCat(value.getId(), value.getName()));
 
+                // selectedTradesIdOnly.add(value.getId());
+
+                // new CustomeModelSelectedCat(value.getId(), value.getName());
+
+                Log.e("fsdsdaadasd", "selectTradesIds = " + value.getId());
+                Log.e("fsdsdaadasd", "selectTradesIds = " + value.getName());
+                // Log.e("fsdsdaadasd", "position = " + posID[index] + " value.getId() = " + value.getId() + " Name = " + value.getName());
                 index++;
                 System.out.println("Main category" + value.getName());
             }
         }
+
     }
 
     private class JsonGCMTask extends AsyncTask<String, String, String> {
@@ -1646,11 +1894,12 @@ public class TradesmanSignup2 extends AppCompatActivity {
                     if (holder.ProblemNameTV.isChecked()) {
                         holder.ProblemNameTV.setChecked(false);
                         Selecteddata.remove(data.get(position));
-
+                        selectedTradesIdOnly.remove(data.get(position));
                     } else {
 
                         holder.ProblemNameTV.setChecked(true);
                         Selecteddata.add(data.get(position));
+                        selectedTradesIdOnly.add(data.get(position));
 
                     }
                 }
@@ -1663,5 +1912,6 @@ public class TradesmanSignup2 extends AppCompatActivity {
         public class ViewHolder {
             CheckedTextView ProblemNameTV;
         }
+
     }
 }

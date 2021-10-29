@@ -20,7 +20,6 @@
           android:layout_below="@id/profile_toolbar"
           android:orientation="vertical">
 
-
           <LinearLayout
               android:id="@+id/rel4"
               android:layout_width="match_parent"
@@ -68,10 +67,10 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction1"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -96,10 +95,10 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction2"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -113,7 +112,6 @@
                         android:layout_height="@dimen/_6sdp"
                         android:layout_marginTop="@dimen/_12sdp"
                         android:src="@drawable/dot">
-
                     </ImageView>
 
                     <TextView
@@ -124,10 +122,10 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
                         android:layout_marginTop="@dimen/_6sdp"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction3"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -150,12 +148,12 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
                         android:background="#ffffff"
-                        android:fontFamily="@font/droidderif"
-                        android:padding="@dimen/_5sdp"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction4"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -180,7 +178,7 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction5"
                         android:textColor="#2C2829"
                         android:textSize="@dimen/_13sdp" />
@@ -208,10 +206,10 @@
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction6"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -236,10 +234,10 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:background="#ffffff"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/droidderif"
+                        android:fontFamily="@font/montserrat_medium"
                         android:text="@string/tradmeninstruction7"
                         android:textColor="#2C2829"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>
 
@@ -252,7 +250,7 @@
                 android:layout_below="@+id/tv_tradesmen"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/droidderif"
+                android:fontFamily="@font/montserrat_medium"
                 android:padding="@dimen/_2sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="Thanks for choosing to use"
@@ -260,13 +258,14 @@
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
 
-            <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+            <TextView
                 android:id="@+id/tv_chosing2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_chosing"
                 android:layout_gravity="center"
                 android:padding="@dimen/_2sdp"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:text="Fixezi'- The App of All Trades."
                 android:textColor="#000000"

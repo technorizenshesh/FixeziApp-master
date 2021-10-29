@@ -7,6 +7,6 @@ public class HttpPAth {
 
     // public static String Urlpath="http://www.technorizen.co.in/WORKSPACE6/FIXEZI/webserv.php?";
     // public static String Urlpath="https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?";
-    public static String Urlpath="https://fixezi.com.au/fixezi_admin/FIXEZI/webserv_test.php?";
+    public static String Urlpath = "https://fixezi.com.au/fixezi_admin/FIXEZI/webserv_test.php?";
 
 }

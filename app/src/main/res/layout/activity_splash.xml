@@ -3,8 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_spalase"
+    android:paddingTop="@dimen/_20sdp"
+    android:gravity="center"
+    android:background="@drawable/bg"
+    android:paddingBottom="@dimen/_20sdp"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:src="@drawable/final_logoupdate"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/mainlogo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="@dimen/_18sdp"
+        android:text="100% Certified Tradesmen"/>
 
 </LinearLayout>

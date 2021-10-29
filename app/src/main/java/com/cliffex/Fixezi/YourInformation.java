@@ -62,7 +62,6 @@ public class YourInformation extends AppCompatActivity {
         EditServiceLocationTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(YourInformation.this, EditServiceLocation.class);
                 startActivity(intent);
             }

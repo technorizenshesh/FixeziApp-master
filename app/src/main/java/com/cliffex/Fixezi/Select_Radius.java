@@ -53,7 +53,8 @@ import java.util.Objects;
 
 import static java.security.AccessController.getContext;
 
-public class Select_Radius extends FragmentActivity implements OnMapReadyCallback,
+public class Select_Radius extends FragmentActivity
+        implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
 
     private static final int MAX = 20;
@@ -108,6 +109,14 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
                 Intent intent = new Intent();
                 intent.putExtra("Select_radius", "" + progress3);
                 intent.putExtra("Select_address_Raedus", Select_address_Raedus);
+                intent.putExtra("lat", String.valueOf(latitude));
+                intent.putExtra("lon", String.valueOf(longitude));
+
+//                if(latitude != 0.0){
+//                    intent.putExtra("lat", latitude+"");
+//                    intent.putExtra("lon", longitude+"");
+//                }
+
                 setResult(2, intent);
                 finish();
             }
@@ -120,7 +129,7 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
 
     private void getCurrentLocation() {
         mContext = this;
-        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
 
@@ -180,8 +189,9 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        if(level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
-            try {} catch (Exception e) {
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
+            try {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -191,7 +201,7 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             LatLng propertyLatlng = new LatLng(latitude, longitude);
             MapsInitializer.initialize(Objects.<Context>requireNonNull(this));
             try {
@@ -220,7 +230,7 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
                 .title(address))
                 .setIcon(bitmapDescriptorFromVector(getContext(), R.drawable.c));
 
-        Log.e("sdfsdfdsfdsf","(15 * 21) / 100 = " + (15 * 21) / 100);
+        Log.e("sdfsdfdsfdsf", "(15 * 21) / 100 = " + (15 * 21) / 100);
 
 //        progress.setMax(100);
 //        distance.setText("" + 0 + "km ");
@@ -245,100 +255,109 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
 //
 //        });
 
-         progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress1 = 30 - progress;
                 circle.setRadius(getRedious(progress));
 
-                Log.e("CircleRedius", progress + "==>" + circle.getRadius());
+
+                Log.e("CircleRedius", progress + "==>" + progress);
                 Log.e("progress1", progress1 + "==>" + circle.getRadius());
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) progress1));
 
-                if(progress1 == 30) {
+                if (progress1 == 30) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 17));
                 }
-                if(progress1 == 29) {
+                if (progress1 == 29) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 16));
                 }
-                if(progress1 == 28) {
+                if (progress1 == 28) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 15));
                 }
-                if(progress1 == 27) {
+                if (progress1 == 27) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 14));
                 }
-                if(progress1 == 26) {
+                if (progress1 == 26) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 14));
                 }
-                if(progress1 == 25) {
+                if (progress1 == 25) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 13.50));
                 }
-                if(progress1 == 24) {
+                if (progress1 == 24) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 13.10));
                 }
-                if(progress1 == 23) {
+                if (progress1 == 23) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 12.85));
                 }
-                if(progress1 == 22) {
+                if (progress1 == 22) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 12.10));
                 }
-                if(progress1 == 21) {
+                if (progress1 == 21) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 11.85));
                 }
-                if(progress1 == 20) {
+                if (progress1 == 20) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 10.85));
                 }
-
-                if(progress1 == 19) {
+                if (progress1 == 19) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 9.85));
                 }
-
-                if(progress1 == 18) {
+                if (progress1 == 18) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 9.45));
                 }
-
-                if(progress1 == 17) {
+                if (progress1 == 17) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 9.08));
                 }
 
-                if(progress1 == 16) {
+                if (progress1 == 16) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 9.01));
                 }
 
-                if(progress1 == 15) {
+                if (progress1 == 15) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 9.35));
                 }
 
-                if(progress1 == 14) {
+                if (progress1 == 14) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 8.35));
                 }
 
-                if(progress1 == 13) {
+                if (progress1 == 13) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 7.35));
                 }
 
-                if(progress1 == 12) {
+                if (progress1 == 12) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 7.15));
                 }
 
-                if(progress1 == 11) {
+                if (progress1 == 11) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 7.01));
                 }
 
-                if(progress1 == 10) {
+                if (progress1 == 10) {
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 7));
                 }
+
                 distance.setText("" + progress * 5 + "km ");
                 progress3 = progress * 5;
+
+                if (progress == 10) {
+                    distance.setText("0km");
+                    progress3 = 0;
+                    Log.e("sdfsdfdsfds", "progress3 = " + progress3);
+                }
+
                 PreferenceConnector.writeString(Select_Radius.this, PreferenceConnector.Select_radius, "" + progress * 5);
+
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {}
+            public void onStartTrackingTouch(final SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {}
+            public void onStopTrackingTouch(final SeekBar seekBar) {
+            }
 
         });
 
@@ -385,7 +404,7 @@ public class Select_Radius extends FragmentActivity implements OnMapReadyCallbac
             return 3700;
         }
         if (progress == 9) {
-            return  4000;
+            return 4000;
         }
         if (progress == 10) {
             return 5000;
