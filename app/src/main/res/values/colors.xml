@@ -8,6 +8,12 @@
     <color name="grey">#e8e8e7</color>
     <color name="greydark">#D5D5D5</color>
     <color name="blueee">#66ccff</color>
+    <color name="purpal">#a34aa4</color>
+    <color name="welcome_blue">#51ccde</color>
+    <color name="welcome_black">#0f0f0f</color>
+    <color name="welcome_gray">#5a5a5a</color>
+    <color name="welcome_button">#5acbeb</color>
+    <color name="blue_light">#00a499</color>
     <color name="green">#7CC25E</color>
     <color name="remind_color">#5fb0ce</color>
     <color name="greendar">#51d11a</color>

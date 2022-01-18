@@ -265,8 +265,8 @@ public class AllJobs extends AppCompatActivity {
             }
 
         }
-    }
 
+    }
 
     private class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
 
@@ -277,10 +277,12 @@ public class AllJobs extends AppCompatActivity {
 
             TextView ProblemJobRequest, DateJobRequest, TimeJobRequest, FlexibleDateJobRequest,
                     FlexibleTimeJobRequest, StatusTV, NumberTv, jobforwordto;
+
             TextView residentialbtn, commercialbtn;
 
             public MyViewHolder(View view) {
                 super(view);
+
                 ProblemJobRequest = (TextView) view.findViewById(R.id.ProblemJobRequest);
                 DateJobRequest = (TextView) view.findViewById(R.id.DateJobRequest);
                 TimeJobRequest = (TextView) view.findViewById(R.id.TimeJobRequest);

@@ -390,6 +390,7 @@ public class TradesmanSignUp extends AppCompatActivity {
                 PreferenceConnector.writeString(TradesmanSignUp.this, PreferenceConnector.confirm_email, ConfirmEmailSU1);
 
                 finish();
+
             }
         });
 
@@ -420,10 +421,8 @@ public class TradesmanSignUp extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (Validate()) {
-
                     StringBuilder s = new StringBuilder();
                     for (int i = 0; i < SelectedPostCode.size(); i++) {
-
                         if (i == 0) {
                             s.append(SelectedPostCode.get(i));
                             continue;

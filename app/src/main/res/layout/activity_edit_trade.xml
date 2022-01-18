@@ -41,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_editMessage"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:background="#000000"
                 android:gravity="center"
                 android:padding="7dp"
@@ -121,9 +121,7 @@
 
                 </RelativeLayout>
 
-
             </RelativeLayout>
-
 
             <ListView
                 android:id="@+id/TradeList"
@@ -132,7 +130,7 @@
                 android:layout_above="@+id/UpdataTradeBT"
                 android:layout_below="@+id/tv_trade"
                 android:layout_marginTop="10dp"
-                android:enabled="false" />
+                android:enabled="true" />
 
             <TextView
                 android:id="@+id/tv_tv"
@@ -140,8 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/TradeList"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/border_black"
                 android:gravity="center"
                 android:padding="7dp"
@@ -165,13 +163,13 @@
 
 
                     <EditText
+                        android:id="@+id/edit_comment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_above="@+id/rel_11"
                         android:background="@android:color/transparent"
                         android:hint="Please type your comments here"
                         android:maxLines="3"
-                        android:id="@+id/edit_comment"
                         android:paddingLeft="10dp"
                         android:textColor="@color/black"
 
@@ -187,15 +185,15 @@
 
 
                         <Button
+                            android:id="@+id/btn_sendInformation"
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
                             android:layout_margin="5dp"
                             android:background="@color/green_color_gradient"
                             android:elevation="10dp"
                             android:text="Send"
-                            android:id="@+id/btn_sendInformation"
                             android:textColor="@color/white"
 
                             />
@@ -271,8 +269,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="Fixezi"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
 

@@ -1,17 +1,32 @@
 package com.cliffex.Fixezi;
 
+import static android.os.Build.VERSION.SDK_INT;
+
+import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
+
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -29,15 +44,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.Base64Decode;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.util.Compress;
+import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.gson.Gson;
+import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -54,6 +77,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -64,6 +88,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +96,17 @@ import java.util.Map;
 
 public class EditCompanyImages extends AppCompatActivity {
 
+    private static final int GALLERY = 101;
+    private static final int CAMERA = 102;
+    private static final int CROP = 103;
+    private static final int logoImageCode = 123;
+    private static final int normalImageCode = 456;
+    private static final int PERMISSION_ID = 1234;
+    private static int cameraOrGallery = 0;
+
+    File logoImage, normalImage;
     Toolbar toolbar;
+    Context mContext = EditCompanyImages.this;
     SessionTradesman sessionTradesman;
     TextView toolbar_textview;
     RelativeLayout NavigationUpIM;
@@ -94,6 +129,8 @@ public class EditCompanyImages extends AppCompatActivity {
     CheckBox EditImageCB;
     ProgressDialog progressDialog;
     String fileUriPath;
+    private String str_image_path;
+    private int imageCapturedCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +152,7 @@ public class EditCompanyImages extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.ToolbarECIm);
         toolbar_textview = (TextView) findViewById(R.id.toolbar_title);
         NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
+
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,7 +199,6 @@ public class EditCompanyImages extends AppCompatActivity {
         BTUploadCompanyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (PhotoOrString.equalsIgnoreCase("String")) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(EditCompanyImages.this);
                     builder1.setTitle("fixezi Team");
@@ -177,16 +214,21 @@ public class EditCompanyImages extends AppCompatActivity {
                                 }
                             });
 
-
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
-                } else {
 
-                    gotoAddProfileImage(camera2, gallery2);
+                } else {
+                    if (checkPermissions()) {
+                        imageCapturedCode = 2;
+                        showPictureDialog();
+                        // gotoAddProfileImage(camera2, gallery2);
+                    } else {
+                        requestPermissions();
+                    }
+
                 }
             }
         });
-
 
         ETCompanyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,34 +286,32 @@ public class EditCompanyImages extends AppCompatActivity {
             }
         });
 
-
         ClearImageIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 RLCompanyUpload.setVisibility(View.GONE);
                 BTUploadCompanyDetail.setVisibility(View.VISIBLE);
-
                 BTUploadCompanyDetail.setBackgroundResource(R.drawable.border_black_solid_white);
                 BTUploadCompanyDetail.setText("Click here to upload company details and service you provide");
                 BTUploadCompanyDetail.setTextColor(Color.parseColor("#000000"));
                 PhotoOrString = "";
                 ETCompanyDetail.setFocusableInTouchMode(true);
                 ETCompanyDetail.setFocusable(true);
-
             }
         });
-
 
         ClearProfileImageIMTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gotoAddProfileImage(camera, gallery);
-
+                if (checkPermissions()) {
+                    imageCapturedCode = 1;
+                    showPictureDialog();
+                    // gotoAddProfileImage(camera, gallery);
+                } else {
+                    requestPermissions();
+                }
             }
         });
-
 
         ClearProfileImageIMTwo.setEnabled(false);
         ClearImageIM.setEnabled(false);
@@ -280,58 +320,105 @@ public class EditCompanyImages extends AppCompatActivity {
         EditImageCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
                 if (b) {
-
                     ClearProfileImageIMTwo.setEnabled(true);
                     ETCompanyDetail.setEnabled(true);
                     ClearImageIM.setEnabled(true);
                     SaveChangeTV.setEnabled(true);
-
                 } else {
-
                     ClearProfileImageIMTwo.setEnabled(false);
                     ETCompanyDetail.setEnabled(false);
                     ClearImageIM.setEnabled(false);
                     SaveChangeTV.setEnabled(false);
                 }
-
             }
         });
-
 
         SaveChangeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (EditImageCB.isChecked()) {
-
-
                     if (PhotoOrString.equalsIgnoreCase("")) {
-
                         Toast.makeText(EditCompanyImages.this, "Please Enter Company Detail or Upload Company Detail Photo", Toast.LENGTH_SHORT).show();
                     } else {
-
-                        new JsonUpdate().execute(ETCompanyDetail.getText().toString());
+                        updateProfileApi();
+                        // new JsonUpdate().execute(ETCompanyDetail.getText().toString());
                     }
-
                 } else {
-
                     Toast.makeText(EditCompanyImages.this, "Please check the box to edit", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
-        });
 
+        });
 
     }
 
+    private boolean checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSION_ID
+        );
+    }
+
+    private void updateProfileApi() {
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", sessionTradesman.getId());
+        paramHash.put("company_profile_ratio", "");
+        paramHash.put("company_upload_ratio", "");
+        paramHash.put("company_detail", ETCompanyDetail.getText().toString().trim());
+
+        HashMap<String, File> paramFileHash = new HashMap<>();
+
+        if (logoImage != null) {
+            paramFileHash.put("profile_pic", logoImage);
+        }
+
+        if (normalImage != null) {
+            paramFileHash.put("company_detail_upload", normalImage);
+        }
+
+        Log.e("responseresponse", "paramHash = " + paramHash);
+        Log.e("responseresponse", "paramFileHash = " + paramFileHash);
+
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+        AndroidNetworking.upload(HttpPAth.Urlpath + "profile_pic_company_detail_Upadte")
+                .addMultipartParameter(paramHash)
+                .addMultipartFile(paramFileHash)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        finish();
+                        Toast.makeText(mContext, "Success", Toast.LENGTH_SHORT).show();
+                        Log.e("responseresponse", "response = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+
+                });
+    }
 
     private class JsonUpdate extends AsyncTask<String, String, TradesManBean> {
 
         String jsonresult = "he";
-
 
         @Override
         protected void onPreExecute() {
@@ -349,9 +436,7 @@ public class EditCompanyImages extends AppCompatActivity {
                 List<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("user_id", sessionTradesman.getId()));
 
-
                 if (Appconstants.IMAGE_BASE64.equalsIgnoreCase("")) {
-
                 } else {
                     Log.e("WEBCheck1", ">>>>>" + Appconstants.IMAGE_BASE64);
                     nameValuePairs.add(new BasicNameValuePair("profile_pic", Appconstants.IMAGE_BASE64));
@@ -359,16 +444,12 @@ public class EditCompanyImages extends AppCompatActivity {
                 }
 
                 if (Appconstants.IMAGE_BASE642.equalsIgnoreCase("")) {
-
                     nameValuePairs.add(new BasicNameValuePair("company_detail", strings[0]));
-
                 } else {
                     Log.e("WEBCheck2", ">>>>>" + Appconstants.IMAGE_BASE642);
-
                     nameValuePairs.add(new BasicNameValuePair("company_detail_upload", Appconstants.IMAGE_BASE642));
                     nameValuePairs.add(new BasicNameValuePair("company_upload_ratio", Appconstants.companyDesRatio));
                     nameValuePairs.add(new BasicNameValuePair("company_detail", strings[0]));
-
                 }
 
                 post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -378,6 +459,7 @@ public class EditCompanyImages extends AppCompatActivity {
                 Log.e("JsonUpdate", object);
 
                 Gson gson = new Gson();
+
                 JSONArray ParentArray = new JSONArray(object);
 
                 JSONObject Object = ParentArray.getJSONObject(0);
@@ -388,7 +470,6 @@ public class EditCompanyImages extends AppCompatActivity {
 
                 return tradesManBean;
 
-
             } catch (JSONException e1) {
                 e1.printStackTrace();
             } catch (UnsupportedEncodingException e1) {
@@ -396,7 +477,6 @@ public class EditCompanyImages extends AppCompatActivity {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
             return null;
         }
 
@@ -405,219 +485,205 @@ public class EditCompanyImages extends AppCompatActivity {
             super.onPostExecute(result);
             progressDialog.dismiss();
             if (jsonresult.equalsIgnoreCase("successfully")) {
-
                 Toast.makeText(EditCompanyImages.this, "Updated", Toast.LENGTH_SHORT).show();
-
                 finish();
-
             }
         }
 
     }
 
+    private void setImageFromCameraGallery(String path) {
+        if (imageCapturedCode == 1) {
+            CompanyProfileIM.setImageURI(Uri.parse(path));
+            logoImage = new File(path);
+            Log.e("asdasdas", "logoImage Image = " + logoImage.getAbsolutePath());
+        } else if (imageCapturedCode == 2) {
 
-    private void gotoAddProfileImage(final int camera, final int gallery) {
+            normalImage = new File(path);
+            Log.e("asdasdas", "Normal Image = " + normalImage.getAbsolutePath());
+            RLCompanyUpload.setVisibility(View.VISIBLE);
+            BTUploadCompanyDetail.setVisibility(View.GONE);
 
-        final Dialog dialog = new Dialog(EditCompanyImages.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.choosemedia);
-        dialog.setTitle("Upload Image");
+            ComapanyUploadIm.setImageURI(Uri.parse(path));
+            // CompanyProfileIM.setImageURI(uri);
+            BTUploadCompanyDetail.setBackgroundResource(R.drawable.border_black_solid_red);
+            BTUploadCompanyDetail.setTextColor(Color.parseColor("#ffffff"));
+            BTUploadCompanyDetail.setText("Image Uploaded");
+            PhotoOrString = "Photo";
+            ETCompanyDetail.setFocusable(false);
 
-        ImageView CameraImage = (ImageView) dialog.findViewById(R.id.CameraImage);
-        ImageView GalleryImage = (ImageView) dialog.findViewById(R.id.GalleryImage);
+//            Compress.get(mContext).setQuality(90).execute(new Compress.onSuccessListener() {
+//                @Override
+//                public void response(boolean status, String message, File file) {
+//
+//                }
+//            }).CompressedImage(file.getPath());
 
-        CameraImage.setOnClickListener(new View.OnClickListener() {
+        }
 
-            @Override
-            public void onClick(View v) {
-
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri(1);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(cameraIntent, camera);
-                dialog.dismiss();
-
-            }
-        });
-
-        GalleryImage.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery);
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        Log.e("zsfasdasda", "requestCode = " + requestCode);
+        Log.e("zsfasdasda", "resultCode = " + resultCode);
+        Log.e("zsfasdasda", "resultCode = " + resultCode);
 
-            switch (requestCode) {
-
-                case gallery:
-
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String FinalPath = cursor.getString(columnIndex);
-                    cursor.close();
-                    Log.e("PATH", "" + FinalPath);
-
-                    Intent intent = new Intent(EditCompanyImages.this, CropActivity.class);
-                    intent.putExtra("ImagePath", FinalPath);
-                    startActivityForResult(intent, 1000);
-
-                    break;
-
-                case camera:
-
-                    Intent intent2 = new Intent(EditCompanyImages.this, CropActivity.class);
-                    intent2.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent2, 1000);
-
-                    break;
-
-
-                case gallery2:
-
-                    Uri selectedImage2 = data.getData();
-                    String[] filePathColumn2 = {MediaStore.Images.Media.DATA};
-                    Cursor cursor2 = getContentResolver().query(selectedImage2, filePathColumn2, null, null, null);
-                    cursor2.moveToFirst();
-
-                    int columnIndex2 = cursor2.getColumnIndex(filePathColumn2[0]);
-                    String FinalPath2 = cursor2.getString(columnIndex2);
-                    cursor2.close();
-                    Log.e("PATH", "" + FinalPath2);
-
-                    Intent intent3 = new Intent(EditCompanyImages.this, CropActivity.class);
-                    intent3.putExtra("ImagePath", FinalPath2);
-                    startActivityForResult(intent3, 1001);
-
-                    break;
-
-                case camera2:
-
-                    Intent intent4 = new Intent(EditCompanyImages.this, CropActivity.class);
-                    intent4.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent4, 1001);
-
-                    break;
-
-
-                case 1000:
-
-                    String newPath = data.getStringExtra("CroppedImage");
-                    Appconstants.companyProfileRatio = data.getStringExtra("Ratio");
-                    //Uri uri = Uri.fromFile(new File(newPath));
-                    Uri uri = FileProvider.getUriForFile(EditCompanyImages.this, getApplicationContext().getPackageName() + ".provider", new File(newPath));
-
-                    Log.e("22NEWPATH", "???" + newPath);
-
-                    Bitmap bm = null;
-                    try {
-                        bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 90, bao);
-                    byte[] ba = bao.toByteArray();
-                    Appconstants.IMAGE_BASE64 = Base64Decode.encodeBytes(ba);
-                    Log.e("bitmap gallery", Appconstants.IMAGE_BASE64);
-
-                    Toast.makeText(EditCompanyImages.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                    //TODO
-
-
-                    if (Appconstants.companyProfileRatio.equalsIgnoreCase("43")) {
-                        CompanyProfileIM.setLayoutParams(layoutParams43);
-                    } else if (Appconstants.companyProfileRatio.equalsIgnoreCase("169")) {
-                        CompanyProfileIM.setLayoutParams(layoutParams169);
-                    } else if (Appconstants.companyProfileRatio.equalsIgnoreCase("44")) {
-                        CompanyProfileIM.setLayoutParams(layoutParams44);
-                    }
-                    //CompanyProfileIM.setImageURI(Uri.fromFile(new File(newPath)));
-                    CompanyProfileIM.setImageURI(FileProvider.getUriForFile(EditCompanyImages.this, getApplicationContext().getPackageName() + ".provider", new File(newPath)));
-
-                    /*BTUploadPhoto.setBackgroundResource(R.drawable.border_black_solid_red);
-                    BTUploadPhoto.setTextColor(Color.parseColor("#ffffff"));
-                    BTUploadPhoto.setText("Image Uploaded");*/
-
-                    break;
-
-                case 1001:
-
-                    CompanyUpload = data.getStringExtra("CroppedImage");
-                    Appconstants.companyDesRatio = data.getStringExtra("Ratio");
-                    //Uri uri2 = Uri.fromFile(new File(CompanyUpload));
-                    Uri uri2 = FileProvider.getUriForFile(EditCompanyImages.this, getApplicationContext().getPackageName() + ".provider", new File(CompanyUpload));
-                    Log.e("22NEWPATH", "???" + CompanyUpload);
-
-                    Bitmap bm2 = null;
-                    try {
-                        bm2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri2);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ByteArrayOutputStream bao2 = new ByteArrayOutputStream();
-                    bm2.compress(Bitmap.CompressFormat.JPEG, 90, bao2);
-                    byte[] ba2 = bao2.toByteArray();
-                    Appconstants.IMAGE_BASE642 = Base64Decode.encodeBytes(ba2);
-                    Log.e("bitmap gallery", Appconstants.IMAGE_BASE642);
-
-                    Toast.makeText(EditCompanyImages.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
-                    RLCompanyUpload.setVisibility(View.VISIBLE);
-                    BTUploadCompanyDetail.setVisibility(View.GONE);
-
-                    if (Appconstants.companyDesRatio.equalsIgnoreCase("43")) {
-
-                        ComapanyUploadIm.setLayoutParams(layoutParams43);
-                    } else if (Appconstants.companyDesRatio.equalsIgnoreCase("169")) {
-
-                        ComapanyUploadIm.setLayoutParams(layoutParams169);
-                    } else if (Appconstants.companyDesRatio.equalsIgnoreCase("44")) {
-
-                        ComapanyUploadIm.setLayoutParams(layoutParams44);
-                    }
-
-                    ComapanyUploadIm.setImageURI(Uri.fromFile(new File(CompanyUpload)));
-
-                    BTUploadCompanyDetail.setBackgroundResource(R.drawable.border_black_solid_red);
-                    BTUploadCompanyDetail.setTextColor(Color.parseColor("#ffffff"));
-                    BTUploadCompanyDetail.setText("Image Uploaded");
-                    PhotoOrString = "Photo";
-                    ETCompanyDetail.setFocusable(false);
-
-                    break;
-
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                String path = RealPathUtil.getRealPath(mContext, resultUri);
+                Log.e("hjagksads", "path = " + path);
+                setImageFromCameraGallery(path);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
             }
         }
+
+        if (requestCode == GALLERY) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    try {
+                        Log.e("hjagksads", "GALLERY URI = " + data.getData());
+                        // String path = RealPathUtil.getRealPath(mContext, resultUri);
+                        CropImage.activity(data.getData()).start(this);
+                    } catch (Exception e) {
+                        Log.e("hjagksads", "image = " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                //                String path = ProjectUtil.getRealPathFromURI(mContext, data.getData());
+//
+//                Intent intent = new Intent(mContext, CropActivity.class);
+//                intent.putExtra("ImagePath", path);
+//                intent.putExtra("isEdit", "isEdit");
+//
+//                if (imageCapturedCode == 1) {
+//                    intent.putExtra("code", logoImageCode);
+//                    startActivityForResult(intent, logoImageCode);
+//                } else {
+//                    intent.putExtra("code", normalImageCode);
+//                    startActivityForResult(intent, normalImageCode);
+//                }
+
+            }
+        } else if (requestCode == CAMERA) {
+            if (resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap bitmapNew = (Bitmap) extras.get("data");
+                Bitmap imageBitmap = BITMAP_RE_SIZER(bitmapNew, bitmapNew.getWidth(), bitmapNew.getHeight());
+
+                Uri tempUri = getImageUri(mContext, imageBitmap);
+
+                CropImage.activity(tempUri).start(this);
+
+//              Intent intent = new Intent(mContext, CropActivity.class);
+//              intent.putExtra("ImagePath", str_image_path);
+//              intent.putExtra("isEdit", "isEdit");
+//              if (imageCapturedCode == 1) {
+//                  intent.putExtra("code", logoImageCode);
+//                  startActivityForResult(intent, logoImageCode);
+//              } else {
+//                  intent.putExtra("code", normalImageCode);
+//                  startActivityForResult(intent, normalImageCode);
+//              }
+
+            }
+        } else if (resultCode == logoImageCode) {
+            String path = data.getStringExtra("CroppedImage");
+            Log.e("zsfasdasda", "Path = " + path);
+            // setImageFromCameraGallery(new File(path));
+        } else if (resultCode == normalImageCode) {
+            String path = data.getStringExtra("CroppedImage");
+            Log.e("zsfasdasda", "Path = " + path);
+            // setImageFromCameraGallery(new File(path));
+        }
+
     }
 
+    public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
+
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
+
+    public static void requestPermissions(Context mContext) {
+        ActivityCompat.requestPermissions(
+                ((Activity) mContext), new String[]{
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                }, 101);
+    }
+
+    public void showPictureDialog() {
+        androidx.appcompat.app.AlertDialog.Builder pictureDialog = new androidx.appcompat.app.AlertDialog.Builder(mContext);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {"Select photo from gallery", "Capture photo from camera"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                // cameraOrGallery = CAMERA;
+                                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                galleryIntent.setType("image/*");
+                                startActivityForResult(galleryIntent, GALLERY);
+                                dialog.dismiss();
+                                // ProjectUtil.openGallery(mContext, GALLERY);
+                                break;
+                            case 1:
+                                // cameraOrGallery = GALLERY;
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, CAMERA);
+                                dialog.dismiss();
+                                // str_image_path = ProjectUtil.openCamera(mContext, CAMERA);
+                                Toast.makeText(mContext, "str_image_path = " + str_image_path, Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + System.currentTimeMillis(), null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = mContext.getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
 
     public Uri getOutputMediaFileUri(int type) {
         fileUriPath = getOutputMediaFile(type).getPath();
         Uri uri = FileProvider.getUriForFile(EditCompanyImages.this, getApplicationContext().getPackageName() + ".provider", new File(fileUriPath));
         return uri;
     }
-
 
     private static File getOutputMediaFile(int type) {
 
@@ -650,7 +716,6 @@ public class EditCompanyImages extends AppCompatActivity {
         fileUri = savedInstanceState.getParcelable("file_uri");
     }
 
-
     private class JsonGetInfo extends AsyncTask<String, String, TradesManBean> {
 
         String jsonresult = "he";
@@ -668,6 +733,7 @@ public class EditCompanyImages extends AppCompatActivity {
                 params.put("tradesman_id", sessionTradesman.getId());
 
                 StringBuilder postData = new StringBuilder();
+
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (postData.length() != 0) postData.append('&');
                     postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
@@ -691,6 +757,7 @@ public class EditCompanyImages extends AppCompatActivity {
                 while ((line = reader.readLine()) != null) {
                     response += line;
                 }
+
                 writer.close();
                 reader.close();
                 Log.e("JsonGetInfo", response);
@@ -713,7 +780,6 @@ public class EditCompanyImages extends AppCompatActivity {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
             return null;
         }
 
@@ -723,26 +789,21 @@ public class EditCompanyImages extends AppCompatActivity {
 
             if (jsonresult.equalsIgnoreCase("successfully")) {
 
-
                 if (result.getCompany_profile_ratio().equalsIgnoreCase("43")) {
-
                     CompanyProfileIM.setLayoutParams(layoutParams43);
-
                 } else if (result.getCompany_profile_ratio().equalsIgnoreCase("169")) {
-
                     CompanyProfileIM.setLayoutParams(layoutParams169);
-
                 } else if (result.getCompany_profile_ratio().equalsIgnoreCase("44")) {
-
                     CompanyProfileIM.setLayoutParams(layoutParams44);
-
                 }
-
 
                 Glide.with(EditCompanyImages.this).load(result.getProfile_pic())
                         .thumbnail(0.5f)
                         .into(CompanyProfileIM);
-
+//
+//                        Glide.with(EditCompanyImages.this).load(result.getCompany_detail_upload())
+//                        .thumbnail(0.5f)
+//                        .into(CompanyProfileIM);
 
                 if (result.getCompany_detail().trim().equalsIgnoreCase("")) {
 
@@ -765,4 +826,5 @@ public class EditCompanyImages extends AppCompatActivity {
             }
         }
     }
+
 }

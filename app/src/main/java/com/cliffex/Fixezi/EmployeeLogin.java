@@ -48,8 +48,8 @@ public class EmployeeLogin extends AppCompatActivity {
     EditText WorkerUsernameET,WorkerPasswordET;
     TextView LoginWorkerTV;
     SessionWorker sessionWorker;
-    CheckBox WorkerRememberCheckbox;
     SharedPreferences RememberMeWorkerPref;
+    CheckBox WorkerRememberCheckbox;
     SharedPreferences.Editor RememberMeWorkerPrefEditor;
     GoogleCloudMessaging gcm;
     String RegId = "";
@@ -106,27 +106,20 @@ public class EmployeeLogin extends AppCompatActivity {
                         Toast.makeText(EmployeeLogin.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
 
-
             private boolean Validation() {
-
                 if (WorkerUsernameET.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(EmployeeLogin.this, "Enter Username", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (WorkerPasswordET.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(EmployeeLogin.this, "Enter Password", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-
                 return true;
             }
 
         });
-
 
         if (RememberMeWorkerPref.getBoolean("IsRememberMeChecked", false)) {
 
@@ -134,7 +127,6 @@ public class EmployeeLogin extends AppCompatActivity {
             String password = RememberMeWorkerPref.getString("Password", "");
 
             if (username.equalsIgnoreCase("")) {
-
             } else {
                 WorkerUsernameET.setText(username);
                 WorkerPasswordET.setText(password);
@@ -142,12 +134,9 @@ public class EmployeeLogin extends AppCompatActivity {
             }
         }
 
-
         if (InternetDetect.isConnected(this)) {
-
             new JsonGCMTask().execute();
         } else {
-
             Toast.makeText(EmployeeLogin.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 

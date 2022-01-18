@@ -33,8 +33,8 @@ import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.MyFontTextView;
 import com.cliffex.Fixezi.activities.EmployeeTradeHomeAct;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
-import com.cliffex.Fixezi.util.IabHelper;
-import com.cliffex.Fixezi.util.IabResult;
+// import com.cliffex.Fixezi.util.IabHelper;
+//import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
 import com.cliffex.Fixezi.util.Purchase;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -95,69 +95,69 @@ public class TradesmanActivity extends AppCompatActivity implements
     // Used to select between purchasing gas on a monthly or yearly basis
     String mSelectedSubscriptionPeriod = "";
     // The helper object
-    IabHelper mHelper;
+    // IabHelper mHelper;
 
-    IabBroadcastReceiver mBroadcastReceiver;
+    //  IabBroadcastReceiver mBroadcastReceiver;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String WhichPlan = "";
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-
-            if (mHelper == null) return;
-
-            //
-            if (result.isFailure()) {
-                complain("Failed to query inventory: " + result);
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-            /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
-             */
-
-            // First find out which subscription is auto renewing
-            Purchase economyPlan = inventory.getPurchase(Appconstants.SKU_ECONOMY);
-            Purchase fullPlan = inventory.getPurchase(Appconstants.SKU_FUll);
-
-            if (economyPlan != null) {
-                mInfiniteGasSku = Appconstants.SKU_ECONOMY;
-
-            } else if (fullPlan != null) {
-                mInfiniteGasSku = Appconstants.SKU_FUll;
-
-            } else {
-                mInfiniteGasSku = "";
-
-            }
-
-            // The user is subscribed if either subscription exists, even if neither is auto
-            // renewing
-            mSubscribedToInfiniteGas = (economyPlan != null && verifyDeveloperPayload(economyPlan))
-                    || (fullPlan != null && verifyDeveloperPayload(fullPlan));
-            Log.d(TAG, "User " + (mSubscribedToInfiniteGas ? "HAS" : "DOES NOT HAVE")
-                    + " infinite gas subscription.");
-            if (mSubscribedToInfiniteGas) {
-
-                if (mInfiniteGasSku.equalsIgnoreCase("")) {
-                    saveData("Pay Per Job");
-                } else {
-                    saveData(mInfiniteGasSku);
-                }
-
-            } else {
-                saveData("Pay Per Job");
-            }
-            Log.e(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
+    //    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+//        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+//            Log.d(TAG, "Query inventory finished.");
+//
+//            if (mHelper == null) return;
+//
+//            //
+//            if (result.isFailure()) {
+//                complain("Failed to query inventory: " + result);
+//                return;
+//            }
+//
+//            Log.d(TAG, "Query inventory was successful.");
+//
+//            /*
+//             * Check for items we own. Notice that for each purchase, we check
+//             * the developer payload to see if it's correct! See
+//             * verifyDeveloperPayload().
+//             */
+//
+//            // First find out which subscription is auto renewing
+//            Purchase economyPlan = inventory.getPurchase(Appconstants.SKU_ECONOMY);
+//            Purchase fullPlan = inventory.getPurchase(Appconstants.SKU_FUll);
+//
+//            if (economyPlan != null) {
+//                mInfiniteGasSku = Appconstants.SKU_ECONOMY;
+//
+//            } else if (fullPlan != null) {
+//                mInfiniteGasSku = Appconstants.SKU_FUll;
+//
+//            } else {
+//                mInfiniteGasSku = "";
+//
+//            }
+//
+//            // The user is subscribed if either subscription exists, even if neither is auto
+//            // renewing
+//            mSubscribedToInfiniteGas = (economyPlan != null && verifyDeveloperPayload(economyPlan))
+//                    || (fullPlan != null && verifyDeveloperPayload(fullPlan));
+//            Log.d(TAG, "User " + (mSubscribedToInfiniteGas ? "HAS" : "DOES NOT HAVE")
+//                    + " infinite gas subscription.");
+//            if (mSubscribedToInfiniteGas) {
+//
+//                if (mInfiniteGasSku.equalsIgnoreCase("")) {
+//                    saveData("Pay Per Job");
+//                } else {
+//                    saveData(mInfiniteGasSku);
+//                }
+//
+//            } else {
+//                saveData("Pay Per Job");
+//            }
+//            Log.e(TAG, "Initial inventory query finished; enabling main UI.");
+//        }
+//    };
 
     private LinearLayout emegancy_callout_notes;
     private RelativeLayout emergency_callouttext;
@@ -186,38 +186,38 @@ public class TradesmanActivity extends AppCompatActivity implements
         loadData();
 
         Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, Appconstants.base64EncodedPublicKey);
-
-        // Toast.makeText(this, AfterHour, Toast.LENGTH_SHORT).show();
-
-        mHelper.enableDebugLogging(true);
-
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-
-                // Have we been disposed of in the meantime? If so, quit.
-                if (mHelper == null) return;
-
-                mBroadcastReceiver = new IabBroadcastReceiver(TradesmanActivity.this);
-                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
-                registerReceiver(mBroadcastReceiver, broadcastFilter);
-
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                try {
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error querying inventory. Another async operation in progress.");
-                }
-            }
-        });
+//        mHelper = new IabHelper(this, Appconstants.base64EncodedPublicKey);
+//
+//        // Toast.makeText(this, AfterHour, Toast.LENGTH_SHORT).show();
+//
+//        mHelper.enableDebugLogging(true);
+//
+//        Log.d(TAG, "Starting setup.");
+//        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+//            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+//
+//                if (!result.isSuccess()) {
+//                    // Oh noes, there was a problem.
+//                    complain("Problem setting up in-app billing: " + result);
+//                    return;
+//                }
+//
+//                // Have we been disposed of in the meantime? If so, quit.
+//                if (mHelper == null) return;
+//
+//                mBroadcastReceiver = new IabBroadcastReceiver(TradesmanActivity.this);
+//                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
+//                registerReceiver(mBroadcastReceiver, broadcastFilter);
+//
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+//                try {
+//                    mHelper.queryInventoryAsync(mGotInventoryListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error querying inventory. Another async operation in progress.");
+//                }
+//            }
+//        });
 
         sessionTradesman = new SessionTradesman(this);
         tradesman_profile_toolbar = (Toolbar) findViewById(R.id.tradesman_profile_toolbar);
@@ -302,7 +302,6 @@ public class TradesmanActivity extends AppCompatActivity implements
         ProfileDashIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent(getApplicationContext(), TradesmanProfile.class);
                 startActivity(i);
             }
@@ -614,12 +613,15 @@ public class TradesmanActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         ActiveOrNot();
+
         if (InternetDetect.isConnected(this)) {
+            new JsonGetAllJob().execute();
             new JsonGetInfo().execute();
             new JsonIncomingReq().execute();
         } else {
             Toast.makeText(TradesmanActivity.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -674,27 +676,29 @@ public class TradesmanActivity extends AppCompatActivity implements
     @Override
     public void receivedBroadcast() {
         Log.d(TAG, "Received broadcast notification. Querying inventory.");
-        try {
-            mHelper.queryInventoryAsync(mGotInventoryListener);
-        } catch (IabHelper.IabAsyncInProgressException e) {
-            complain("Error querying inventory. Another async operation in progress.");
-        }
+//        try {
+//            mHelper.queryInventoryAsync(mGotInventoryListener);
+//        } catch (IabHelper.IabAsyncInProgressException e) {
+//            complain("Error querying inventory. Another async operation in progress.");
+//        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-        if (mHelper == null) return;
+        // if (mHelper == null) return;
 
         // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            super.onActivityResult(requestCode, resultCode, data);
-        } else {
-            Log.d(TAG, "onActivityResult handled by IABUtil.");
-        }
+//        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+//            // not handled, so handle it ourselves (here's where you'd
+//            // perform any handling of activity results not related to in-app
+//            // billing...
+//            super.onActivityResult(requestCode, resultCode, data);
+//        } else {
+//            Log.d(TAG, "onActivityResult handled by IABUtil.");
+//        }
+
     }
 
     /**
@@ -711,17 +715,17 @@ public class TradesmanActivity extends AppCompatActivity implements
     public void onDestroy() {
         super.onDestroy();
 
-        // very important:
-        if (mBroadcastReceiver != null) {
-            unregisterReceiver(mBroadcastReceiver);
-        }
+//      very important:
+//      if (mBroadcastReceiver != null) {
+//          unregisterReceiver(mBroadcastReceiver);
+//      }
 
-        // very important:
+//      very important:
         Log.d(TAG, "Destroying helper.");
-        if (mHelper != null) {
-            mHelper.disposeWhenFinished();
-            mHelper = null;
-        }
+//        if (mHelper != null) {
+//            mHelper.disposeWhenFinished();
+//            mHelper = null;
+//        }
     }
 
     void complain(String message) {
@@ -740,8 +744,6 @@ public class TradesmanActivity extends AppCompatActivity implements
     void saveData(String whichplan) {
         editor.putString("WhichPlan", whichplan);
         editor.apply();
-
-
     }
 
     void loadData() {
@@ -795,6 +797,7 @@ public class TradesmanActivity extends AppCompatActivity implements
             }
 
         }
+
     }
 
     private class JsonGetAllJob extends AsyncTask<String, String, List<IncomingRequestBean>> {
@@ -802,12 +805,16 @@ public class TradesmanActivity extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
         protected List<IncomingRequestBean> doInBackground(String... paramss) {
 
+            count = 0;
+            countcomplete = 0;
+            countAccepted = 0;
+
+            Log.e("fasdasdfas", "tradesmen id = " + sessionTradesman.getId());
 
             try {
                 URL url = new URL(HttpPAth.Urlpath + "get_all_product_detaits&");
@@ -849,7 +856,10 @@ public class TradesmanActivity extends AppCompatActivity implements
 
                     JSONObject object = jsonArray.getJSONObject(i);
                     IncomingRequestBean incomingRequestBean = new IncomingRequestBean();
-                    incomingRequestBean.setId(object.getString("id"));
+                    try {
+                        incomingRequestBean.setId(object.getString("id"));
+                    } catch (Exception e) {
+                    }
                     incomingRequestBean.setName(object.getString("name"));
                     incomingRequestBean.setPost_code(object.getString("post_code"));
                     incomingRequestBean.setCity(object.getString("city"));
@@ -886,20 +896,31 @@ public class TradesmanActivity extends AppCompatActivity implements
                     incomingRequestBean.setProblem(problem);
                     incomingRequestListBeanList.add(incomingRequestBean);
 
-                    for (int j=0; j<ProblemArray.length();j++) {
+                    for (int j = 0; j < ProblemArray.length(); j++) {
+
                         JSONObject obj = ProblemArray.getJSONObject(j);
+
                         if (obj.getString("order_status").equals("PENDING")) {
                             count++;
-                        } else if (obj.getString("order_status").equals("COMPLETED")) {
+                        } else if (obj.getString("order_status").equals("COMPLETED") ||
+                                obj.getString("order_status").equals("RATED")) {
                             countcomplete++;
-                        } else if (obj.getString("status").equals("Pending")) {
+                        } else if (obj.getString("status").equals("PROCESS")) {
                             countAccepted++;
                         }
+
+                        Log.e("dfsdfsdfds", "Count = " + count + " countcomplete = " + countcomplete + " countAccepted = " + countAccepted);
+
+                        Log.e("dfsdfsdfds", "Status = " + obj.getString("status"));
+
+                        Log.e("dfsdfsdfds", "Order Status = " + obj.getString("order_status"));
+
                     }
 
                     all = incomingRequestListBeanList.size();
 
                     Log.e("ListSize", "??" + incomingRequestListBeanList.size());
+
                 }
 
                 return incomingRequestListBeanList;
@@ -942,7 +963,6 @@ public class TradesmanActivity extends AppCompatActivity implements
                             Log.e("Compare Date", ">>>" + currentDate.compareTo(jobDate));
 
                             if (currentDate.compareTo(jobDate) > 0) {
-
                                 Log.e("Index ::", ">>>" + result.indexOf(bean));
                                 index = String.valueOf(result.indexOf(bean));
                                 break;
@@ -958,10 +978,11 @@ public class TradesmanActivity extends AppCompatActivity implements
 
                 if (index == null) {
                 } else {
-                    Intent intent = new Intent(TradesmanActivity.this, IsJobDone.class);
-                    intent.putExtra("ProblemId", result.get(Integer.parseInt(index)).getProblem().getId());
-                    startActivity(intent);
+//                 Intent intent = new Intent(TradesmanActivity.this, IsJobDone.class);
+//                 intent.putExtra("ProblemId", result.get(Integer.parseInt(index)).getProblem().getId());
+//                 startActivity(intent);
                 }
+
             }
         }
     }
@@ -1006,7 +1027,10 @@ public class TradesmanActivity extends AppCompatActivity implements
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
                     IncomingRequestBean incomingRequestBean = new IncomingRequestBean();
-                    incomingRequestBean.setId(object.getString("id"));
+                    try {
+                        incomingRequestBean.setId(object.getString("id"));
+                    } catch (Exception e) {
+                    }
                     incomingRequestBean.setName(object.getString("name"));
                     incomingRequestBean.setPost_code(object.getString("post_code"));
                     incomingRequestBean.setCity(object.getString("city"));
@@ -1019,8 +1043,11 @@ public class TradesmanActivity extends AppCompatActivity implements
                     incomingRequestBean.setUsername(object.getString("username"));
                     incomingRequestBean.setStreet(object.getString("street"));
                     incomingRequestBean.setHousenoo(object.getString("housenoo"));
+
                     JSONArray ProblemArray = object.getJSONArray("problem");
+
                     JSONObject ProblemObject = ProblemArray.getJSONObject(0);
+
                     IncomingRequestBean.Problem problem = new IncomingRequestBean.Problem();
                     problem.setId(ProblemObject.getString("id"));
                     problem.setDate(ProblemObject.getString("date"));
@@ -1050,13 +1077,13 @@ public class TradesmanActivity extends AppCompatActivity implements
             }
 
             return null;
+
         }
 
         @Override
         protected void onPostExecute(List<IncomingRequestBean> result) {
             super.onPostExecute(result);
             if (result == null) {
-
                 IncReqCountTV.setVisibility(View.GONE);
                 tv_jobPending.setVisibility(View.GONE);
                 tv_allJOb.setVisibility(View.GONE);

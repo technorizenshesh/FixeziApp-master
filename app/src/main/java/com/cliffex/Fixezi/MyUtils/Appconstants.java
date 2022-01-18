@@ -41,7 +41,6 @@ public class Appconstants {
 
     public static String problemId = "";
 
-
     public static String DATE_SELECTED = "";
     public static String JOB_REQUEST = "";
     public static String PERSON_ON_SITE = "", WHICH_TYPE_ADDRESS = "", SITE_ADDRESS = "", SITE_HOME_NUMBER = "", SITE_MOBILE_NUMBER = "", RELATION_TYPE = "", Different_Address = "";

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,14 +40,16 @@ public class InvoicePage extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.invoice_pages);
+
         getFromSdcard();
 
-        invoices_pager_toolbar=(Toolbar)findViewById(R.id.invoices_pager_toolbar);
-        toolbar_title=(TextView)findViewById(R.id.toolbar_title);
-        InvoiceGridView=(GridView)findViewById(R.id.InvoiceGridView);
-        NavigationUpIM=(RelativeLayout)findViewById(R.id.NavigationUpIM);
+        invoices_pager_toolbar = (Toolbar) findViewById(R.id.invoices_pager_toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        InvoiceGridView = (GridView) findViewById(R.id.InvoiceGridView);
+        NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
 
         toolbar_title.setText("Invoices");
+
         setSupportActionBar(invoices_pager_toolbar);
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,21 +58,21 @@ public class InvoicePage extends AppCompatActivity {
             }
         });
 
-            if(ImageFilePath.size()>0)
-            {
-                Log.e("SIZE","????"+ImageFilePath.size());
-                 listViewAdapter=new ListViewAdapter(InvoicePage.this,ImageFilePath);
-                InvoiceGridView.setAdapter(listViewAdapter);
-            }else{
 
-                Log.e("Else","????"+ImageFilePath.size());
-            }
+        if (ImageFilePath.size() > 0) {
+            Log.e("SIZE", "????" + ImageFilePath.size());
+            listViewAdapter = new ListViewAdapter(InvoicePage.this, ImageFilePath);
+            InvoiceGridView.setAdapter(listViewAdapter);
+
+        } else {
+
+            Log.e("Else", "????" + ImageFilePath.size());
+        }
     }
 
 
-    public void getFromSdcard()
-    {
-        File file = new File(android.os.Environment.getExternalStorageDirectory(), "/FIXEZI/Invoices");
+    public void getFromSdcard() {
+        File file = new File(Environment.getExternalStorageDirectory(), "/FIXEZI/Invoices");
 
         if (file.isDirectory()) {
             listFile = file.listFiles();
@@ -81,18 +84,17 @@ public class InvoicePage extends AppCompatActivity {
         }
     }
 
-    public void deleetefile(String path)
-    {
+    public void deleetefile(String path) {
         File file = new File(path);
         file.delete();
-        if(file.exists()){
+        if (file.exists()) {
             try {
                 file.getCanonicalFile().delete();
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(file.exists()){
+            if (file.exists()) {
                 getApplicationContext().deleteFile(file.getName());
             }
         }
@@ -106,7 +108,7 @@ public class InvoicePage extends AppCompatActivity {
         private ArrayList<String> ImagePath;
 
 
-        public ListViewAdapter(Context context,ArrayList<String> ImagePath) {
+        public ListViewAdapter(Context context, ArrayList<String> ImagePath) {
 
 
             mContext = context;
@@ -153,7 +155,6 @@ public class InvoicePage extends AppCompatActivity {
             holder.InvoiceImage.setImageURI(Uri.fromFile(new File(ImagePath.get(position))));
 
 
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -161,7 +162,7 @@ public class InvoicePage extends AppCompatActivity {
                     Intent intent = new Intent(InvoicePage.this, FullScreenActivity.class);
                     intent.putStringArrayListExtra("ImageArrayList", ImagePath);
                     intent.putExtra("position", position);
-                    startActivityForResult(intent,12);
+                    startActivityForResult(intent, 12);
 
                 }
             });
@@ -193,7 +194,6 @@ public class InvoicePage extends AppCompatActivity {
                     return true;
                 }
             });
-
 
 
             return view;

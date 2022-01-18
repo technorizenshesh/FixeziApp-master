@@ -47,12 +47,12 @@ public class MyDateAndTimePick extends AppCompatActivity implements
         TimePickerDialogSet.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener {
 
-    TextView toolbar_title,picktimetxtview;
+    TextView toolbar_title, picktimetxtview;
     Button dialogacceptbtn;
-    String strSelectedDate="";
+    String strSelectedDate = "";
     Toolbar datetimetoolbar;
     Date GCurrentDate, GSelectedDate;
-    boolean istrue;
+    boolean istrue, isDateYesNo, isTimeYesNo;
     Context mContext = MyDateAndTimePick.this;
     Dialog callFeeDialog;
     int currentyear;
@@ -135,18 +135,19 @@ public class MyDateAndTimePick extends AppCompatActivity implements
 
         Appconstants.DATE_SELECTED = "";
         Appconstants.TIME_SELECTED = "";
+        Appconstants.dateFlexi = "";
+        Appconstants.timeFlexi = "";
 
         yeslayyout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 yeslayyout.setBackgroundResource(R.drawable.border_black_solid_skyblue);
                 yeslayyout.setTextColor(Color.parseColor("#ffffff"));
                 nolayouttt.setBackgroundResource(R.drawable.border_black_solid_white);
                 nolayouttt.setTextColor(Color.parseColor("#000000"));
                 Appconstants.dateFlexi = "yes";
-
             }
+
         });
 
         yeslayyout1.setOnClickListener(new View.OnClickListener() {
@@ -165,24 +166,21 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                                     dialog.cancel();
                                 }
                             }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    dialog.dismiss();
-                                    int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                                    yeslayyout1.setBackgroundResource(R.drawable.border_black_solid_skyblue);
-                                    yeslayyout1.setTextColor(Color.parseColor("#ffffff"));
-                                    nolayouttt1.setBackgroundResource(R.drawable.border_black_solid_white);
-                                    nolayouttt1.setTextColor(Color.parseColor("#000000"));
-                                    Appconstants.timeFlexi = "Yes";
-                                    Appconstants.timeFlexibleValue = strings[selectedPosition];
-
-                                }
-                            }).show();
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+                            int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                            yeslayyout1.setBackgroundResource(R.drawable.border_black_solid_skyblue);
+                            yeslayyout1.setTextColor(Color.parseColor("#ffffff"));
+                            nolayouttt1.setBackgroundResource(R.drawable.border_black_solid_white);
+                            nolayouttt1.setTextColor(Color.parseColor("#000000"));
+                            Appconstants.timeFlexi = "Yes";
+                            Appconstants.timeFlexibleValue = strings[selectedPosition];
+                        }
+                    }).show();
                 }
             }
 
-
             public boolean ValidationSuccess() {
-
                 return true;
             }
 
@@ -200,7 +198,6 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                 final TextView MyContent = (TextView) YourAddDialog.findViewById(R.id.MyContent);
                 MyContent.setText(getResources().getString(R.string.TwentyFourHour));
                 OkayBT.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
                         YourAddDialog.dismiss();
@@ -210,6 +207,7 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                 YourAddDialog.show();
 
             }
+
         });
 
         TimeFlexInfoIM.setOnClickListener(new View.OnClickListener() {
@@ -250,7 +248,6 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                 final TextView MyContent = (TextView) YourAddDialog.findViewById(R.id.MyContent);
                 MyContent.setText("If Tradesman cannot do you job at selected date/time. Can date/time be flexible i.e.-The next day, 4 hrs before or after.");
 
-
                 OkayBT.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -266,7 +263,6 @@ public class MyDateAndTimePick extends AppCompatActivity implements
         nolayouttt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 nolayouttt.setBackgroundResource(R.drawable.border_black_solid_skyblue);
                 nolayouttt.setTextColor(Color.parseColor("#ffffff"));
                 yeslayyout.setBackgroundResource(R.drawable.border_black_solid_white);
@@ -280,14 +276,12 @@ public class MyDateAndTimePick extends AppCompatActivity implements
             public void onClick(View v) {
 
                 if (ValidationSuccess()) {
-
                     nolayouttt1.setBackgroundResource(R.drawable.border_black_solid_skyblue);
                     nolayouttt1.setTextColor(Color.parseColor("#ffffff"));
                     yeslayyout1.setBackgroundResource(R.drawable.border_black_solid_white);
                     yeslayyout1.setTextColor(Color.parseColor("#000000"));
                     Appconstants.timeFlexi = "No";
                     Appconstants.timeFlexibleValue = "Not available";
-
                 }
 
             }
@@ -308,7 +302,7 @@ public class MyDateAndTimePick extends AppCompatActivity implements
             public void onClick(View v) {
                 if (ValidationSuccess()) {
                     Intent returnIntent = new Intent();
-                    returnIntent.putExtra("isstart","start");
+                    returnIntent.putExtra("isstart", "start");
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
@@ -317,22 +311,29 @@ public class MyDateAndTimePick extends AppCompatActivity implements
             public boolean ValidationSuccess() {
 
                 if (type_string.equals("date")) {
-
                     if (Appconstants.DATE_SELECTED.equalsIgnoreCase("")) {
                         Toast.makeText(MyDateAndTimePick.this, "Select date", Toast.LENGTH_SHORT).show();
+                        return false;
+                    } else if (Appconstants.dateFlexi.equals("")) {
+                        alertDialogYesNo("Please select date flexible yes or no ?");
+                        // Toast.makeText(mContext, "IS SELECTED DATE FLEXIBLE ?", Toast.LENGTH_LONG).show();
                         return false;
                     }
                 }
 
                 if (type_string.equals("time")) {
-
                     if (Appconstants.TIME_SELECTED.equalsIgnoreCase("")) {
                         Toast.makeText(MyDateAndTimePick.this, "Select Time", Toast.LENGTH_SHORT).show();
+                        return false;
+                    } else if (Appconstants.timeFlexi.equals("")) {
+                        alertDialogYesNo("Please select time flexible yes or no ?");
+                        // Toast.makeText(mContext, "IS SELECTED TIME FLEXIBLE ?", Toast.LENGTH_LONG).show();
                         return false;
                     }
                 }
 
                 return true;
+
             }
 
         });
@@ -443,9 +444,9 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                             final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
                             final int minute1 = date.get(Calendar.MINUTE);
                             int second1 = currentDate.get(Calendar.SECOND);
-                            MyDateAndTimePick.this.onTimeSet(view1,hourOfDay1,minute1,second1);
+                            MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
                         }
-                    },currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+                    }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
             timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             LayoutInflater inflater = getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
@@ -503,15 +504,15 @@ public class MyDateAndTimePick extends AppCompatActivity implements
                                 final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
                                 final int minute1 = date.get(Calendar.MINUTE);
                                 int second1 = currentDate.get(Calendar.SECOND);
-                                MyDateAndTimePick.this.onTimeSet(view1,hourOfDay1,minute1,second1);
+                                MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
                             }
-                        },currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+                        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 LayoutInflater inflater = getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
                 timePickerDialog.setCustomTitle(dialogView);
                 timePickerDialog.show();
-                //                Calendar now = Calendar.getInstance();
+//                Calendar now = Calendar.getInstance();
 //                TimePickerDialogSet tpd = TimePickerDialogSet.newInstance(MyDateAndTimePick.this, now.get(Calendar.HOUR_OF_DAY),
 //                        now.get(Calendar.MINUTE), false);
 //
@@ -529,7 +530,19 @@ public class MyDateAndTimePick extends AppCompatActivity implements
 
     }
 
-    private int mYear,mMonth,mDay,mHour,mMinute;
+    private void alertDialogYesNo(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Fixezi")
+                .setMessage(msg)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
+    private int mYear, mMonth, mDay, mHour, mMinute;
 
     public void DateAndTimePickerActivity() {
         Calendar c = Calendar.getInstance();

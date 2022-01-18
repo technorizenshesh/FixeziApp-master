@@ -1,5 +1,6 @@
- package com.cliffex.Fixezi;
+package com.cliffex.Fixezi;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -104,8 +105,8 @@ public class UserActivity extends AppCompatActivity
     String Loginuserid = "";
     Context mContext = UserActivity.this;
     TextView toolbar_title, tradetxt, select_problem,
-             pleseeseleccttttxtv, enter_adddress, setdatetimeee,
-             selecttrade, YourAddressTV;
+            pleseeseleccttttxtv, enter_adddress, setdatetimeee,
+            selecttrade, YourAddressTV;
     Button acceptbtn, commbtn, ressbtnn;
     String redcolor = "#00A69B";
     LinearLayout sellecttttradinglayyy, uplayy, selectproblembackkk;
@@ -148,7 +149,7 @@ public class UserActivity extends AppCompatActivity
     private LinearLayout select_address;
     private String search_address;
     private TextView text_select_address;
-    private String Address_Save = "",saveLat="",saveLon="";
+    private String Address_Save = "", saveLat = "", saveLon = "";
     private RelativeLayout activity_main;
     private RelativeLayout uplayy2;
     private TextView select_date_tv;
@@ -157,7 +158,7 @@ public class UserActivity extends AppCompatActivity
     private LinearLayout select_date_rl, select_time_rl;
     private String status = "";
     private FirebaseAnalytics mFirebaseAnalytics;
-    public static String address = "",selectDate = "";
+    public static String address = "", selectDate = "";
     private Tracker mTracker;
     // private PlacesClient placesClient;
 
@@ -171,22 +172,23 @@ public class UserActivity extends AppCompatActivity
             if (address != null) {
                 try {
                     Address location = address.get(0);
-                    Log.e("dsfasdadas","getLatitude = " + location.getLatitude());
-                    Log.e("dsfasdadas","getLongitude = " + location.getLongitude());
-                } catch (Exception er) {}
+                    Log.e("dsfasdadas", "getLatitude = " + location.getLatitude());
+                    Log.e("dsfasdadas", "getLongitude = " + location.getLongitude());
+                } catch (Exception er) {
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         MyApp application = (MyApp) getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("User Screen Akash");
@@ -195,11 +197,11 @@ public class UserActivity extends AppCompatActivity
         Address_Save = PreferenceConnector.readString(UserActivity.this,
                 PreferenceConnector.Address_Save, "");
 
-        PreferenceConnector.writeString(UserActivity.this, PreferenceConnector.Address_Save,"");
-        PreferenceConnector.writeString(UserActivity.this, PreferenceConnector.Address_Save1,"");
+        PreferenceConnector.writeString(UserActivity.this, PreferenceConnector.Address_Save, "");
+        PreferenceConnector.writeString(UserActivity.this, PreferenceConnector.Address_Save1, "");
 
         if (!Address_Save.equals("")) {
-           // Toast.makeText(getApplicationContext(),"after" + Address_Save, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(),"after" + Address_Save, Toast.LENGTH_SHORT).show();
         }
 
         // getLatLonFromAddress("1/32 Alday St, St James WA 6102, Australia");
@@ -220,20 +222,23 @@ public class UserActivity extends AppCompatActivity
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(UserActivity.this,android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(UserActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(UserActivity.this,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {}
-        try {} catch (Exception e) {
+                != PackageManager.PERMISSION_GRANTED) {
+        }
+
+        try {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         sessionUser = new SessionUser(this);
         UserDetail = sessionUser.getUserDetails();
 
-        Log.e("UserDetail","UserDetail Lat = "+ UserDetail.get(SessionUser.KEY_LAT));
-        Log.e("UserDetail","UserDetail Lon = "+ UserDetail.get(SessionUser.KEY_LON));
-        Log.e("UserDetail","UserDetail Address = "+ UserDetail.get(SessionUser.KEY_HOME_ADDRESS));
+        Log.e("UserDetail", "UserDetail Lat = " + UserDetail.get(SessionUser.KEY_LAT));
+        Log.e("UserDetail", "UserDetail Lon = " + UserDetail.get(SessionUser.KEY_LON));
+        Log.e("UserDetail", "UserDetail Address = " + UserDetail.get(SessionUser.KEY_HOME_ADDRESS));
 
         Address_Save = UserDetail.get(SessionUser.KEY_HOME_ADDRESS);
         saveLat = UserDetail.get(SessionUser.KEY_LAT);
@@ -257,7 +262,7 @@ public class UserActivity extends AppCompatActivity
                 okBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                      callFeeDialog.dismiss();
+                        callFeeDialog.dismiss();
                     }
                 });
                 callFeeDialog.show();
@@ -320,7 +325,7 @@ public class UserActivity extends AppCompatActivity
         uplayy1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MyDateAndTimePick.class);
+                Intent intent = new Intent(getApplicationContext(), MyDateAndTimePick.class);
                 intent.putExtra("type", "date");
                 UserActivity.this.startActivityForResult(intent, 1);
             }
@@ -476,34 +481,38 @@ public class UserActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), "Please select Category", Toast.LENGTH_SHORT).show();
                 } else if (selecttrade.getText().toString().equalsIgnoreCase("SELECT TRADE")) {
                     isError = true;
-                    Toast.makeText(getApplicationContext(),"Please select Trade", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please select Trade", Toast.LENGTH_SHORT).show();
                 } else if (select_problem.getText().toString().equalsIgnoreCase("Select Problem")) {
                     isError = true;
-                    Toast.makeText(getApplicationContext(),"Please select problem", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please select problem", Toast.LENGTH_SHORT).show();
                 } else if (selectAddress.equalsIgnoreCase("")) {
                     isError = true;
-                    Toast.makeText(getApplicationContext(),"Please select address category ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please select address category", Toast.LENGTH_SHORT).show();
                 }
 
-                Log.e("sfasdasdas","adasdasda = " + Appconstants.lat);
-                Log.e("sfasdasdas","adasdasda = " + Appconstants.lon);
+                Log.e("sfasdasdas", "adasdasda = " + Appconstants.lat);
+                Log.e("sfasdasdas", "adasdasda = " + Appconstants.lon);
                 Log.e("sfasdasdas", "sfasdasdas = " + Appconstants.SITE_ADDRESS);
 
                 if (!isError) {
-                    if(address != null || !(address.equals(""))) {
+                    if (address != null || !(address.equals(""))) {
                         Appconstants.SITE_ADDRESS = address;
                     }
+
+                    Toast.makeText(getApplicationContext(), Appconstants.SITE_ADDRESS, Toast.LENGTH_SHORT).show();
+
                     Appconstants.DATE_SELECTED = selectDate;
-                    Log.e("sfasdasdas","Selected Date = " + Appconstants.DATE_SELECTED);
+                    Log.e("sfasdasdas", "Selected Adresss =>>>>> " + Appconstants.SITE_ADDRESS);
                     Appconstants.JOB_REQUEST = Any_Job_Request.getText().toString();
-                    Intent i = new Intent(getApplicationContext(),SelectTrademan.class);
-                    i.putExtra("address",Address_Save);
-                    if(sessionUser.IsLoggedIn()) {
-                        i.putExtra("status","login");
+                    Intent i = new Intent(getApplicationContext(), SelectTrademan.class);
+                    i.putExtra("address", Appconstants.SITE_ADDRESS);
+
+                    if (sessionUser.IsLoggedIn()) {
+                        i.putExtra("status", "login");
                     } else {
-                        i.putExtra("status","accept");
+                        i.putExtra("status", "accept");
                     }
-                    i.putExtra("select_status","quick_search");
+                    i.putExtra("select_status", "quick_search");
                     startActivity(i);
                 }
             }
@@ -516,7 +525,6 @@ public class UserActivity extends AppCompatActivity
                 Appconstants.Category = "COMMERCIAL";
                 commbtn.setBackgroundColor(Color.parseColor(redcolor));
                 commbtn.setTextColor(Color.parseColor("#ffffff"));
-
                 ressbtnn.setBackgroundColor(Color.parseColor("#e8e8e7"));
                 ressbtnn.setTextColor(Color.parseColor("#000000"));
             }
@@ -525,14 +533,14 @@ public class UserActivity extends AppCompatActivity
         enterpostaladress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  selectAddress = "your address";
-//                Toast.makeText(gpsTracker, "Hello", Toast.LENGTH_SHORT).show();
-//                enterpostaladress.setBackgroundResource(R.drawable.outline_blue_10);
-//                enter_adddress.setTextColor(Color.parseColor("#ffffff"));
-//                findnearbylayyy.setBackgroundResource(R.drawable.outline_round_10);
-//                YourAddressTV.setTextColor(Color.parseColor("#000000"));
-                  Intent intent = new Intent(UserActivity.this, EnterDifferentAddress.class);
-                  startActivityForResult(intent, 10);
+                selectAddress = "your address";
+//              Toast.makeText(gpsTracker, "Hello", Toast.LENGTH_SHORT).show();
+//              enterpostaladress.setBackgroundResource(R.drawable.outline_blue_10);
+//              enter_adddress.setTextColor(Color.parseColor("#ffffff"));
+//              findnearbylayyy.setBackgroundResource(R.drawable.outline_round_10);
+//              YourAddressTV.setTextColor(Color.parseColor("#000000"));
+                Intent intent = new Intent(UserActivity.this, EnterDifferentAddress.class);
+                startActivityForResult(intent, 10);
             }
         });
 
@@ -569,8 +577,15 @@ public class UserActivity extends AppCompatActivity
                     Appconstants.SITE_HOME_NUMBER = UserDetail.get(SessionUser.KEY_HOMEPHONE);
                     Appconstants.SITE_MOBILE_NUMBER = UserDetail.get(SessionUser.KEY_MOBILEPHONE);
                     Appconstants.ServiceLocation = Address_Save;
-                    Appconstants.lat = Double.parseDouble(saveLat);
-                    Appconstants.lon = Double.parseDouble(saveLon);
+
+                    try {
+                        Appconstants.lat = Double.parseDouble(saveLat);
+                        Appconstants.lon = Double.parseDouble(saveLon);
+                    } catch (Exception e) {
+                        Appconstants.lat = 0.0;
+                        Appconstants.lon = 0.0;
+                    }
+
                     Appconstants.DATE_SELECTED = selectDate;
 
                     Appconstants.RELATION_ID = "";
@@ -583,19 +598,10 @@ public class UserActivity extends AppCompatActivity
 
                     enterpostaladress.setBackgroundResource(R.drawable.outline_round_10);
                     enter_adddress.setTextColor(Color.parseColor("#000000"));
-                    Intent i = new Intent(getApplicationContext(), SelectTrademan.class);
-                    i.putExtra("address", Address_Save);
-                    if(sessionUser.IsLoggedIn()) {
-                        i.putExtra("status","login");
-                    } else {
-                        i.putExtra("status","accept");
-                    }
-                    i.putExtra("select_status", "");
-                    startActivity(i);
 
                 }
 
-//                if (status.equals("login")) {
+                //                if (status.equals("login")) {
 //
 //
 //
@@ -693,7 +699,8 @@ public class UserActivity extends AppCompatActivity
                     AcceptProblemTV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (Selecteddata.isEmpty()) {} else {
+                            if (Selecteddata.isEmpty()) {
+                            } else {
                                 StringBuilder s = new StringBuilder();
                                 for (int i = 0; i < Selecteddata.size(); i++) {
                                     if (i == 0) {
@@ -702,12 +709,12 @@ public class UserActivity extends AppCompatActivity
                                     }
                                     s.append("," + Selecteddata.get(i));
                                 }
-                                select_problem.setPadding(25,20,0,20);
+                                select_problem.setPadding(25, 20, 0, 20);
                                 String AllFollowerID = s.toString();
                                 Log.e("AllFollowerID", "??" + AllFollowerID);
                                 select_problem.setText(AllFollowerID);
                                 Appconstants.PROBLEM_SELECTED = AllFollowerID;
-                                select_problem.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+                                select_problem.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
                                 selectproblembackkk.setBackgroundColor(Color.parseColor(redcolor));
                             }
                             SelectProblemDailog.dismiss();
@@ -756,7 +763,7 @@ public class UserActivity extends AppCompatActivity
                         sellecttttradinglayyy.setBackgroundColor(Color.parseColor(redcolor));
 
                         select_problem.setText("Select Problem");
-                        select_problem.setPadding(20,20,0,20);
+                        select_problem.setPadding(20, 20, 0, 20);
                         // select_problem.setHeight(80);
                         select_problem.setTextColor(Color.BLACK);
                         selectproblembackkk.setBackgroundResource(R.drawable.roundedcorners_gray);
@@ -787,17 +794,17 @@ public class UserActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("onDestroy","onDestroy");
+        Log.e("onDestroy", "onDestroy");
     }
 
     private void getLatLonFromAddress(String address) {
         String postReceiverUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-                address.replace(",","+") + "&key=" + getResources().getString(R.string.places_api_key);
-        Log.e("asdasdasds","Plcaes Url = " + postReceiverUrl);
+                address.replace(",", "+") + "&key=" + getResources().getString(R.string.places_api_key);
+        Log.e("asdasdasds", "Plcaes Url = " + postReceiverUrl);
         AndroidNetworking.get(postReceiverUrl).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
-                Log.e("responseresponse",response);
+                Log.e("responseresponse", response);
                 try {
                     JSONObject mainObj = new JSONObject(response);
                     JSONArray resultArray = mainObj.getJSONArray("results");
@@ -808,8 +815,8 @@ public class UserActivity extends AppCompatActivity
                     double lat = locationObj.getDouble("lat");
                     double lon = locationObj.getDouble("lng");
 
-                    Log.e("sfsdfsdfsdf","lat = " + lat);
-                    Log.e("sfsdfsdfsdf","lon = " + lon);
+                    Log.e("sfsdfsdfsdf", "lat = " + lat);
+                    Log.e("sfsdfsdfsdf", "lon = " + lon);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -818,8 +825,8 @@ public class UserActivity extends AppCompatActivity
 
             @Override
             public void onError(ANError anError) {
-                Log.e("responseresponse","anError = "+anError.getErrorBody());
-                Log.e("responseresponse","anError = "+anError.getErrorDetail());
+                Log.e("responseresponse", "anError = " + anError.getErrorBody());
+                Log.e("responseresponse", "anError = " + anError.getErrorDetail());
             }
         });
     }
@@ -872,9 +879,9 @@ public class UserActivity extends AppCompatActivity
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "UserActivity");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
 
-        Log.e("asfdasdasdasdas","Appconstants.ServiceLocation = " + Appconstants.ServiceLocation);
-        Log.e("asfdasdasdasdas","Appconstants.lat = " + Appconstants.lat);
-        Log.e("asfdasdasdasdas","Appconstants.lon = " + Appconstants.lon);
+        Log.e("asfdasdasdasdas", "Appconstants.ServiceLocation = " + Appconstants.ServiceLocation);
+        Log.e("asfdasdasdasdas", "Appconstants.lat = " + Appconstants.lat);
+        Log.e("asfdasdasdasdas", "Appconstants.lon = " + Appconstants.lon);
 
         text_select_address = findViewById(R.id.text_select_address);
 
@@ -929,25 +936,28 @@ public class UserActivity extends AppCompatActivity
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finishAffinity();
-               startActivity(new Intent(mContext,MainActivity.class));
+                finishAffinity();
+                startActivity(new Intent(mContext, MainActivity.class));
             }
         });
 
     }
 
     @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {}
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+    }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {}
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+    }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {}
+    public void onMapReady(GoogleMap googleMap) {
+    }
 
     @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
 
@@ -970,9 +980,10 @@ public class UserActivity extends AppCompatActivity
 //                Appconstants.ServiceLocation = data.getStringExtra("add");
 //                Appconstants.lat = data.getDoubleExtra("lat",0.0);
 //                Appconstants.lon = data.getDoubleExtra("lon",0.0);
-                Log.e("dasdasfsfdas","ServiceLocation = " + data.getStringExtra("add"));
-                Log.e("dasdasfsfdas","Appconstants.lat = " + data.getDoubleExtra("lat",0.0));
-                Log.e("dasdasfsfdas","Appconstants.lon = " + data.getDoubleExtra("lon",0.0));
+
+                Log.e("dasdasfsfdas", "ServiceLocation = " + data.getStringExtra("add"));
+                Log.e("dasdasfsfdas", "Appconstants.lat = " + data.getDoubleExtra("lat", 0.0));
+                Log.e("dasdasfsfdas", "Appconstants.lon = " + data.getDoubleExtra("lon", 0.0));
                 // Toast.makeText(UserActivity.this, "Hello", Toast.LENGTH_SHORT).show();
                 enterpostaladress.setBackgroundResource(R.drawable.outline_blue_10);
                 enter_adddress.setTextColor(Color.parseColor("#ffffff"));
@@ -984,7 +995,7 @@ public class UserActivity extends AppCompatActivity
 
     }
 
-    public class CatrequestById extends AsyncTask<String,Void,String> {
+    public class CatrequestById extends AsyncTask<String, Void, String> {
 
         String id;
 
@@ -1333,9 +1344,9 @@ public class UserActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         finishAffinity();
-        startActivity(new Intent(mContext,MainActivity.class));
+        startActivity(new Intent(mContext, MainActivity.class));
     }
-    
+
 }
 
 

@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -112,7 +113,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(EnterDifferentAddress.this,relationship_person);
+                PopupMenu popup = new PopupMenu(EnterDifferentAddress.this, relationship_person);
                 // Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
                 // registering popup with OnMenuItemClickListener
@@ -120,19 +121,19 @@ public class EnterDifferentAddress extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         relationship_person.setText(item.getTitle());
                         Appconstants.RELATION_STATUS = item.getTitle().toString().trim();
-                        if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.landlord))) {
+                        if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.landlord))) {
                             Appconstants.RELATION_ID = "1";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.real_estate_agent))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.real_estate_agent))) {
                             Appconstants.RELATION_ID = "2";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.family_member))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.family_member))) {
                             Appconstants.RELATION_ID = "3";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.friend))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.friend))) {
                             Appconstants.RELATION_ID = "4";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.tradesman))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.tradesman))) {
                             Appconstants.RELATION_ID = "5";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.contractor))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.contractor))) {
                             Appconstants.RELATION_ID = "6";
-                        } else if(item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.i_am_the_owner))){
+                        } else if (item.getTitle().toString().trim().equalsIgnoreCase(getString(R.string.i_am_the_owner))) {
                             Appconstants.RELATION_ID = "7";
                         }
                         return true;
@@ -153,7 +154,9 @@ public class EnterDifferentAddress extends AppCompatActivity {
         SubmitAddressBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (Validation()) {
+
                     Appconstants.WHICH_TYPE_ADDRESS = "Postal Address";
                     Appconstants.SITE_ADDRESS = HouseNumberET.getText().toString() + ", " + StreetNameET.getText().toString() + ", " + PostCodeET.getText().toString() + ", " + CityStateET.getText().toString();
                     Appconstants.PERSON_ON_SITE = PersonOnSiteET.getText().toString();
@@ -194,12 +197,16 @@ public class EnterDifferentAddress extends AppCompatActivity {
             }
         });
 
+
         SaveAddressBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (Validation()) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(EnterDifferentAddress.this);
+               /* if (Validation()) {*/
+
+                    Toast.makeText(EnterDifferentAddress.this, "suces", Toast.LENGTH_SHORT).show();
+
+                  /*  AlertDialog.Builder alert = new AlertDialog.Builder(EnterDifferentAddress.this);
                     alert.setTitle("Save As");
                     alert.setMessage("File Name :");
 
@@ -207,17 +214,19 @@ public class EnterDifferentAddress extends AppCompatActivity {
                     alert.setView(input);
 
                     alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+
                                 public void onClick(DialogInterface dialog, int whichButton) {
 
                                     String value = input.getText().toString();
 
                                     if (input.getText().toString().equalsIgnoreCase("")) {
+
                                         Toast.makeText(EnterDifferentAddress.this, "Not Saved. Please enter a file name", Toast.LENGTH_SHORT).show();
                                     } else {
                                         if (InternetDetect.isConnected(EnterDifferentAddress.this)) {
                                             new JsonSaveAddress().execute(PersonOnSiteET.getText().toString(), other_phone.getText().toString(),
                                                     diiferent_add.getText().toString(), PostCodeET.getText().toString(), CityStateET.getText().toString(),
-                                                    other_phone.getText().toString(), MobileNumberET.getText().toString(), value,relationship_person.getText().toString());
+                                                    other_phone.getText().toString(), MobileNumberET.getText().toString(), value, relationship_person.getText().toString());
                                         } else {
                                             Toast.makeText(EnterDifferentAddress.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
                                         }
@@ -237,8 +246,8 @@ public class EnterDifferentAddress extends AppCompatActivity {
                                 }
                             }
                     );
-                    alert.show();
-                }
+                    alert.show();*/
+                //}
             }
 
             private boolean Validation() {
@@ -288,6 +297,29 @@ public class EnterDifferentAddress extends AppCompatActivity {
 
     }
 
+    public LatLng getLocationFromAddress(String strAddress) {
+
+        Geocoder coder = new Geocoder(EnterDifferentAddress.this);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+
     private void acceptCancelDialog() {
 
         Dialog dialog = new Dialog(EnterDifferentAddress.this, WindowManager.LayoutParams.MATCH_PARENT);
@@ -321,7 +353,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
 
         btContinue.setOnClickListener(v -> {
             Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_OK,returnIntent);
+            setResult(Activity.RESULT_OK, returnIntent);
             finish();
             dialog.dismiss();
         });
@@ -330,7 +362,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
 
     }
 
-    private class JsontaskPostCode extends AsyncTask<String,String,String> {
+    private class JsontaskPostCode extends AsyncTask<String, String, String> {
 
         String result = "";
         ArrayList<String> postCodeList;
@@ -419,20 +451,6 @@ public class EnterDifferentAddress extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-
-//            person_site
-//            housenoo
-//            street
-//            post_code
-//            city
-//            home_no
-//            mobile_phone
-//            file_name
-//            user_id
-//            dif_lat
-//            dif_lon
-//            r_name
-//            r_id
 
             try {
                 URL url = new URL(HttpPAth.Urlpath + "update_relative_information");
@@ -594,19 +612,23 @@ public class EnterDifferentAddress extends AppCompatActivity {
             if (address != null) {
                 try {
                     Address location = address.get(0);
-                    Log.e("dsfasdadas","getLatitude = " + location.getLatitude());
-                    Log.e("dsfasdadas","getLongitude = " + location.getLongitude());
+//                    Log.e("dsfasdadas", "getLatitude = " + location.getLatitude());
+//                    Log.e("dsfasdadas", "getLongitude = " + location.getLongitude());
                     Appconstants.servicelocation = diiferent_add.getText().toString().trim();
                     Appconstants.ServiceLocation = diiferent_add.getText().toString().trim();
-                    Appconstants.lat = location.getLatitude();
-                    Appconstants.lon = location.getLongitude();
+
+//                  getLatLonFromAddress();
+
+//                    Appconstants.lat = location.getLatitude();
+//                    Appconstants.lon = location.getLongitude();
 //                    Intent intent = new Intent();
 //                    intent.putExtra("lat",location.getLatitude());
 //                    intent.putExtra("lon",location.getLongitude());
 //                    intent.putExtra("add",diiferent_add.getText().toString().trim());
 //                    setResult(10,intent);
 //                    finish();
-                } catch (Exception er) {}
+                } catch (Exception er) {
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -614,16 +636,16 @@ public class EnterDifferentAddress extends AppCompatActivity {
     }
 
     private void getLatLonFromAddress(String address) {
-        ProjectUtil.showProgressDialog(EnterDifferentAddress.this,false,"Please wait...");
+        ProjectUtil.showProgressDialog(EnterDifferentAddress.this, false, "Please wait...");
         String postReceiverUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-                address.replace(",","+") + "&key=" +
+                address.replace(",", "+") + "&key=" +
                 getResources().getString(R.string.places_api_key);
-        Log.e("asdasdasds","Plcaes Url = " + postReceiverUrl);
+        Log.e("asdasdasds", "Plcaes Url = " + postReceiverUrl);
         AndroidNetworking.get(postReceiverUrl).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {
                 ProjectUtil.pauseProgressDialog();
-                Log.e("responseresponse",response);
+                Log.e("responseresponse", response);
                 try {
                     JSONObject mainObj = new JSONObject(response);
                     JSONArray resultArray = mainObj.getJSONArray("results");
@@ -640,10 +662,10 @@ public class EnterDifferentAddress extends AppCompatActivity {
                     Appconstants.lat = lat;
                     Appconstants.lon = lon;
 
-                    Log.e("sfsdfsdfsdf","Address = " + diiferent_add.getText().toString().trim());
-                    Log.e("sfsdfsdfsdf","SITE_ADDRESS = " + Appconstants.SITE_ADDRESS);
-                    Log.e("sfsdfsdfsdf","lat = " + lat);
-                    Log.e("sfsdfsdfsdf","lon = " + lon);
+                    Log.e("sfsdfsdfsdf", "Address = " + diiferent_add.getText().toString().trim());
+                    Log.e("sfsdfsdfsdf", "SITE_ADDRESS = " + Appconstants.SITE_ADDRESS);
+                    Log.e("sfsdfsdfsdf", "lat = " + lat);
+                    Log.e("sfsdfsdfsdf", "lon = " + lon);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -653,8 +675,8 @@ public class EnterDifferentAddress extends AppCompatActivity {
             @Override
             public void onError(ANError anError) {
                 ProjectUtil.pauseProgressDialog();
-                Log.e("responseresponse","anError = "+anError.getErrorBody());
-                Log.e("responseresponse","anError = "+anError.getErrorDetail());
+                Log.e("responseresponse", "anError = " + anError.getErrorBody());
+                Log.e("responseresponse", "anError = " + anError.getErrorDetail());
             }
 
         });
@@ -673,6 +695,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
         }
 
         if (requestCode == 10) {
+
             if (resultCode == Activity.RESULT_OK) {
                 PersonOnSiteET.setText(data.getStringExtra("PersonOnSite"));
                 other_phone.setText(data.getStringExtra("HouseNumber"));
@@ -687,19 +710,19 @@ public class EnterDifferentAddress extends AppCompatActivity {
                 UserActivity.address = data.getStringExtra("StreetName");
 
                 Appconstants.RELATION_STATUS = data.getStringExtra("r_name");
-                if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.landlord))) {
+                if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.landlord))) {
                     Appconstants.RELATION_ID = "1";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.real_estate_agent))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.real_estate_agent))) {
                     Appconstants.RELATION_ID = "2";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.family_member))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.family_member))) {
                     Appconstants.RELATION_ID = "3";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.friend))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.friend))) {
                     Appconstants.RELATION_ID = "4";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.tradesman))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.tradesman))) {
                     Appconstants.RELATION_ID = "5";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.contractor))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.contractor))) {
                     Appconstants.RELATION_ID = "6";
-                } else if(data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.i_am_the_owner))){
+                } else if (data.getStringExtra("r_name").trim().equalsIgnoreCase(getString(R.string.i_am_the_owner))) {
                     Appconstants.RELATION_ID = "7";
                 }
             }
@@ -715,7 +738,5 @@ public class EnterDifferentAddress extends AppCompatActivity {
                 }
             }
         }
-
-
     }
 }

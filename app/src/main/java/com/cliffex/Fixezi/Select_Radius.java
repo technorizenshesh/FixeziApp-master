@@ -58,7 +58,7 @@ public class Select_Radius extends FragmentActivity
         GoogleMap.OnMarkerClickListener {
 
     private static final int MAX = 20;
-    private static final int MIN = 10;
+    private static final int MIN = 1;
     private GoogleMap mMap;
     private Circle circle;
     private TextView distance;
@@ -131,12 +131,9 @@ public class Select_Radius extends FragmentActivity
         mContext = this;
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]
-
-                    {
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                    }, 1);
-
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 1);
 
         } else {
 
@@ -232,7 +229,7 @@ public class Select_Radius extends FragmentActivity
 
         Log.e("sdfsdfdsfdsf", "(15 * 21) / 100 = " + (15 * 21) / 100);
 
-//        progress.setMax(100);
+        //        progress.setMax(100);
 //        distance.setText("" + 0 + "km ");
 //        progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 //            @Override
@@ -260,7 +257,6 @@ public class Select_Radius extends FragmentActivity
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress1 = 30 - progress;
                 circle.setRadius(getRedious(progress));
-
 
                 Log.e("CircleRedius", progress + "==>" + progress);
                 Log.e("progress1", progress1 + "==>" + circle.getRadius());
@@ -338,11 +334,16 @@ public class Select_Radius extends FragmentActivity
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(circle.getCenter(), (float) 7));
                 }
 
+                Log.e("dfgbdzsgdf", "progress1 = " + progress1);
+                Log.e("dfgbdzsgdf", "progress = " + progress);
+                Log.e("dfgbdzsgdf", "progress in Shows = " +  progress * 5);
+
                 distance.setText("" + progress * 5 + "km ");
                 progress3 = progress * 5;
 
-                if (progress == 10) {
+                if (progress == 0) {
                     distance.setText("0km");
+                    progress = 0;
                     progress3 = 0;
                     Log.e("sdfsdfdsfds", "progress3 = " + progress3);
                 }

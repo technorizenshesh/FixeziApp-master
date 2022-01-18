@@ -119,7 +119,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:max="20"
-                    android:min="10"
+                    android:min="0"
                     android:maxWidth="5dp"
                     android:maxHeight="5dp"
                     android:minWidth="10dp"

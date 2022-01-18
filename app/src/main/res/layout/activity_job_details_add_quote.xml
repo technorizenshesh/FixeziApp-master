@@ -19,17 +19,19 @@
         android:padding="@dimen/_10sdp">
 
         <RadioButton
+            android:id="@+id/rb7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="7 Days "></RadioButton>
+            android:text="7 Days ">
+        </RadioButton>
 
         <RadioButton
+            android:id="@+id/rb14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_30sdp"
             android:text="14 Days ">
-
         </RadioButton>
 
     </LinearLayout>
@@ -42,6 +44,7 @@
         android:padding="@dimen/_10sdp">
 
         <TextView
+            android:id="@+id/tvJobId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/droidderif"
@@ -50,19 +53,16 @@
 
         </TextView>
 
-
-
         <EditText
             android:id="@+id/jobs_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_150sdp"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/border_black_solid_white"
-            android:paddingStart="@dimen/_10sdp"
-            android:hint="Type Your Quote Here "
-            android:padding="@dimen/_65sdp"
-            android:paddingLeft="@dimen/_10sdp">
-
+            android:gravity="top|left"
+            android:inputType="textVisiblePassword|textMultiLine"
+            android:hint="@string/type_your_quote_here"
+            android:padding="@dimen/_10sdp">
 
         </EditText>
 
@@ -82,6 +82,7 @@
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/border_black_solid_white"
             android:hint="Price"
+            android:inputType="number"
             android:paddingLeft="@dimen/_10sdp">
 
         </EditText>

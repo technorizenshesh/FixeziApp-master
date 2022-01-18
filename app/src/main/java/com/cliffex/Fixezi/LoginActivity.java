@@ -55,12 +55,12 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final int PREFERENCE_PRIVATE_MODE=0;
-    TextView toolbar_title,forgot_password,remembertxt;
-    EditText usernameedit,passworddit;
+    private final int PREFERENCE_PRIVATE_MODE = 0;
+    TextView toolbar_title, forgot_password, remembertxt;
+    EditText usernameedit, passworddit;
     RelativeLayout loginbtn;
     TextView logiinnnbtntxt;
-    String Suser="",Spass="",result="",forgetemailstring="";
+    String Suser = "", Spass = "", result = "", forgetemailstring = "";
     ProgressBar loginprogress;
 
     SharedPreferences LoginPref;
@@ -195,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                             registerBackground();
                         } else {
                             new JsonLogin().execute(Suser, Spass, RegId);
-                            Log.e("RegId>>",RegId);
+                            Log.e("RegId>>", RegId);
                         }
 
                     } else {
@@ -304,6 +304,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 return msg;
             }
+
             protected void onPostExecute(String msg) {
 
             }
@@ -454,8 +455,8 @@ public class LoginActivity extends AppCompatActivity {
                 userDetail.setUser_lat(FinalObject.getString("user_lat"));
                 userDetail.setUser_lon(FinalObject.getString("user_lon"));
 
-                Log.e("userDetailuserDetail","userDetail lat = " + userDetail.getUser_lat());
-                Log.e("userDetailuserDetail","userDetail lon = " + userDetail.getUser_lon());
+                Log.e("userDetailuserDetail", "userDetail lat = " + userDetail.getUser_lat());
+                Log.e("userDetailuserDetail", "userDetail lon = " + userDetail.getUser_lon());
 
                 return result;
 
@@ -495,15 +496,15 @@ public class LoginActivity extends AppCompatActivity {
                     RememberMePrefEditor.commit();
                 }
 
-                sessionUser.createLoginSession(userDetail.getUser_lat(),userDetail.getUser_lon(),userDetail.getId(),userDetail.getName(),userDetail.getFirst_name(), userDetail.getLast_name(),userDetail.getHomeAddress(),userDetail.getPostcode(),userDetail.getCity(),userDetail.getState(),userDetail.getHomephone(),userDetail.getWorkphone(),userDetail.getMobilephone(),userDetail.getEmail(),userDetail.getUsername());
+                sessionUser.createLoginSession(userDetail.getUser_lat(), userDetail.getUser_lon(), userDetail.getId(), userDetail.getName(), userDetail.getFirst_name(), userDetail.getLast_name(), userDetail.getHomeAddress(), userDetail.getPostcode(), userDetail.getCity(), userDetail.getState(), userDetail.getHomephone(), userDetail.getWorkphone(), userDetail.getMobilephone(), userDetail.getEmail(), userDetail.getUsername());
 
-                Intent i = new Intent(getApplicationContext(),UserActivity.class);
+                Intent i = new Intent(getApplicationContext(), UserActivity.class);
                 i.putExtra("status", "login");
                 startActivity(i);
                 LoginActivity.this.finish();
                 errorToast("Logged in Successfully");
 
-            }/*else if (result.equalsIgnoreCase("Deactive")) {
+            } /* else if (result.equalsIgnoreCase("Deactive")) {
 
                 final Dialog VerificationDialog = new Dialog(LoginActivity.this);
                 VerificationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -609,7 +610,7 @@ public class LoginActivity extends AppCompatActivity {
                 String line;
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-                while((line = reader.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     response += line;
                 }
 
@@ -664,7 +665,7 @@ public class LoginActivity extends AppCompatActivity {
                 alert11.show();
 
 
-            } else if(result.equalsIgnoreCase("unsuccessfully")) {
+            } else if (result.equalsIgnoreCase("unsuccessfully")) {
 
             }
 

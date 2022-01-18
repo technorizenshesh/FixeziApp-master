@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:usetools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    usetools:ignore="contentDescription">
 
     <include
         android:id="@+id/ToolbarECIm"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,22 +68,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
                     <ImageView
                         android:id="@+id/CompanyProfileIM"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop" />
 
-
                     <ImageView
                         android:id="@+id/ClearProfileImageIMTwo"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentRight="true"
-                        android:layout_margin="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
                         android:background="@drawable/pencil_red" />
-
 
                 </RelativeLayout>
 
@@ -166,8 +168,8 @@
                         android:gravity="top"
                         android:hint="Please add details of your company and services you provide"
                         android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
                         android:paddingTop="10dp"
+                        android:paddingRight="10dp"
                         android:textSize="14sp" />
 
                 </LinearLayout>

@@ -21,14 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <RelativeLayout
                 android:id="@+id/RLone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp">
-
 
                 <ImageView
                     android:id="@+id/Im1"
@@ -37,14 +35,12 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/mainlogo" />
 
-
                 <ImageView
                     android:id="@+id/IM12"
                     android:layout_width="@dimen/new_logo_width"
                     android:layout_height="@dimen/new_logo_height"
                     android:layout_toRightOf="@+id/Im1"
                     android:background="@drawable/final_logoupdate" />
-
 
             </RelativeLayout>
 
@@ -66,14 +62,11 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-
             </RelativeLayout>
-
 
         </RelativeLayout>
 
     </ScrollView>
-
 
     <Button
         android:id="@+id/SubscribeBT"
@@ -87,3 +80,8 @@
         android:textSize="18sp" />
 
 </RelativeLayout>
+
+
+
+
+

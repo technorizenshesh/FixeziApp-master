@@ -1,13 +1,25 @@
 package com.cliffex.Fixezi;
 
+import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
+
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,13 +39,25 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.bumptech.glide.Glide;
+import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.Model.UserDetail;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.Base64Decode;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.util.Compress;
+import com.cliffex.Fixezi.util.ProjectUtil;
+import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -59,22 +83,28 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-/**
- * Created by technorizen8 on 2/3/16.
- */
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.OkHttpClient;
+
 public class UserInformation extends AppCompatActivity {
+
     private static final int camera = 1;
     private static final int gallery = 2;
     private static final int camera2 = 3;
     private static final int gallery2 = 4;
+    private static final int PERMISSION_ID = 1234;
+    Context mContext = UserInformation.this;
     Toolbar userinfo_toolbar;
+    String latUser, lonUser;
     TextView toolbar_title, contusertxt;
     EditText MobileNumberedit, WorkPhoneNumberedit, HomePhoneNumberedit, updateemailedit,
             usernameemailedit, k7edit, upadatecityedit, updatestateedittt;
-    EditText UpdateHomeAddressET;
+    EditText UpdateHomeAddressET, Other_Numberedit;
     AutoCompleteTextView updatepostaledit;
     CheckBox editcheck0, signup2checkbox;
     SessionUser sessionUser;
@@ -82,7 +112,7 @@ public class UserInformation extends AppCompatActivity {
     RelativeLayout NavigationUpIM;
     ProgressDialog dialog;
     EditText FnameUpdateET, LnameUpdateET;
-    ImageView img_user_image;
+    CircleImageView img_user_image;
     Uri fileUri;
     String PhotoOrString = "";
     String CompanyUpload = "";
@@ -116,7 +146,8 @@ public class UserInformation extends AppCompatActivity {
         sessionUser = new SessionUser(this);
         logid = sessionUser.getId();
 
-        Toast.makeText(this, "login.>>"+logid, Toast.LENGTH_SHORT).show();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         iniComp();
 
@@ -142,13 +173,11 @@ public class UserInformation extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (signup2checkbox.isChecked()) {
-
-                    if(InternetDetect.isConnected(UserInformation.this)) {
-
+                    if (InternetDetect.isConnected(UserInformation.this)) {
                         if (Validation()) {
-                            new SaveJsonTask().execute();
+                            updateProfile();
+                            // new SaveJsonTask().execute();
                         }
-
                     } else {
                         Toast.makeText(UserInformation.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
                     }
@@ -172,9 +201,7 @@ public class UserInformation extends AppCompatActivity {
                     Toast.makeText(UserInformation.this, "Enter Mobile Number", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-
                 return true;
-
             }
 
         });
@@ -182,7 +209,11 @@ public class UserInformation extends AppCompatActivity {
         img_user_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoAddProfileImage(camera2, gallery2);
+                if (checkPermissions()) {
+                    gotoAddProfileImage(camera2, gallery2);
+                } else {
+                    requestPermissions();
+                }
             }
         });
 
@@ -203,9 +234,7 @@ public class UserInformation extends AppCompatActivity {
                     FnameUpdateET.setEnabled(true);
                     UpdateHomeAddressET.setEnabled(true);
                     img_user_image.setEnabled(true);
-
                 } else {
-
                     updatepostaledit.setEnabled(false);
                     MobileNumberedit.setEnabled(false);
                     updateemailedit.setEnabled(false);
@@ -218,16 +247,90 @@ public class UserInformation extends AppCompatActivity {
                     FnameUpdateET.setEnabled(false);
                     UpdateHomeAddressET.setEnabled(false);
                     img_user_image.setEnabled(false);
+                }
 
+            }
+
+        });
+
+    }
+
+    private void getLatLonFromAddress(String address) {
+        ProjectUtil.showProgressDialog(UserInformation.this, false, "Please wait...");
+        String postReceiverUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+                address.replace(",", "+") + "&key=" + getResources().getString(R.string.places_api_key);
+        Log.e("asdasdasds", "Plcaes Url = " + postReceiverUrl);
+        AndroidNetworking.get(postReceiverUrl).build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("getLatLonFromAddress", response);
+                try {
+                    JSONObject mainObj = new JSONObject(response);
+                    JSONArray resultArray = mainObj.getJSONArray("results");
+                    JSONObject resultFirstObj = resultArray.getJSONObject(0);
+                    JSONObject geometryObj = resultFirstObj.getJSONObject("geometry");
+                    JSONObject locationObj = geometryObj.getJSONObject("location");
+
+                    double lat = locationObj.getDouble("lat");
+                    double lon = locationObj.getDouble("lng");
+
+                    latUser = String.valueOf(lat);
+                    lonUser = String.valueOf(lon);
+
+                    //                  Appconstants.servicelocation = diiferent_add.getText().toString().trim();
+//                  Appconstants.ServiceLocation = diiferent_add.getText().toString().trim();
+//                  Appconstants.SITE_ADDRESS = diiferent_add.getText().toString().trim();
+//                  Appconstants.lat = lat;
+//                  Appconstants.lon = lon;
+
+                    Log.e("sfsdfsdfsdf", "SITE_ADDRESS = " + Appconstants.SITE_ADDRESS);
+                    Log.e("sfsdfsdfsdf", "lat = " + lat);
+                    Log.e("sfsdfsdfsdf", "lon = " + lon);
+                    Log.e("sfsdfsdfsdf", "lat Add= " + (lat * 1E6));
+                    Log.e("sfsdfsdfsdf", "lon Add= " + lon * 1E6);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onError(ANError anError) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("responseresponse", "anError = " + anError.getErrorBody());
+                Log.e("responseresponse", "anError = " + anError.getErrorDetail());
+            }
+
         });
+
+    }
+
+    private boolean checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        android.Manifest.permission.CAMERA,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSION_ID
+        );
     }
 
     private void iniComp() {
         userinfo_toolbar = (Toolbar) findViewById(R.id.userinfo_toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         contusertxt = (TextView) findViewById(R.id.contusertxt);
+        Other_Numberedit = findViewById(R.id.Other_Numberedit);
         updatepostaledit = (AutoCompleteTextView) findViewById(R.id.updatepostaledit);
         MobileNumberedit = (EditText) findViewById(R.id.MobileNumberedit);
         updateemailedit = (EditText) findViewById(R.id.updateemailedit);
@@ -244,7 +347,7 @@ public class UserInformation extends AppCompatActivity {
 
         FnameUpdateET = (EditText) findViewById(R.id.FnameUpdateET);
         LnameUpdateET = (EditText) findViewById(R.id.LnameUpdateET);
-        img_user_image = (ImageView) findViewById(R.id.img_user_image);
+        img_user_image = findViewById(R.id.img_user_image);
 
         updatepostaledit.setEnabled(false);
         MobileNumberedit.setEnabled(false);
@@ -259,20 +362,22 @@ public class UserInformation extends AppCompatActivity {
         UpdateHomeAddressET.setEnabled(false);
         img_user_image.setEnabled(false);
 
+        UpdateHomeAddressET.setOnClickListener(v -> {
+            Intent in = new Intent(UserInformation.this, GooglePlacesAutocompleteActivity.class);
+            startActivityForResult(in, 101);
+        });
 
         FnameUpdateET.addTextChangedListener(new TextWatcher() {
+
             int mStart = 0;
 
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
                 mStart = arg1 + arg3;
-
             }
 
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             }
 
             @Override
@@ -280,6 +385,7 @@ public class UserInformation extends AppCompatActivity {
 
                 String input = et.toString();
                 String capitalizedText;
+
                 if (input.length() < 1)
                     capitalizedText = input;
                 else if (input.length() > 1 && input.contains(" ")) {
@@ -298,12 +404,10 @@ public class UserInformation extends AppCompatActivity {
                     FnameUpdateET.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                         }
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                         }
 
                         @Override
@@ -318,7 +422,7 @@ public class UserInformation extends AppCompatActivity {
             }
         });
 
-         LnameUpdateET.addTextChangedListener(new TextWatcher() {
+        LnameUpdateET.addTextChangedListener(new TextWatcher() {
             int mStart = 0;
 
             @Override
@@ -378,27 +482,76 @@ public class UserInformation extends AppCompatActivity {
         });
 
         if (Appconstants.postCode == null) {
-
-            if(InternetDetect.isConnected(this)) {
-
+            if (InternetDetect.isConnected(this)) {
                 new JsontaskPostCode().execute();
-
             } else {
                 Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
             }
         } else if (Appconstants.postCode.isEmpty()) {
-
             if (InternetDetect.isConnected(this)) {
-
                 new JsontaskPostCode().execute();
-
             } else {
                 Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
             }
         } else {
-
             updatepostaledit.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_checkout, R.id.text1, Appconstants.postCode));
         }
+
+    }
+
+    private void updateProfile() {
+
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .build();
+
+        HashMap<String, String> paramHashMap = new HashMap<>();
+
+        paramHashMap.put("user_id", logid);
+        paramHashMap.put("name", FnameUpdateET.getText().toString().trim() + " " + LnameUpdateET.getText().toString().trim());
+        paramHashMap.put("first_name", FnameUpdateET.getText().toString().trim());
+        paramHashMap.put("last_name", LnameUpdateET.getText().toString().trim());
+        paramHashMap.put("home_address", UpdateHomeAddressET.getText().toString().trim());
+        paramHashMap.put("home_phone", "");
+        if (latUser == null) {
+            paramHashMap.put("user_lat", "");
+            paramHashMap.put("user_lon", "");
+        } else {
+            paramHashMap.put("user_lat", latUser);
+            paramHashMap.put("user_lon", lonUser);
+        }
+        paramHashMap.put("work_phone", Other_Numberedit.getText().toString().trim());
+        paramHashMap.put("mobile_phone", MobileNumberedit.getText().toString().trim());
+        paramHashMap.put("email", updateemailedit.getText().toString().trim());
+        paramHashMap.put("username", updateemailedit.getText().toString().trim());
+
+        HashMap<String, File> fileHashParam = new HashMap<>();
+        if (CompanyUpload == null) fileHashParam.put("user_image", null);
+        else fileHashParam.put("user_image", new File(CompanyUpload));
+
+        AndroidNetworking.initialize(mContext, okHttpClient);
+        AndroidNetworking.upload("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?" + "update_normal_user_profile")
+                .addMultipartParameter(paramHashMap)
+                .addMultipartFile(fileHashParam)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        finish();
+                        Toast.makeText(mContext, "Update Profile Successfully", Toast.LENGTH_SHORT).show();
+                        Log.e("adasdasdasdasd", "response = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
 
     }
 
@@ -416,34 +569,50 @@ public class UserInformation extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri = getOutputMediaFileUri(1);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                startActivityForResult(cameraIntent, camera2);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, camera2);
                 dialog.dismiss();
-
             }
         });
 
         GalleryImage.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), gallery2);
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, gallery2);
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                CompanyUpload = RealPathUtil.getRealPath(mContext, resultUri);
+                Log.e("asdasfasdsasd", "CompanyUpload = " + CompanyUpload);
+                Log.e("asdasfasdsasd", "resultUri = " + resultUri);
+                img_user_image.setImageURI(resultUri);
+                Toast.makeText(UserInformation.this, "Uploaded", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+
+        if (resultCode == 101) {
+            String add = data.getStringExtra("add");
+            UpdateHomeAddressET.setText(add);
+            getLatLonFromAddress(add);
+            Log.e("asdadadasd", "address = " + add);
+        }
 
         if (resultCode == RESULT_OK) {
 
@@ -451,63 +620,94 @@ public class UserInformation extends AppCompatActivity {
 
                 case gallery:
 
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
+                    if (data != null) {
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String FinalPath = cursor.getString(columnIndex);
-                    cursor.close();
-                    Log.e("PATH", "" + FinalPath);
+                        Uri contentURI = data.getData();
+                        try {
+                            String pat3 = RealPathUtil.getRealPath(mContext, contentURI);
+                            CropImage.activity(data.getData()).start(this);
+//                            Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+//                                @Override
+//                                public void response(boolean status, String message, File file) {
+//                                    Intent intent121 = new Intent(mContext, CropActivity.class);
+//                                    intent121.putExtra("ImagePath", file.getAbsolutePath());
+//                                    startActivityForResult(intent121, 1000);
+//                                }
+//                            }).CompressedImage(pat3);
 
-                    Intent intent = new Intent(UserInformation.this, CropActivity.class);
-                    intent.putExtra("ImagePath", FinalPath);
-                    startActivityForResult(intent, 1000);
-
+                        } catch (Exception e) {
+                            Log.e("hjagksads", "image = " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
                     break;
 
                 case camera:
+                    Bundle extras2 = data.getExtras();
+                    Bitmap bitmapNew2 = (Bitmap) extras2.get("data");
+                    Bitmap imageBitmap2 = BITMAP_RE_SIZER(bitmapNew2, bitmapNew2.getWidth(), bitmapNew2.getHeight());
 
-                    Intent intent2 = new Intent(UserInformation.this, CropActivity.class);
-                    intent2.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent2, 1000);
+                    Uri tempUri2 = getImageUri(mContext, imageBitmap2);
+
+                    String path2 = RealPathUtil.getRealPath(mContext, tempUri2);
+
+                    CropImage.activity(tempUri2).start(this);
 
                     break;
 
-
                 case gallery2:
-
-                    Uri selectedImage2 = data.getData();
-                    String[] filePathColumn2 = {MediaStore.Images.Media.DATA};
-                    Cursor cursor2 = getContentResolver().query(selectedImage2, filePathColumn2, null, null, null);
-                    cursor2.moveToFirst();
-
-                    int columnIndex2 = cursor2.getColumnIndex(filePathColumn2[0]);
-                    String FinalPath2 = cursor2.getString(columnIndex2);
-                    cursor2.close();
-                    Log.e("PATH", "" + FinalPath2);
-
-                    Intent intent3 = new Intent(UserInformation.this, CropActivity.class);
-                    intent3.putExtra("ImagePath", FinalPath2);
-                    startActivityForResult(intent3, 1001);
-
+                    if (data != null) {
+                        Uri contentURI = data.getData();
+                        CropImage.activity(data.getData()).start(this);
+                        //                        try {
+//                            String pat3 = RealPathUtil.getRealPath(mContext, contentURI);
+//                            Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+//                                @Override
+//                                public void response(boolean status, String message, File file) {
+//                                    Intent intent3 = new Intent(UserInformation.this, CropActivity.class);
+//                                    intent3.putExtra("ImagePath", file.getAbsolutePath());
+//                                    startActivityForResult(intent3, 1001);
+//                                }
+//                            }).CompressedImage(pat3);
+//
+//                        } catch (Exception e) {
+//                            Log.e("hjagksads", "image = " + e.getMessage());
+//                            e.printStackTrace();
+//                        }
+                    }
                     break;
 
                 case camera2:
 
-                    Intent intent4 = new Intent(UserInformation.this, CropActivity.class);
-                    intent4.putExtra("ImagePath", fileUriPath);
-                    startActivityForResult(intent4, 1001);
+                    Bundle extras3 = data.getExtras();
+                    Bitmap bitmapNew3 = (Bitmap) extras3.get("data");
+                    Bitmap imageBitmap3 = BITMAP_RE_SIZER(bitmapNew3, bitmapNew3.getWidth(), bitmapNew3.getHeight());
+
+                    Uri tempUri3 = getImageUri(mContext, imageBitmap3);
+
+                    String path3 = RealPathUtil.getRealPath(mContext, tempUri3);
+                    CropImage.activity(tempUri3).start(this);
+
+//                    Compress.get(mContext).setQuality(80).execute(new Compress.onSuccessListener() {
+//                        @Override
+//                        public void response(boolean status, String message, File file) {
+//                            Intent intent2 = new Intent(UserInformation.this, CropActivity.class);
+//                            intent2.putExtra("ImagePath", fileUriPath);
+//                            startActivityForResult(intent2, 1001);
+//                        }
+//                    }).CompressedImage(path3);
 
                     break;
 
-
                 case 1000:
+
+                    // ImageUpload_drivnig = data.getStringExtra("CroppedImage");
 
                     String newPath = data.getStringExtra("CroppedImage");
                     Appconstants.companyProfileRatio = data.getStringExtra("Ratio");
                     Uri uri = FileProvider.getUriForFile(UserInformation.this, getApplicationContext().getPackageName() + ".provider", new File(newPath));
+
+                    img_user_image.setImageURI(Uri.parse(newPath));
 
                     Log.e("22NEWPATH", "???" + newPath);
 
@@ -529,36 +729,45 @@ public class UserInformation extends AppCompatActivity {
                     Toast.makeText(UserInformation.this, "Uploaded", Toast.LENGTH_SHORT).show();
                     break;
 
-
                 case 1001:
                     CompanyUpload = data.getStringExtra("CroppedImage");
-                    Appconstants.companyDesRatio = data.getStringExtra("Ratio");
-                    Uri uri2 = FileProvider.getUriForFile(UserInformation.this, getApplicationContext().getPackageName() + ".provider", new File(CompanyUpload));
-                    Log.e("22NEWPATHH", "???" + CompanyUpload);
-
-                    Bitmap bm2 = null;
-                    try {
-                        bm2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri2);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    ByteArrayOutputStream bao2 = new ByteArrayOutputStream();
-                    bm2.compress(Bitmap.CompressFormat.JPEG, 90, bao2);
-                    byte[] ba2 = bao2.toByteArray();
-                    Appconstants.IMAGE_BASE642 = Base64Decode.encodeBytes(ba2);
-                    Log.e("bitmap gallery", Appconstants.IMAGE_BASE642);
                     Toast.makeText(UserInformation.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                    img_user_image.setImageBitmap(bm2);
-
+                    img_user_image.setImageURI(Uri.parse(CompanyUpload));
                     break;
 
             }
         }
+
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public Bitmap BITMAP_RE_SIZER(Bitmap bitmap, int newWidth, int newHeight) {
+
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
     }
 
     public Uri getOutputMediaFileUri(int type) {
-
         fileUriPath = getOutputMediaFile(type).getPath();
         Uri uri = FileProvider.getUriForFile(UserInformation.this, getApplicationContext().getPackageName() + ".provider", new File(fileUriPath));
         return uri;
@@ -568,15 +777,12 @@ public class UserInformation extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("file_uri", fileUri);
-
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         fileUri = savedInstanceState.getParcelable("file_uri");
-
     }
 
     private class JsonGetInfo extends AsyncTask<String, Void, String> {
@@ -588,7 +794,6 @@ public class UserInformation extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -609,7 +814,6 @@ public class UserInformation extends AppCompatActivity {
                 JSONArray ParentArray = new JSONArray(obj);
                 JSONObject FinalObject = ParentArray.getJSONObject(0);
 
-
                 Log.e("Json2", String.valueOf(FinalObject));
 
                 userDetail = new UserDetail();
@@ -628,12 +832,12 @@ public class UserInformation extends AppCompatActivity {
                 userDetail.setMobilephone(FinalObject.getString("mobile_phone"));
                 userDetail.setEmail(FinalObject.getString("email"));
                 userDetail.setUsername(FinalObject.getString("username"));
+                userDetail.setUserImage(FinalObject.getString("user_image"));
 
                 Log.e("userDetailss", "" + FinalObject);
 
             } catch (Exception e) {
                 System.out.println("Errror in gettting normal userbyID" + e);
-
             }
             return null;
         }
@@ -642,15 +846,22 @@ public class UserInformation extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if (userDetail.getFirst_name().trim().equalsIgnoreCase("")) {
+            if (userDetail.getUserImage() != null && !userDetail.getUserImage().equals("")) {
+                Log.e("asdasdasdas", "userDetail.getUserImage() = " + userDetail.getUserImage());
+                Glide.with(mContext)
+                        .load(userDetail.getUserImage())
+                        .placeholder(R.drawable.user_icon_abc)
+                        .error(R.drawable.user_icon_abc)
+                        .into(img_user_image);
+            }
 
+            if (userDetail.getFirst_name().trim().equalsIgnoreCase("")) {
                 FnameUpdateET.setText(userDetail.getFirst_name());
             } else {
                 FnameUpdateET.setText(userDetail.getFirst_name().substring(0, 1).toUpperCase() + userDetail.getFirst_name().substring(1));
             }
 
             if (userDetail.getLast_name().trim().equalsIgnoreCase("")) {
-
                 LnameUpdateET.setText(userDetail.getLast_name());
             } else {
                 LnameUpdateET.setText(userDetail.getLast_name().substring(0, 1).toUpperCase() + userDetail.getLast_name().substring(1));
@@ -670,6 +881,7 @@ public class UserInformation extends AppCompatActivity {
             updateemailedit.setText(userDetail.getEmail());
             usernameemailedit.setText(userDetail.getUsername());
             UpdateHomeAddressET.setText(userDetail.getHomeAddress());
+
         }
     }
 
@@ -688,7 +900,6 @@ public class UserInformation extends AppCompatActivity {
             super.onPreExecute();
             dialog.show();
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -814,6 +1025,7 @@ public class UserInformation extends AppCompatActivity {
             }
 
             return null;
+
         }
 
         @Override
@@ -821,14 +1033,13 @@ public class UserInformation extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (result == null) {
-
             } else if (result.equalsIgnoreCase("successfully")) {
-
                 updatepostaledit.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_checkout, R.id.text1, Appconstants.postCode));
-
             } else {
-
             }
+
         }
     }
+
+
 }

@@ -22,14 +22,12 @@
             android:fitsSystemWindows="true"
             android:orientation="vertical">
 
-
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_user_image"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_85sdp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/user_icon_abc" />
-
 
             <RelativeLayout
                 android:id="@+id/k0"
@@ -46,7 +44,6 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp" />
 
-
                 <CheckBox
                     android:id="@+id/editcheck0"
                     android:layout_width="@dimen/_25sdp"
@@ -54,7 +51,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:button="@drawable/custom_checkbox" />
-
 
             </RelativeLayout>
 
@@ -81,9 +77,7 @@
                     android:singleLine="true"
                     android:textColor="@color/black" />
 
-
             </RelativeLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,12 +87,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp">
 
-
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
-
 
                     <EditText
                         android:id="@+id/FnameUpdateET"
@@ -114,9 +106,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
-
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:layout_width="3dp"
@@ -127,7 +117,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
-
 
                     <EditText
                         android:id="@+id/LnameUpdateET"
@@ -143,12 +132,9 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
-
                 </RelativeLayout>
 
-
             </LinearLayout>
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -157,12 +143,14 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp">
 
-
                 <EditText
                     android:id="@+id/UpdateHomeAddressET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border_black_solid_grey"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:gravity="center_horizontal"
                     android:hint="Your Home Address"
                     android:padding="10dp"
@@ -170,9 +158,7 @@
                     android:singleLine="true"
                     android:textSize="16sp" />
 
-
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/k3"
@@ -345,13 +331,14 @@
                  android:layout_marginRight="10dp"
                  android:background="@color/grey">
 
-                  <EditText
+                 <EditText
                      android:id="@+id/Other_Numberedit"
                      android:layout_width="fill_parent"
                      android:layout_height="fill_parent"
                      android:background="@drawable/border_black_solid_grey"
                      android:gravity="center"
                      android:hint="Work Number"
+                     android:inputType="number"
                      android:paddingLeft="10dp"
                      android:paddingRight="10dp"
                      android:singleLine="true"
@@ -359,7 +346,6 @@
                      android:textSize="16sp" />
 
              </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/k4"
@@ -378,6 +364,7 @@
                     android:background="@drawable/border_black_solid_grey"
                     android:gravity="center"
                     android:hint="Mobile Number"
+                    android:inputType="number"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:singleLine="true"

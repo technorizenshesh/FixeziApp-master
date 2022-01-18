@@ -15,8 +15,7 @@
         <com.theartofdev.edmodo.cropper.CropImageView
             android:id="@+id/newCropImageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 

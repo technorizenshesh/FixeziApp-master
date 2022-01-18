@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,12 +76,9 @@ public class GooglePlacesAutocompleteActivity extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if (s.length() > 0) {
-
                     // clear_pick_ic.setVisibility(View.VISIBLE);
                     loadData(gettypedlocation.getText().toString());
-
                 } else {
                     // clear_pick_ic.setVisibility(View.GONE);
                 }
@@ -105,6 +103,7 @@ public class GooglePlacesAutocompleteActivity extends Activity {
                     GeoAutoCompleteAdapter ga = new GeoAutoCompleteAdapter(GooglePlacesAutocompleteActivity.this, l1, "" + latitude, "" + longitude);
                     gettypedlocation.setAdapter(ga);
                     ga.notifyDataSetChanged();
+
                 }
 
             }
@@ -165,8 +164,9 @@ public class GooglePlacesAutocompleteActivity extends Activity {
                                 InputMethodManager.HIDE_NOT_ALWAYS);
 
                         if (l2 == null || l2.isEmpty()) {
-
                         } else {
+
+                            Log.e("sdfasdfsfasf", "lat = " + lat + " lon = " + lon);
 
                             gettypedlocation.setText("" + l2.get(i));
                             gettypedlocation.dismissDropDown();
@@ -175,22 +175,23 @@ public class GooglePlacesAutocompleteActivity extends Activity {
 
                             PreferenceConnector.writeString(GooglePlacesAutocompleteActivity.this, PreferenceConnector.Address_Save, order_landmarkadd);
                             Intent intent = new Intent();
-                            intent.putExtra("add",order_landmarkadd);
-//                            intent.putExtra("lat",gettypedlocation);
-//                            intent.putExtra("lon",order_landmarkadd);
-                            setResult(101,intent);
+                            intent.putExtra("add", order_landmarkadd);
+
+//                          intent.putExtra("lat",gettypedlocation);
+//                          intent.putExtra("lon",order_landmarkadd);
+
+                            setResult(101, intent);
                             finish();
+
                         }
 
                     }
                 });
 
-            } catch (Exception e) {
-
-
-            }
+            } catch (Exception e) {}
 
             return view;
+
         }
 
         @Override
@@ -201,6 +202,7 @@ public class GooglePlacesAutocompleteActivity extends Activity {
                 protected FilterResults performFiltering(CharSequence constraint) {
                     FilterResults filterResults = new FilterResults();
                     if (constraint != null) {
+                        Log.e("aasdsdadsad", "Places Details = " + "https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyDQhXBxYiOPm-aGspwuKueT3CfBOIY3SJs&input=" + constraint.toString().trim().replaceAll(" ", "+") + "&location=" + lat + "," + lon + "+&radius=20000&types=geocode&sensor=true");
                         wo.setUrl("https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyDQhXBxYiOPm-aGspwuKueT3CfBOIY3SJs&input=" + constraint.toString().trim().replaceAll(" ", "+") + "&location=" + lat + "," + lon + "+&radius=20000&types=geocode&sensor=true");
                         String result = null;
                         try {
@@ -235,6 +237,7 @@ public class GooglePlacesAutocompleteActivity extends Activity {
 
         private void parseJson(String result) {
 
+            Log.e("asdasdasdasdas", "Parse Json = " + result);
             try {
                 l2 = new ArrayList<>();
                 JSONObject jk = new JSONObject(result);
@@ -247,6 +250,7 @@ public class GooglePlacesAutocompleteActivity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
 
     }

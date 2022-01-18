@@ -35,6 +35,8 @@ public class CropActivity extends AppCompatActivity {
     int degree = 0;
     int ratio = 0;
     String ratioStr = "43";
+    int returnCode = 0;
+    String isEdit = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,11 @@ public class CropActivity extends AppCompatActivity {
         newCropImageView.setAutoZoomEnabled(true);
 
         Bundle extra = getIntent().getExtras();
-        String ImagePath = extra.getString("ImagePath");
+        String ImagePath = getIntent().getStringExtra("ImagePath");
+        isEdit = getIntent().getStringExtra("isEdit");
+        returnCode = getIntent().getIntExtra("code", 0);
 
-        Log.e("image_path_crop",""+ImagePath);
+        Log.e("image_path_crop", "" + ImagePath);
 
         newCropImageView.setImageUriAsync(Uri.fromFile(new File(ImagePath)));
         CropCancelLL.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +73,6 @@ public class CropActivity extends AppCompatActivity {
             public void onClick(View v) {
                 degree = degree + 90;
                 newCropImageView.rotateImage(degree);
-
             }
         });
 
@@ -80,24 +83,18 @@ public class CropActivity extends AppCompatActivity {
                 ratio = ratio + 1;
 
                 if (ratio == 0) {
-
                     newCropImageView.setAspectRatio(4, 3);
                     ratioStr = "43";
                 } else if (ratio == 1) {
-
                     newCropImageView.setAspectRatio(16, 9);
                     ratioStr = "169";
-
                 } else if (ratio == 2) {
-
                     newCropImageView.setAspectRatio(4, 4);
                     ratioStr = "44";
                     ratio = -1;
                 }
-
             }
         });
-
 
         CropDoneLL.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +116,6 @@ public class CropActivity extends AppCompatActivity {
                     fos.write(bitmapdata);
                     fos.flush();
                     fos.close();
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -129,13 +125,19 @@ public class CropActivity extends AppCompatActivity {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("CroppedImage", fileUri.getPath());
                 returnIntent.putExtra("Ratio", ratioStr);
-                setResult(Activity.RESULT_OK, returnIntent);
+                if (isEdit == null || isEdit.equals("")) {
+                    setResult(Activity.RESULT_OK, returnIntent);
+                } else {
+                    setResult(returnCode, returnIntent);
+                }
+
+                Log.e("CropedImage", "CropedImage = " + fileUri.getPath());
+
                 finish();
 
             }
         });
     }
-
 
     public Uri getOutputMediaFileUri(int type) {
         return Uri.fromFile(getOutputMediaFile(type));
@@ -173,5 +175,8 @@ public class CropActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+
     }
+
+
 }

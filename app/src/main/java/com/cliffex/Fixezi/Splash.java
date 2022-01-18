@@ -11,6 +11,7 @@ import android.content.pm.Signature;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
@@ -21,9 +22,6 @@ import androidx.core.app.ActivityCompat;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -51,32 +49,25 @@ public class Splash extends AppCompatActivity {
         params.putString(AppEventsConstants.EVENT_PARAM_CONTENT_TYPE, "product");
         params.putString(AppEventsConstants.EVENT_PARAM_CONTENT, "[{\"id\": \"1234\", \"quantity\": 2}, {\"id\": \"5678\", \"quantity\": 1}]");
 
-        logger.logEvent("fb_purchase",
-                54.23,
-                params);
+        logger.logEvent("fb_purchase", 54.23, params);
 
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    getPackageName(),
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(),
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        }
-        catch (PackageManager.NameNotFoundException e) {
-
-        }
-        catch (NoSuchAlgorithmException e) {
-
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
         }
 
         sessionUser = new SessionUser(Splash.this);
         sessionTradesman = new SessionTradesman(Splash.this);
         sessionWorker = new SessionWorker(Splash.this);
 
-        //        if(ContextCompat.checkSelfPermission(this,
+//        if(ContextCompat.checkSelfPermission(this,
 //                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                != PackageManager.PERMISSION_GRANTED ||
 //                ContextCompat.checkSelfPermission(this,
@@ -155,7 +146,7 @@ public class Splash extends AppCompatActivity {
 
     private boolean checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED  &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -173,7 +164,7 @@ public class Splash extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions (
+        ActivityCompat.requestPermissions(
                 this,
                 new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -198,7 +189,7 @@ public class Splash extends AppCompatActivity {
                 builder.setMessage(R.string.permission_required)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // FIRE ZE MISSILES!
+                                // FIRE ZE MISSILES
                                 openPermissionScreen();
                             }
                         }).setNegativeButton(R.string.mdtp_cancel, new DialogInterface.OnClickListener() {
@@ -214,23 +205,29 @@ public class Splash extends AppCompatActivity {
 
     public void go_next() {
 
-        if(sessionUser.IsLoggedIn()) {
-            Intent intent = new Intent(Splash.this, UserActivity.class);
-            startActivity(intent);
-            finish();
-        } else if(sessionTradesman.IsLoggedIn()) {
-            Intent intent = new Intent(Splash.this, TradesmanActivity.class);
-            startActivity(intent);
-            finish();
-        } else if(sessionWorker.IsLoggedIn()) {
-            Intent intent = new Intent(Splash.this, EmployeeActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(Splash.this, SplashTwo.class);
-            startActivity(intent);
-            finish();
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (sessionUser.IsLoggedIn()) {
+                    Intent intent = new Intent(Splash.this, UserActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (sessionTradesman.IsLoggedIn()) {
+                    Intent intent = new Intent(Splash.this, TradesmanActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (sessionWorker.IsLoggedIn()) {
+                    Intent intent = new Intent(Splash.this, EmployeeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(Splash.this, SplashTwo.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, 2000);
+
     }
 
     public void openPermissionScreen() {
@@ -242,7 +239,7 @@ public class Splash extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
             dialog = null;
         }

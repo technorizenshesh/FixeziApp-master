@@ -109,7 +109,6 @@ public class EditTrade extends AppCompatActivity {
         UpdataTradeBT.setEnabled(false);
         SelectTradeEditTrade.setEnabled(false);
 
-
         EditTradeCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -119,7 +118,6 @@ public class EditTrade extends AppCompatActivity {
                     UpdataTradeBT.setEnabled(true);
                     SelectTradeEditTrade.setEnabled(true);
                 } else {
-
                     TradeList.setEnabled(false);
                     UpdataTradeBT.setEnabled(false);
                     SelectTradeEditTrade.setEnabled(false);
@@ -228,6 +226,7 @@ public class EditTrade extends AppCompatActivity {
                             ListViewAdapterOld adapter = new ListViewAdapterOld(EditTrade.this, serviceLocationBeanArrayList);
                             TradeList.setAdapter(adapter);
 
+                            HttpPAth.setListViewHeightBasedOnChildren(TradeList);
 
                         }
 
@@ -296,10 +295,8 @@ public class EditTrade extends AppCompatActivity {
         });
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonGetTrade().execute();
         } else {
-
             Toast.makeText(EditTrade.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
@@ -311,6 +308,7 @@ public class EditTrade extends AppCompatActivity {
 
         @Override
         protected List<ServiceLocationBean> doInBackground(String... params) {
+
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(HttpPAth.Urlpath + "get_tradesman_trade&tradesman_id=" + sessionTradesman.getId());
             try {
@@ -339,9 +337,10 @@ public class EditTrade extends AppCompatActivity {
 
             } catch (Exception e) {
                 System.out.println("errror in Forget task " + e);
-
             }
+
             return null;
+
         }
 
         @Override
@@ -349,13 +348,16 @@ public class EditTrade extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (result == null) {
-
             } else {
+                for(int i=0;i<result.size();i++)
+                    Log.e("resultresultresult","result = " + result.get(i).getName());
                 ListViewAdapterOld adapter = new ListViewAdapterOld(EditTrade.this, result);
                 TradeList.setAdapter(adapter);
+                HttpPAth.setListViewHeightBasedOnChildren(TradeList);
             }
 
         }
+
     }
 
     private class ListViewAdapterOld extends BaseAdapter {

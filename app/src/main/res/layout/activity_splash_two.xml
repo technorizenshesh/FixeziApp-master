@@ -11,28 +11,38 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000"
-            android:fontFamily="@font/montserrat_medium"
-            android:gravity="center_horizontal"
-            android:text="Welcome To"
-            android:textColor="#1E90FF"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
+            android:background="@drawable/below_black_back"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_5sdp">
 
-        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000000"
-            android:fontFamily="@font/montserrat_medium"
-            android:gravity="center_horizontal"
-            android:padding="5dp"
-            android:text="Fixezi- The App of All Trades"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:text="Welcome To"
+                android:textColor="@color/welcome_blue"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:padding="5dp"
+                android:text="Fixezi- The App of All Trades"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:id="@+id/rel3"
@@ -50,16 +60,47 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/rel_2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#ffffff"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:lineSpacingMultiplier="1.1"
-                    android:padding="@dimen/_10sdp"
-                    android:text="Do you have a problem that needs fixing around your home/business or property,and need the job booked, repaired, and finished without the stress of hunting down quality tradesmen ? \n \nWe realise how difficult it can be to find and hire qualified reliable and efficient tradesmen, so at Fixezi we have designed an app that takes the stress out of the whole process.\n\nWith a step by step booking system, and ratings of tradesman listed,we give you the choice to select qualified tradesmen to do your next job!"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/_12sdp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    android:text="@string/hire_trades_at_the"
+                    android:textColor="@color/welcome_black"
+                    android:textSize="@dimen/_22sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    android:text="@string/speed_of_thought"
+                    android:textColor="@color/welcome_black"
+                    android:textSize="@dimen/_22sdp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_250sdp"
+                        android:src="@drawable/ic_fixeziwelcome" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_100sdp"
+                        android:layout_marginLeft="@dimen/_160sdp"
+                        android:layout_marginBottom="@dimen/_30sdp"
+                        android:src="@drawable/mainlogo" />
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/tv_aa"
@@ -72,44 +113,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/rel_2"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:background="#ffffff"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:gravity="center_horizontal"
-                        android:text="It's free to sign up and use. \n So Try ...\n "
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center"
+                        android:text="With Qualified Local Trades all in one place!\nFixezi The App of All Trades\nIs the most intuitive way to book your next\ntrades person."
                         android:textColor="@color/colorGray"
                         android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/rel_2"
-                        android:background="#ffffff"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:gravity="center_horizontal"
-                        android:paddingTop="@dimen/_10sdp"
-                        android:text="Fixezi- The App of All Trades"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/_15sdp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_95sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_aa"
-                        android:layout_gravity="center_horizontal"
-                        android:scaleType="fitCenter"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:src="@drawable/st_one" />
 
                     <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
                         android:id="@+id/ContinueSTTV"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@color/lightblue"
+                        android:background="@drawable/button_welcome_back"
                         android:gravity="center"
                         android:text="Lets get started"
                         android:textAllCaps="false"

@@ -65,6 +65,7 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TermsWV.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+
         TermsWV.loadUrl(Url);
         TermsWV.setWebViewClient(new WebViewClient() {
             @Override
@@ -106,7 +107,6 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
         remembertxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 remembercheckbox.setChecked(!remembercheckbox.isChecked());
             }
         });
@@ -116,21 +116,17 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (remembercheckbox.isChecked()) {
-
                     if (From.equalsIgnoreCase("TradesmanTwo")) {
+                        TradesmanSignup2.IsTermsOpen = true;
                         finish();
-
                     } else if (From.equalsIgnoreCase("Main")) {
                         Intent j = new Intent(getApplicationContext(), SignupActivity.class);
                         j.putExtra("select_status", "sign_up");
                         j.putExtra("status", "signuptradmenn1");
                         j.putExtra("status1", "");
-
                         startActivity(j);
                         finish();
-
                     }
-
                 } else {
                     Toast.makeText(TermsConditionTradmanSignup.this, "Please Select Check Box", Toast.LENGTH_SHORT).show();
                 }
@@ -145,6 +141,7 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
     }
 
     private void initComp() {
+
         remembercheckbox = findViewById(R.id.remembercheckbox);
         remembertxt = findViewById(R.id.remembertxt);
         tvCon = findViewById(R.id.tv_continuous);
@@ -157,6 +154,7 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TradesmanSignup2.IsTermsOpen = false;
                 finish();
             }
         });
@@ -173,4 +171,5 @@ public class TermsConditionTradmanSignup extends AppCompatActivity {
             return true;
         }
     }
+
 }

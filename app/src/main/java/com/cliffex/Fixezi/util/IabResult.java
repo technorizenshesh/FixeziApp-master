@@ -14,6 +14,7 @@
  */
 
 package com.cliffex.Fixezi.util;
+
 /**
  * Represents the result of an in-app billing operation.
  * A result is composed of a response code (an integer) and possibly a
@@ -22,17 +23,18 @@ package com.cliffex.Fixezi.util;
  * can also inquire whether a result is a success or a failure by
  * calling {@link #isSuccess()} and {@link #isFailure()}.
  */
+
 public class IabResult {
+
     int mResponse;
     String mMessage;
 
     public IabResult(int response, String message) {
         mResponse = response;
         if (message == null || message.trim().length() == 0) {
-            mMessage = IabHelper.getResponseDesc(response);
-        }
-        else {
-            mMessage = message + " (response: " + IabHelper.getResponseDesc(response) + ")";
+            mMessage = ""/*IabHelper.getResponseDesc(response)*/;
+        } else {
+            mMessage = message + " (response: " + "IabHelper.getResponseDesc(response)" + ")";
         }
     }
     public int getResponse() { return mResponse; }

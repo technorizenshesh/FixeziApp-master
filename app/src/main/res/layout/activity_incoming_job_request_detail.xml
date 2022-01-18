@@ -115,9 +115,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_toRightOf="@+id/FlexibleDateTV"
-
-                                />
+                                android:layout_toRightOf="@+id/FlexibleDateTV" />
 
                         </RelativeLayout>
 
@@ -150,9 +148,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10dp"
-                                android:layout_toRightOf="@+id/TimeTV"
-
-                                />
+                                android:layout_toRightOf="@+id/TimeTV" />
 
                             <ImageView
                                 android:id="@+id/img_pensile_two"
@@ -162,7 +158,6 @@
                                 android:src="@drawable/edit_black"
                                 android:visibility="gone" />
 
-
                         </RelativeLayout>
 
 
@@ -170,7 +165,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
-
 
                             <TextView
                                 android:id="@+id/FlexibleTimeTV"
@@ -483,10 +477,10 @@
                     <RelativeLayout
                         android:id="@+id/RLeleven"
                         android:layout_width="wrap_content"
-                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/RLTen"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/WorkNumberTV"
@@ -803,9 +797,9 @@
                             android:layout_marginLeft="15dp"
                             android:text="Quotes accepted/declined"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="16dp"/>
+                            android:textSize="16dp" />
 
-                         <TextView
+                        <TextView
                             android:id="@+id/qotesaccepted"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -813,27 +807,23 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="20dp"
                             android:text="1/1"
-                            android:textColor="@color/black"/>
-
+                            android:textColor="@color/black" />
 
                     </RelativeLayout>
-
 
                 </RelativeLayout>
 
             </LinearLayout>
 
-
-             <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lay_rat"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="10dp"
-                 android:layout_marginRight="@dimen/_10sdp"
-                 android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:orientation="horizontal"
                 android:weightSum="3">
-
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -847,26 +837,25 @@
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/roundedbuttongreen"
                         android:text="Accept"
-                        android:textColor="#ffffff"/>
+                        android:textColor="#ffffff" />
 
                 </RelativeLayout>
 
-
-                 <RelativeLayout
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                     <Button
+                    <Button
                         android:id="@+id/btn_reschedule"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                         android:paddingRight="@dimen/_5sdp"
-                         android:paddingLeft="@dimen/_5sdp"
                         android:background="@drawable/btn_skyblue"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
                         android:text="Reschedule"
                         android:textColor="#ffffff" />
 

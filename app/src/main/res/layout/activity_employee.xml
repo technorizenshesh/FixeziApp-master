@@ -196,8 +196,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
-
-
                     android:background="@drawable/roundedcorners_gray"
                     android:gravity="center"
                     android:padding="10dp"

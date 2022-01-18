@@ -53,7 +53,7 @@
     <string name="info_link">More open source from Pixplicity:\nhttp://github.com/Pixplicity</string>
     <string name="page_number_1d">Page #%d</string>
     <string name="ok">OK</string>
-    <string name="no">NO</string>
+    <string name="no">No</string>
 
     <string name="permission_required">Permission Required</string>
 
@@ -136,6 +136,15 @@
     <string name="tradesman">Tradesman</string>
     <string name="contractor">Contractor</string>
     <string name="i_am_the_owner">I am the owner</string>
+    <string name="take_a_photo_of_your_invoice_receipt">Take a photo of your invoice/receipt</string>
+    <string name="the_client_will_receive_any_invoice_receipt_note_once_job_is_completed"><![CDATA[The client will receive any invoice/receipt & note once job is completed]]></string>
+    <string name="type_your_note_here">Type your note here</string>
+    <string name="create_additional_qoute">Create additional qoute?</string>
+    <string name="mark_job_as_complete">Mark job as Complete?</string>
+    <string name="yes">Yes</string>
+    <string name="type_your_quote_here">Type Your Quote Here</string>
+    <string name="hire_trades_at_the">Hire trades at the</string>
+    <string name="speed_of_thought">speed of thought</string>
 
     <string-array name="imageFor">
         <item>1</item>

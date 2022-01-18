@@ -69,8 +69,7 @@ public class HorizontalRecyclerView extends RecyclerView.Adapter<HorizontalRecyc
         holdar.clickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TradesmanSignup2) _c).captureImage(dataSet.getListItemPosition(), dataSet.getLabel() + "" +
-                        dataSet.getSubtext());
+                ((TradesmanSignup2) _c).captureImage(dataSet.getListItemPosition(), dataSet.getLabel() + "" + dataSet.getSubtext());
             }
         });
 

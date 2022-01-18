@@ -35,7 +35,6 @@ public class UpgradeActivity extends AppCompatActivity implements IabBroadcastRe
 
     // Will the subscription auto-renew?
 
-
     // Tracks the currently owned infinite gas SKU, and the options in the Manage dialog
     String mInfiniteGasSku = "";
 

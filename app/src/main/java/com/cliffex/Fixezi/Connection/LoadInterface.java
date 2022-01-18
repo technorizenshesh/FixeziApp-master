@@ -32,7 +32,6 @@ public interface LoadInterface {
     Call<ResponseBody> jobDetails(@Field("problem_id") String problem_id);
     // https://fixezi.com.au/FIXEZI/webserv.php?get_problem_id_again_userdata&problem_id=46
 
-
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?get_normal_user_data_byid")
     Call<ResponseBody> getUserRatingApiCall(@FieldMap Map<String,String> param);
@@ -52,7 +51,6 @@ public interface LoadInterface {
     // https://fixezi.com.au/FIXEZI/webserv.php?get_tradesman_profile&tradesman_id=1
 
     //***ForgetPassword
-
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?forgot_password_ios")
     Call<ResponseBody> forgetuser(@Field("email") String email);
@@ -63,6 +61,7 @@ public interface LoadInterface {
                                    @Field("source") String source);
 
     // https://fixezi.com.au/FIXEZI/webserv.php?forgot_password_ios&email=lorence.technorizen@gmail.com@FormUrlEncoded
+    @FormUrlEncoded
     @POST("FIXEZI/webserv.php?forgot_password_tradesman_ios")
     Call<ResponseBody> forgettrademan(@Field("email") String email);
     // https://fixezi.com.au/FIXEZI/webserv.php?forgot_password_tradesman_ios&email=lorence.technorizen@gmail.com

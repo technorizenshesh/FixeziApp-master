@@ -32,10 +32,12 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -52,6 +54,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +62,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.cliffex.Fixezi.Other.MySharedPref.getData;
 
 public class SignupActivity extends AppCompatActivity {
@@ -75,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
     String trademen = "";
     int a = 1;
     String OTP = "", mobilestatus = "";
-    CheckBox signup2checkbox,signup2checkbox1;
+    CheckBox signup2checkbox, signup2checkbox1;
     GoogleCloudMessaging gcm;
     String RegId = "";
     EditText LnameET, FnameET;
@@ -93,19 +97,16 @@ public class SignupActivity extends AppCompatActivity {
     private String MobileNo;
     private String Email;
     private String Confirm_Passwords;
-    private String Usernames,Passwords,confirmpass,
-                   MobileNoNos,HouseNos,Emails,LNames,
-                   FNames,Password,Username;
+    private String Usernames, Passwords, confirmpass,
+            MobileNoNos, HouseNos, Emails, LNames,
+            FNames, Password, Username;
     private String status1;
     private String text1;
     private Spinner spinner;
     private Object item;
-    private String MobilePhoneSU_string
-            ,otp_status,code_select_string
-            ,code_select
-            ,select_status,ConfirmEmailETs
-            ,HomePhoneNos,Confirm_Emails;
+    private String MobilePhoneSU_string, otp_status, code_select_string, code_select, select_status, ConfirmEmailETs, HomePhoneNos, Confirm_Emails;
     private ImageView verify_otpimg;
+    private String latUser, lonUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,8 @@ public class SignupActivity extends AppCompatActivity {
                 code_select_string = str[1];
             }
 
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
 
         });
 
@@ -173,16 +175,16 @@ public class SignupActivity extends AppCompatActivity {
             } else {
                 text = "<font color='#1E90FF'> IF YOU ARE A TRADESMAN,</font> WOULD YOU LIKE TO JOIN FIXEZI , AS A TRADESMAN?";
             }
-        } catch (Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-       try {
-           SignUpMsgTV.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-           mobilestatus = getData(getApplicationContext(), "mobilestatus", null);
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
+        try {
+            SignUpMsgTV.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+            mobilestatus = getData(getApplicationContext(), "mobilestatus", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         FnameET.addTextChangedListener(new TextWatcher() {
 
@@ -194,7 +196,8 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
 
             @Override
             public void afterTextChanged(Editable et) {
@@ -220,10 +223,12 @@ public class SignupActivity extends AppCompatActivity {
 
                     FnameET.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
 
                         @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
 
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -251,7 +256,8 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
 
             @Override
             public void afterTextChanged(Editable et) {
@@ -270,16 +276,18 @@ public class SignupActivity extends AppCompatActivity {
                     }
                 } else
 
-                capitalizedText = input.substring(0, 1).toUpperCase() + input.substring(1);
+                    capitalizedText = input.substring(0, 1).toUpperCase() + input.substring(1);
 
                 if (!capitalizedText.equals(LnameET.getText().toString())) {
 
                     LnameET.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
 
                         @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
 
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -357,7 +365,7 @@ public class SignupActivity extends AppCompatActivity {
                     MobilePhoneSU_string = mobno.getText().toString().trim();
                     SendOtpApi(MobilePhoneSU_string);
 
-                    Toast.makeText(context, "success>>"+MobilePhoneSU_string, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "success>>" + MobilePhoneSU_string, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -428,12 +436,17 @@ public class SignupActivity extends AppCompatActivity {
                         if (RegId.equalsIgnoreCase("")) {
                             registerBackground();
                         } else {
-                            new JsonSignUp().execute(FName, LName, HouseNo, HomePhoneNo, MobileNo, Email, Username, Password, trademen, RegId);
+                            new JsonSignUp().execute(FName, LName, HouseNo,
+                                    HomePhoneNo, MobileNo, Email, Username, Password,
+                                    trademen, RegId, latUser, lonUser, HouseNo, HouseNo, HouseNo);
                         }
+
                     } else {
                         errorToast("Check Internet Connectivity");
                     }
+
                 }
+
             }
 
             private boolean ValidationSuccess() {
@@ -454,68 +467,155 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Please verify your mobile number", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (emailadd.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!Appconstants.isValidEmail(emailadd.getText().toString().trim())) {
-
                     Toast.makeText(SignupActivity.this, "Enter valid email", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (ConfirmEmailET.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Confirm email", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!(ConfirmEmailET.getText().toString().trim().equals(emailadd.getText().toString().trim()))) {
-
                     Toast.makeText(SignupActivity.this, "Email does not match", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (usernameeee.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (passs.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (passs.getText().toString().length() < 6) {
-
                     Toast.makeText(SignupActivity.this, "Minimum password length is 6", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (confirmpasss.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Enter confirm password", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!(confirmpasss.getText().toString().equals(passs.getText().toString()))) {
-
                     Log.e("pass", passs.getText().toString());
                     Log.e("confirmpasss", confirmpasss.getText().toString());
                     Toast.makeText(SignupActivity.this, "Password does not match", Toast.LENGTH_SHORT).show();
-
                     return false;
-
                 } else if (trademen.equalsIgnoreCase("")) {
-
                     Toast.makeText(SignupActivity.this, "Are you a Tradesman ?", Toast.LENGTH_SHORT).show();
                     return false;
-
                 } else if (!(signup2checkbox.isChecked())) {
-
                     Toast.makeText(SignupActivity.this, "Please confirm above information is true.", Toast.LENGTH_SHORT).show();
-
                     return false;
                 }
                 return true;
             }
 
         });
+
+    }
+
+    private class JsonSignUp extends AsyncTask<String, Void, String> {
+
+        String id, name, houseno, street, home_add, postcode, city, state, homephone, mobilephone, email, username, result = "", error = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(HttpPAth.Urlpath + "sign_up");
+
+            try {
+
+                List<NameValuePair> nameValuePairs = new ArrayList<>();
+                nameValuePairs.add(new BasicNameValuePair("name", params[0] + " " + params[1]));
+                nameValuePairs.add(new BasicNameValuePair("first_name", params[0]));
+                nameValuePairs.add(new BasicNameValuePair("last_name", params[1]));
+                nameValuePairs.add(new BasicNameValuePair("housenoo", params[2]));
+                nameValuePairs.add(new BasicNameValuePair("home_phone", params[7]));
+                nameValuePairs.add(new BasicNameValuePair("work_phone", params[8]));
+                nameValuePairs.add(new BasicNameValuePair("mobile_phone", params[4]));
+                nameValuePairs.add(new BasicNameValuePair("email", params[5]));
+                nameValuePairs.add(new BasicNameValuePair("username", params[6]));
+                nameValuePairs.add(new BasicNameValuePair("password", params[7]));
+                nameValuePairs.add(new BasicNameValuePair("tradesman", params[8]));
+                nameValuePairs.add(new BasicNameValuePair("registration_id", params[9]));
+
+                nameValuePairs.add(new BasicNameValuePair("user_lat", params[10]));
+                nameValuePairs.add(new BasicNameValuePair("user_lon", params[11]));
+                nameValuePairs.add(new BasicNameValuePair("home_address", params[12]));
+                nameValuePairs.add(new BasicNameValuePair("street", params[13]));
+                nameValuePairs.add(new BasicNameValuePair("address", params[14]));
+
+                Log.e("parmsss", String.valueOf(params));
+
+                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                HttpResponse response = client.execute(post);
+                String obj = EntityUtils.toString(response.getEntity());
+                Log.e("JsonData", obj);
+                JSONArray ParentArray = new JSONArray(obj);
+                JSONObject FinalObject = ParentArray.getJSONObject(0);
+
+                Log.e("ParentArrayyy", "" + ParentArray);
+
+                result = FinalObject.getString("result");
+
+                if (result.equalsIgnoreCase("unsuccessfully")) {
+                    error = FinalObject.getString("error");
+                    return result;
+                } else if (result.equalsIgnoreCase("successfully")) {
+                    id = FinalObject.getString("id");
+                    name = FinalObject.getString("name");
+                    houseno = FinalObject.getString("housenoo");
+                    street = FinalObject.getString("street");
+                    home_add = FinalObject.getString("home_address");
+                    postcode = FinalObject.getString("post_code");
+                    city = FinalObject.getString("city");
+                    state = FinalObject.getString("state");
+                    homephone = FinalObject.getString("home_phone");
+                    mobilephone = FinalObject.getString("mobile_phone");
+                    email = FinalObject.getString("email");
+                    username = FinalObject.getString("username");
+                    return result;
+                }
+            } catch (Exception e) {
+                System.out.println("eeeerrrrorrrrr in registration ++++++" + e);
+            }
+
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            super.onPostExecute(result);
+
+            if (result == null) {
+                Toast.makeText(SignupActivity.this, "Server Problem", Toast.LENGTH_SHORT).show();
+            } else if (result.equalsIgnoreCase("successfully")) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
+                builder1.setTitle("Registration Successful");
+                builder1.setIcon(R.drawable.mainlogo);
+                builder1.setMessage("A Confirmation Link has been sent to registered email id. Please click on the Activation Link to Activate your account.");
+                builder1.setCancelable(false);
+                builder1.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+
+            } else if (result.equalsIgnoreCase("unsuccessfully")) {
+                Toast.makeText(SignupActivity.this, "Error " + error, Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     private void SendOtpApi(final String mobilePhoneSU_string) {
@@ -523,14 +623,14 @@ public class SignupActivity extends AppCompatActivity {
         String s = mobilePhoneSU_string;
         s = s.replaceFirst("^0*", "");
 
-        Log.e("sss",s);
+        Log.e("sss", s);
 
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(SignupActivity.this);
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
-        Log.e("link","https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile="+code_select_string+s);
-        AndroidNetworking.get("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile="+code_select_string + s)
+        Log.e("link", "https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile=" + code_select_string + s);
+        AndroidNetworking.get("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?mobile_verify&mobile=" + code_select_string + s)
                 .addPathParameter("pageNumber", "0")
                 .addQueryParameter("limit", "3")
                 .addHeaders("token", "1234")
@@ -657,7 +757,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(SignupActivity.this, GooglePlacesAutocompleteActivity.class);
-                startActivity(in);
+                startActivityForResult(in, 101);
             }
         });
 
@@ -718,117 +818,6 @@ public class SignupActivity extends AppCompatActivity {
             }
 
         }.execute(null, null, null);
-    }
-
-    private class JsonSignUp extends AsyncTask<String, Void, String> {
-
-        String id, name, houseno, street, home_add, postcode, city, state, homephone, mobilephone, email, username, result = "", error = "";
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(HttpPAth.Urlpath + "sign_up");
-
-            try {
-
-                List<NameValuePair> nameValuePairs = new ArrayList<>();
-                nameValuePairs.add(new BasicNameValuePair("name", params[0] + " " + params[1]));
-                nameValuePairs.add(new BasicNameValuePair("first_name", params[0]));
-                nameValuePairs.add(new BasicNameValuePair("last_name", params[1]));
-                nameValuePairs.add(new BasicNameValuePair("housenoo", params[2]));
-                nameValuePairs.add(new BasicNameValuePair("home_phone", params[7]));
-                nameValuePairs.add(new BasicNameValuePair("work_phone", params[8]));
-                nameValuePairs.add(new BasicNameValuePair("mobile_phone", params[4]));
-                nameValuePairs.add(new BasicNameValuePair("email", params[5]));
-                nameValuePairs.add(new BasicNameValuePair("username", params[6]));
-                nameValuePairs.add(new BasicNameValuePair("password", params[7]));
-                nameValuePairs.add(new BasicNameValuePair("tradesman", params[8]));
-                nameValuePairs.add(new BasicNameValuePair("registration_id", params[9]));
-
-                Log.e("parmsss", String.valueOf(params));
-
-                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = client.execute(post);
-                String obj = EntityUtils.toString(response.getEntity());
-                Log.e("JsonData", obj);
-                JSONArray ParentArray = new JSONArray(obj);
-                JSONObject FinalObject = ParentArray.getJSONObject(0);
-
-                Log.e("ParentArrayyy", "" + ParentArray);
-
-                result = FinalObject.getString("result");
-
-                if (result.equalsIgnoreCase("unsuccessfully")) {
-
-                    error = FinalObject.getString("error");
-                    return result;
-
-                } else if (result.equalsIgnoreCase("successfully")) {
-
-                    id = FinalObject.getString("id");
-                    name = FinalObject.getString("name");
-                    houseno = FinalObject.getString("housenoo");
-                    street = FinalObject.getString("street");
-                    home_add = FinalObject.getString("home_address");
-                    postcode = FinalObject.getString("post_code");
-                    city = FinalObject.getString("city");
-                    state = FinalObject.getString("state");
-                    homephone = FinalObject.getString("home_phone");
-                    mobilephone = FinalObject.getString("mobile_phone");
-                    email = FinalObject.getString("email");
-                    username = FinalObject.getString("username");
-                    return result;
-                }
-
-            } catch (Exception e) {
-
-                System.out.println("eeeerrrrorrrrr in registration ++++++" + e);
-
-            }
-
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            super.onPostExecute(result);
-
-            if (result == null) {
-
-                Toast.makeText(SignupActivity.this, "Server Problem", Toast.LENGTH_SHORT).show();
-
-            } else if (result.equalsIgnoreCase("successfully")) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
-                builder1.setTitle("Registration Successful");
-                builder1.setIcon(R.drawable.mainlogo);
-                builder1.setMessage("A Confirmation Link has been sent to registered email id. Please click on the Activation Link to Activate your account.");
-                builder1.setCancelable(false);
-                builder1.setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                startActivity(intent);
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-            } else if (result.equalsIgnoreCase("unsuccessfully")) {
-
-                Toast.makeText(SignupActivity.this, "Error " + error, Toast.LENGTH_SHORT).show();
-
-            }
-
-        }
     }
 
     private class JsonPostCode extends AsyncTask<String, String, String> {
@@ -906,14 +895,72 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    private void getLatLonFromAddress(String address) {
+        ProjectUtil.showProgressDialog(SignupActivity.this, false, "Please wait...");
+        String postReceiverUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+                address.replace(",", "+") + "&key=" + getResources().getString(R.string.places_api_key);
+        Log.e("asdasdasds", "Plcaes Url = " + postReceiverUrl);
+        AndroidNetworking.get(postReceiverUrl).build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("getLatLonFromAddress", response);
+                try {
+                    JSONObject mainObj = new JSONObject(response);
+                    JSONArray resultArray = mainObj.getJSONArray("results");
+                    JSONObject resultFirstObj = resultArray.getJSONObject(0);
+                    JSONObject geometryObj = resultFirstObj.getJSONObject("geometry");
+                    JSONObject locationObj = geometryObj.getJSONObject("location");
+
+                    double lat = locationObj.getDouble("lat");
+                    double lon = locationObj.getDouble("lng");
+
+                    latUser = String.valueOf(lat);
+                    lonUser = String.valueOf(lon);
+
+//                  Appconstants.servicelocation = diiferent_add.getText().toString().trim();
+//                  Appconstants.ServiceLocation = diiferent_add.getText().toString().trim();
+//                  Appconstants.SITE_ADDRESS = diiferent_add.getText().toString().trim();
+//                  Appconstants.lat = lat;
+//                  Appconstants.lon = lon;
+
+                    Log.e("sfsdfsdfsdf", "SITE_ADDRESS = " + Appconstants.SITE_ADDRESS);
+                    Log.e("sfsdfsdfsdf", "lat = " + lat);
+                    Log.e("sfsdfsdfsdf", "lon = " + lon);
+                    Log.e("sfsdfsdfsdf", "lat Add= " + (lat * 1E6));
+                    Log.e("sfsdfsdfsdf", "lon Add= " + lon * 1E6);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                ProjectUtil.pauseProgressDialog();
+                Log.e("responseresponse", "anError = " + anError.getErrorBody());
+                Log.e("responseresponse", "anError = " + anError.getErrorDetail());
+            }
+
+        });
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == 101) {
+            String add = data.getStringExtra("add");
+            housenoo.setText(add);
+            getLatLonFromAddress(add);
+            Log.e("asdadadasd", "address = " + add);
+        }
+
         if (requestCode == 3) {
             try {
-                 otp_status = data.getStringExtra("otp_status");
-                 if(otp_status.equalsIgnoreCase("true")) {
+                otp_status = data.getStringExtra("otp_status");
+                if (otp_status.equalsIgnoreCase("true")) {
                     verify_otpimg.setVisibility(View.VISIBLE);
                     OTP = otp_status;
                 }

@@ -20,7 +20,7 @@ import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
-import com.cliffex.Fixezi.util.IabHelper;
+// import com.cliffex.Fixezi.util.IabHelper;
 import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
 import com.cliffex.Fixezi.util.Purchase;
@@ -64,7 +64,7 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
     static final int RC_REQUEST = 10001;
 
     // The helper object
-    IabHelper mHelper;
+    // IabHelper mHelper;
 
     // Provides purchase notification while this app is running
     IabBroadcastReceiver mBroadcastReceiver;
@@ -127,11 +127,11 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
                 } else {
 
                     String payload = sessionTradesman.getId();
-                    try {
-                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_9_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_9_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
             }
@@ -157,11 +157,11 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
 
 
                     String payload = sessionTradesman.getId();
-                    try {
-                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_6_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_6_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
             }
@@ -187,11 +187,11 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
 
 
                     String payload = sessionTradesman.getId();
-                    try {
-                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_3_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        mHelper.launchPurchaseFlow(PurchaseEmployeeId.this, Appconstants.SKU_3_ID, RC_REQUEST, mPurchaseFinishedListener, payload);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
 
@@ -205,47 +205,47 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
 
         // Create the helper, passing it our context and the public key to verify signatures with
         Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-
-        // enable debug logging (for a production application, you should set this to false).
-        mHelper.enableDebugLogging(true);
-
-        // Start setup. This is asynchronous and the specified listener
-        // will be called once setup completes.
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    complain("Problem setting up in-app billing: " + result);
-                    return;
-                }
-
-                // Have we been disposed of in the meantime? If so, quit.
-                if (mHelper == null) return;
-
-                // Important: Dynamically register for broadcast messages about updated purchases.
-                // We register the receiver here instead of as a <receiver> in the Manifest
-                // because we always call getPurchases() at startup, so therefore we can ignore
-                // any broadcasts sent while the app isn't running.
-                // Note: registering this listener in an Activity is a bad idea, but is done here
-                // because this is a SAMPLE. Regardless, the receiver must be registered after
-                // IabHelper is setup, but before first call to getPurchases().
-                mBroadcastReceiver = new IabBroadcastReceiver(PurchaseEmployeeId.this);
-                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
-                registerReceiver(mBroadcastReceiver, broadcastFilter);
-
-                // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                try {
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error querying inventory. Another async operation in progress.");
-                }
-            }
-        });
+//        mHelper = new IabHelper(this, base64EncodedPublicKey);
+//
+//        // enable debug logging (for a production application, you should set this to false).
+//        mHelper.enableDebugLogging(true);
+//
+//        // Start setup. This is asynchronous and the specified listener
+//        // will be called once setup completes.
+//        Log.d(TAG, "Starting setup.");
+//        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+//            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+//
+//                if (!result.isSuccess()) {
+//                    // Oh noes, there was a problem.
+//                    complain("Problem setting up in-app billing: " + result);
+//                    return;
+//                }
+//
+//                // Have we been disposed of in the meantime? If so, quit.
+//                if (mHelper == null) return;
+//
+//                // Important: Dynamically register for broadcast messages about updated purchases.
+//                // We register the receiver here instead of as a <receiver> in the Manifest
+//                // because we always call getPurchases() at startup, so therefore we can ignore
+//                // any broadcasts sent while the app isn't running.
+//                // Note: registering this listener in an Activity is a bad idea, but is done here
+//                // because this is a SAMPLE. Regardless, the receiver must be registered after
+//                // IabHelper is setup, but before first call to getPurchases().
+//                mBroadcastReceiver = new IabBroadcastReceiver(PurchaseEmployeeId.this);
+//                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
+//                registerReceiver(mBroadcastReceiver, broadcastFilter);
+//
+//                // IAB is fully set up. Now, let's get an inventory of stuff we own.
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+//                try {
+//                    mHelper.queryInventoryAsync(mGotInventoryListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error querying inventory. Another async operation in progress.");
+//                }
+//            }
+//        });
 
 
     }
@@ -333,30 +333,30 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
 
                 if (SkuType.equalsIgnoreCase("3")) {
 
-                    try {
-                        mHelper.consumeAsync(myGlobalPurchase3, mConsumeFinishedListener);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        complain("Error consuming gas. Another async operation in progress.");
-
-                    }
+//                    try {
+//                        mHelper.consumeAsync(myGlobalPurchase3, mConsumeFinishedListener);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        complain("Error consuming gas. Another async operation in progress.");
+//
+//                    }
 
                 } else if (SkuType.equalsIgnoreCase("6")) {
 
-                    try {
-                        mHelper.consumeAsync(myGlobalPurchase6, mConsumeFinishedListener);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        complain("Error consuming gas. Another async operation in progress.");
-
-                    }
+//                    try {
+//                        mHelper.consumeAsync(myGlobalPurchase6, mConsumeFinishedListener);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        complain("Error consuming gas. Another async operation in progress.");
+//
+//                    }
 
                 } else if (SkuType.equalsIgnoreCase("9")) {
 
-                    try {
-                        mHelper.consumeAsync(myGlobalPurchase9, mConsumeFinishedListener);
-                    } catch (IabHelper.IabAsyncInProgressException e) {
-                        complain("Error consuming gas. Another async operation in progress.");
-
-                    }
+//                    try {
+//                        mHelper.consumeAsync(myGlobalPurchase9, mConsumeFinishedListener);
+//                    } catch (IabHelper.IabAsyncInProgressException e) {
+//                        complain("Error consuming gas. Another async operation in progress.");
+//
+//                    }
                 }
 
 
@@ -472,106 +472,106 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
 */
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-
-            Log.e("GAURAV LOG", "QueryInventoryFinished");
-
-            // Have we been disposed of in the meantime? If so, quit.
-            if (mHelper == null) return;
-
-            // Is it a failure?
-            if (result.isFailure()) {
-                complain("Failed to query inventory: " + result);
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-            Purchase purchase3 = inventory.getPurchase(Appconstants.SKU_3_ID);
-            if (purchase3 != null && verifyDeveloperPayload(purchase3)) {
-                Log.d(TAG, "We have gas. Consuming it.");
-
-
-                IsAlreadyPurchased3 = true;
-                myGlobalPurchase3 = inventory.getPurchase(Appconstants.SKU_3_ID);
-
-                /*try {
-                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                }*/
-
-            }
-
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-            Purchase purchase6 = inventory.getPurchase(Appconstants.SKU_6_ID);
-            if (purchase6 != null && verifyDeveloperPayload(purchase6)) {
-                Log.d(TAG, "We have gas. Consuming it.");
-
-
-                IsAlreadyPurchased6 = true;
-                myGlobalPurchase6 = inventory.getPurchase(Appconstants.SKU_6_ID);
-
-                /*try {
-                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                }*/
-
-            }
-
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-            Purchase purchase9 = inventory.getPurchase(Appconstants.SKU_9_ID);
-            if (purchase9 != null && verifyDeveloperPayload(purchase9)) {
-                Log.d(TAG, "We have gas. Consuming it.");
-
-
-                IsAlreadyPurchased9 = true;
-                myGlobalPurchase9 = inventory.getPurchase(Appconstants.SKU_9_ID);
-
-                /*try {
-                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                }*/
-
-            }
-
-
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
+//    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+//        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+//            Log.d(TAG, "Query inventory finished.");
+//
+//            Log.e("GAURAV LOG", "QueryInventoryFinished");
+//
+//            // Have we been disposed of in the meantime? If so, quit.
+//            if (mHelper == null) return;
+//
+//            // Is it a failure?
+//            if (result.isFailure()) {
+//                complain("Failed to query inventory: " + result);
+//                return;
+//            }
+//
+//            Log.d(TAG, "Query inventory was successful.");
+//
+//            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
+//            Purchase purchase3 = inventory.getPurchase(Appconstants.SKU_3_ID);
+//            if (purchase3 != null && verifyDeveloperPayload(purchase3)) {
+//                Log.d(TAG, "We have gas. Consuming it.");
+//
+//
+//                IsAlreadyPurchased3 = true;
+//                myGlobalPurchase3 = inventory.getPurchase(Appconstants.SKU_3_ID);
+//
+//                /*try {
+//                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//                }*/
+//
+//            }
+//
+//            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
+//            Purchase purchase6 = inventory.getPurchase(Appconstants.SKU_6_ID);
+//            if (purchase6 != null && verifyDeveloperPayload(purchase6)) {
+//                Log.d(TAG, "We have gas. Consuming it.");
+//
+//
+//                IsAlreadyPurchased6 = true;
+//                myGlobalPurchase6 = inventory.getPurchase(Appconstants.SKU_6_ID);
+//
+//                /*try {
+//                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//                }*/
+//
+//            }
+//
+//            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
+//            Purchase purchase9 = inventory.getPurchase(Appconstants.SKU_9_ID);
+//            if (purchase9 != null && verifyDeveloperPayload(purchase9)) {
+//                Log.d(TAG, "We have gas. Consuming it.");
+//
+//
+//                IsAlreadyPurchased9 = true;
+//                myGlobalPurchase9 = inventory.getPurchase(Appconstants.SKU_9_ID);
+//
+//                /*try {
+//                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//                }*/
+//
+//            }
+//
+//
+//            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+//        }
+//    };
 
     @Override
     public void receivedBroadcast() {
         // Received a broadcast notification that the inventory of items has changed
         Log.d(TAG, "Received broadcast notification. Querying inventory.");
-        try {
-            mHelper.queryInventoryAsync(mGotInventoryListener);
-        } catch (IabHelper.IabAsyncInProgressException e) {
-            complain("Error querying inventory. Another async operation in progress.");
-        }
+//        try {
+//            mHelper.queryInventoryAsync(mGotInventoryListener);
+//        } catch (IabHelper.IabAsyncInProgressException e) {
+//            complain("Error querying inventory. Another async operation in progress.");
+//        }
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-        if (mHelper == null) return;
-
-        // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            super.onActivityResult(requestCode, resultCode, data);
-        } else {
-            Log.d(TAG, "onActivityResult handled by IABUtil.");
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+////        if (mHelper == null) return;
+//
+//        // Pass on the activity result to the helper for handling
+////        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+////            // not handled, so handle it ourselves (here's where you'd
+////            // perform any handling of activity results not related to in-app
+////            // billing...
+////            super.onActivityResult(requestCode, resultCode, data);
+////        } else {
+////            Log.d(TAG, "onActivityResult handled by IABUtil.");
+////        }
+//    }
 
     /**
      * Verifies the developer payload of a purchase.
@@ -585,142 +585,142 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
     }
 
     // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-
-            Log.e("GAURAV LOG", "IabPurchaseFinished");
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-                complain("Error purchasing: " + result);
-
-                return;
-            }
-            if (!verifyDeveloperPayload(purchase)) {
-                complain("Error purchasing. Authenticity verification failed.");
-
-                return;
-            }
-
-            Log.d(TAG, "Purchase successful.");
-
-            if (purchase.getSku().equals(Appconstants.SKU_3_ID)) {
-
-                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
-                IsAlreadyPurchased3 = true;
-                myGlobalPurchase3 = purchase;
-
-                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
-
-                    new JsonAddEmployeeIds().execute("3");
-                } else {
-
-                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-                }
-
-                /*try {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-
-                    return;
-                }*/
-            } else if (purchase.getSku().equals(Appconstants.SKU_6_ID)) {
-
-                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
-                IsAlreadyPurchased6 = true;
-                myGlobalPurchase6 = purchase;
-
-                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
-
-                    new JsonAddEmployeeIds().execute("6");
-                } else {
-
-                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-                }
-
-
-            } else if (purchase.getSku().equals(Appconstants.SKU_9_ID)) {
-
-                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
-                IsAlreadyPurchased9 = true;
-                myGlobalPurchase9 = purchase;
-
-                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
-
-                    new JsonAddEmployeeIds().execute("9");
-                } else {
-
-                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-                }
-
-
-            }
-        }
-    };
-
-    // Called when consumption is complete
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
-
-            Log.e("GAURAV LOG", "ConsumnedFinished");
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            // We know this is the "gas" sku because it's the only one we consume,
-            // so we don't check which sku was consumed. If you have more than one
-            // sku, you probably should check...
-
-
-            if (purchase.getSku().equals(Appconstants.SKU_3_ID)) {
-
-                if (result.isSuccess()) {
-                    // successfully consumed, so we apply the effects of the item in our
-                    // game world's logic, which in our case means filling the gas tank a bit
-                    Log.d(TAG, "Consumption successful. Provisioning.");
-
-                    IsAlreadyPurchased3 = false;
-                    finish();
-
-                } else {
-                    complain("Error while consuming: " + result);
-                }
-            } else if (purchase.getSku().equals(Appconstants.SKU_6_ID)) {
-
-                if (result.isSuccess()) {
-                    // successfully consumed, so we apply the effects of the item in our
-                    // game world's logic, which in our case means filling the gas tank a bit
-                    Log.d(TAG, "Consumption successful. Provisioning.");
-
-                    IsAlreadyPurchased6 = false;
-                    finish();
-
-                } else {
-                    complain("Error while consuming: " + result);
-                }
-            } else if (purchase.getSku().equals(Appconstants.SKU_9_ID)) {
-
-                if (result.isSuccess()) {
-                    // successfully consumed, so we apply the effects of the item in our
-                    // game world's logic, which in our case means filling the gas tank a bit
-                    Log.d(TAG, "Consumption successful. Provisioning.");
-
-                    IsAlreadyPurchased9 = false;
-                    finish();
-
-                } else {
-                    complain("Error while consuming: " + result);
-                }
-            }
-
-            Log.d(TAG, "End consumption flow.");
-        }
-    };
+//    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+//        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+//            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+//
+//            Log.e("GAURAV LOG", "IabPurchaseFinished");
+//
+//            // if we were disposed of in the meantime, quit.
+//            if (mHelper == null) return;
+//
+//            if (result.isFailure()) {
+//                complain("Error purchasing: " + result);
+//
+//                return;
+//            }
+//            if (!verifyDeveloperPayload(purchase)) {
+//                complain("Error purchasing. Authenticity verification failed.");
+//
+//                return;
+//            }
+//
+//            Log.d(TAG, "Purchase successful.");
+//
+//            if (purchase.getSku().equals(Appconstants.SKU_3_ID)) {
+//
+//                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
+//                IsAlreadyPurchased3 = true;
+//                myGlobalPurchase3 = purchase;
+//
+//                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
+//
+//                    new JsonAddEmployeeIds().execute("3");
+//                } else {
+//
+//                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                /*try {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//
+//                    return;
+//                }*/
+//            } else if (purchase.getSku().equals(Appconstants.SKU_6_ID)) {
+//
+//                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
+//                IsAlreadyPurchased6 = true;
+//                myGlobalPurchase6 = purchase;
+//
+//                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
+//
+//                    new JsonAddEmployeeIds().execute("6");
+//                } else {
+//
+//                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//            } else if (purchase.getSku().equals(Appconstants.SKU_9_ID)) {
+//
+//                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
+//                IsAlreadyPurchased9 = true;
+//                myGlobalPurchase9 = purchase;
+//
+//                if (InternetDetect.isConnected(PurchaseEmployeeId.this)) {
+//
+//                    new JsonAddEmployeeIds().execute("9");
+//                } else {
+//
+//                    Toast.makeText(PurchaseEmployeeId.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//            }
+//        }
+//    };
+//
+//    // Called when consumption is complete
+//    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+//        public void onConsumeFinished(Purchase purchase, IabResult result) {
+//            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+//
+//            Log.e("GAURAV LOG", "ConsumnedFinished");
+//
+//            // if we were disposed of in the meantime, quit.
+//            if (mHelper == null) return;
+//
+//            // We know this is the "gas" sku because it's the only one we consume,
+//            // so we don't check which sku was consumed. If you have more than one
+//            // sku, you probably should check...
+//
+//
+//            if (purchase.getSku().equals(Appconstants.SKU_3_ID)) {
+//
+//                if (result.isSuccess()) {
+//                    // successfully consumed, so we apply the effects of the item in our
+//                    // game world's logic, which in our case means filling the gas tank a bit
+//                    Log.d(TAG, "Consumption successful. Provisioning.");
+//
+//                    IsAlreadyPurchased3 = false;
+//                    finish();
+//
+//                } else {
+//                    complain("Error while consuming: " + result);
+//                }
+//            } else if (purchase.getSku().equals(Appconstants.SKU_6_ID)) {
+//
+//                if (result.isSuccess()) {
+//                    // successfully consumed, so we apply the effects of the item in our
+//                    // game world's logic, which in our case means filling the gas tank a bit
+//                    Log.d(TAG, "Consumption successful. Provisioning.");
+//
+//                    IsAlreadyPurchased6 = false;
+//                    finish();
+//
+//                } else {
+//                    complain("Error while consuming: " + result);
+//                }
+//            } else if (purchase.getSku().equals(Appconstants.SKU_9_ID)) {
+//
+//                if (result.isSuccess()) {
+//                    // successfully consumed, so we apply the effects of the item in our
+//                    // game world's logic, which in our case means filling the gas tank a bit
+//                    Log.d(TAG, "Consumption successful. Provisioning.");
+//
+//                    IsAlreadyPurchased9 = false;
+//                    finish();
+//
+//                } else {
+//                    complain("Error while consuming: " + result);
+//                }
+//            }
+//
+//            Log.d(TAG, "End consumption flow.");
+//        }
+//    };
 
 
     // We're being destroyed. It's important to dispose of the helper here!
@@ -734,11 +734,11 @@ public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcas
         }
 
         // very important:
-        Log.d(TAG, "Destroying helper.");
-        if (mHelper != null) {
-            mHelper.disposeWhenFinished();
-            mHelper = null;
-        }
+//        Log.d(TAG, "Destroying helper.");
+//        if (mHelper != null) {
+//            mHelper.disposeWhenFinished();
+//            mHelper = null;
+//        }
     }
 
 

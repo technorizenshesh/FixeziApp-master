@@ -48,19 +48,19 @@ import java.util.List;
 public class BookTradesman extends AppCompatActivity {
 
     Toolbar ToolbarBT;
-    TextView toolbar_title, OfficeNumberBT, MobileNumberBT,BusinessNameBT, BookNowTVBT, CancelTVBT,
-            WebUrlBT, ServicingLocationBT, CompanyDetailBT,TradesmanEmailBT;
+    TextView toolbar_title, OfficeNumberBT, MobileNumberBT, BusinessNameBT, BookNowTVBT, CancelTVBT,
+            WebUrlBT, ServicingLocationBT, CompanyDetailBT, TradesmanEmailBT;
     TradesManBean tradesManBean;
     ImageView TradesmanImageBT;
     RelativeLayout NavigationUpIM;
     Dialog postalDialog;
     SessionUser sessionUser;
     ScrollView ParentSV;
-    RelativeLayout RLWebUrl,RLServicingLocation;
-    ImageView CompanyDetailUploadIM,img_company_detailsUpload;
-    TextView OutOfTV,tv_value_chage;
+    RelativeLayout RLWebUrl, RLServicingLocation;
+    ImageView CompanyDetailUploadIM, img_company_detailsUpload;
+    TextView OutOfTV, tv_value_chage;
     FrameLayout.LayoutParams layoutParams;
-    RatingBar AffordabilityRB,WorkmanshipRB,PucntualRB;
+    RatingBar AffordabilityRB, WorkmanshipRB, PucntualRB;
     CardView CompanyDetailCC;
     SeekBar seekBar_book;
 
@@ -105,7 +105,9 @@ public class BookTradesman extends AppCompatActivity {
 
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { finish(); }
+            public void onClick(View view) {
+                finish();
+            }
         });
 
         Bundle extra = getIntent().getExtras();
@@ -163,7 +165,6 @@ public class BookTradesman extends AppCompatActivity {
 
             tradesManBean.setCompany_upload_ratio(object.getString("company_upload_ratio"));
 
-
             if (object.getJSONArray("punctual").length() == 0) {
             } else {
                 float punctualRate = computeRatingNormal(object.getJSONArray("punctual"));
@@ -178,8 +179,8 @@ public class BookTradesman extends AppCompatActivity {
 
             JSONArray ServiceLocationArray = object.getJSONArray("service_locatin");
             StringBuilder s = new StringBuilder();
-            for (int i=0;i<ServiceLocationArray.length();i++) {
-                if (i==0) {
+            for (int i = 0; i < ServiceLocationArray.length(); i++) {
+                if (i == 0) {
                     s.append(ServiceLocationArray.get(i));
                     continue;
                 }
@@ -243,13 +244,11 @@ public class BookTradesman extends AppCompatActivity {
             TradesmanImageBT.setLayoutParams(layoutParams);
 
             if (!(tradesManBean.getCompany_detail_upload().contains("EMPTY"))) {
-
                 CompanyDetailUploadIM.setVisibility(View.VISIBLE);
 
                 Glide.with(BookTradesman.this).load(tradesManBean.getCompany_detail_upload())
                         .thumbnail(0.5f)
                         .into(CompanyDetailUploadIM);
-
             }
 
         } catch (JSONException e) {
@@ -348,7 +347,7 @@ public class BookTradesman extends AppCompatActivity {
                 nameValuePairs.add(new BasicNameValuePair("problem", Appconstants.PROBLEM_SELECTED));
                 nameValuePairs.add(new BasicNameValuePair("IsTimeFlexible_value", Appconstants.timeFlexibleValue));
 
-                Log.e("nameValuePairs","nameValuePairs = " + nameValuePairs.toString());
+                Log.e("nameValuePairs", "nameValuePairs = " + nameValuePairs.toString());
 
                 post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = client.execute(post);
@@ -402,6 +401,7 @@ public class BookTradesman extends AppCompatActivity {
                 return 0;
             }
         }
+
         if (!(punctualList.isEmpty())) {
 
             for (int i = 0; i < punctualList.size(); i++) {

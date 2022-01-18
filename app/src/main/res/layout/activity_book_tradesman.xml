@@ -19,7 +19,7 @@
         android:layout_below="@+id/ToolbarBT"
         android:layout_marginBottom="10dp">
 
-         <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -30,26 +30,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 app:cardCornerRadius="2dp">
 
                 <ImageView
                     android:id="@+id/TradesmanImageBT"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitXY" />
 
             </androidx.cardview.widget.CardView>
-
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/CompanyDetailCC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
 
 
                 <LinearLayout
@@ -74,12 +73,12 @@
                     </RelativeLayout>
 
                     <ImageView
+                        android:id="@+id/img_company_detailsUpload"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:id="@+id/img_company_detailsUpload"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp" />
 
                     <TextView
                         android:id="@+id/CompanyDetailBT"
@@ -99,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/CardViewOne"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
 
 
                 <RelativeLayout
@@ -302,8 +301,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -398,22 +397,21 @@
 
 
             <TextView
+                style="@style/Base.TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hourly Charge"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
                 android:layout_gravity="center_horizontal"
-                style="@style/Base.TextAppearance.AppCompat.Medium"
-                />
+                android:layout_marginTop="10dp"
+                android:text="Hourly Charge"
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:id="@+id/rangebar"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/rel_tv_header"
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/border_black">
 
@@ -421,29 +419,28 @@
                     android:id="@+id/seekBar_book"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:max="500"
-                    android:maxHeight="5dp"
-                    android:maxWidth="5dp"
-                    android:minHeight="10dp"
-                    android:minWidth="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:max="500"
+                    android:maxWidth="5dp"
+                    android:maxHeight="5dp"
+                    android:minWidth="10dp"
+                    android:minHeight="10dp"
                     android:progressDrawable="@drawable/custom_seekbar"
                     android:thumb="@drawable/custom_thumb" />
 
                 <TextView
+                    android:id="@+id/tv_value_chage"
                     style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="5dp"
-                    android:id="@+id/tv_value_chage"
 
                     android:textColor="@color/black" />
 
             </RelativeLayout>
-
 
 
         </LinearLayout>

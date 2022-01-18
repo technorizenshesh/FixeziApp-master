@@ -119,6 +119,7 @@ public class EditServiceLocation extends AppCompatActivity {
             }
         });
 
+
         location_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,26 +270,19 @@ public class EditServiceLocation extends AppCompatActivity {
             Toast.makeText(EditServiceLocation.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
-
         if (Appconstants.postCode == null) {
-
             if (InternetDetect.isConnected(this)) {
-
                 new JsonPostCode().execute();
             } else {
                 Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
             }
         } else if (Appconstants.postCode.isEmpty()) {
-
             if (InternetDetect.isConnected(this)) {
-
                 new JsonPostCode().execute();
-
             } else {
                 Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
             }
         } else {
-
             ServiceLocation.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                     R.layout.custom_checkout, R.id.text1, Appconstants.postCode));
         }
@@ -296,7 +290,6 @@ public class EditServiceLocation extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2) {
@@ -317,8 +310,7 @@ public class EditServiceLocation extends AppCompatActivity {
                 location_get.setText(Select_address_Raedus);
                 seek_bar_text_distance.setText(Select_radius + "km");
                 seekBar.setEnabled(false);
-                seekBar.post(new Runnable() {
-                    @Override
+                seekBar.post(new Runnable() { @Override
                     public void run() {
                         seekBar.setProgress(parseInt(Select_radius));
                     }

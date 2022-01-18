@@ -188,18 +188,14 @@ public class TradesmanProfile extends AppCompatActivity {
         UnsubscribeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent(TradesmanProfile.this, RemoveAccount.class);
                 startActivity(i);
-
             }
         });
 
         SubscribeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 /* WeeklyClicked(); */
                 Intent intent = new Intent(TradesmanProfile.this, PaymentPlan.class);
                 startActivity(intent);
@@ -228,10 +224,8 @@ public class TradesmanProfile extends AppCompatActivity {
         TradesmanInfoTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(TradesmanProfile.this, YourInformation.class);
                 startActivity(intent);
-
             }
         });
 

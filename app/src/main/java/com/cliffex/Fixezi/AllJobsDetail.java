@@ -30,6 +30,7 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.activities.InvoiceTradesmanAct;
 import com.cliffex.Fixezi.util.ProjectUtil;
 
 import org.json.JSONArray;
@@ -55,15 +56,15 @@ public class AllJobsDetail extends AppCompatActivity {
     Toolbar toolbar;
     TextView toolbar_textview, ProblemDetail, DateDetail, TimeDetail, FlexibleDateDetail,
             FlexibleTimeDetail, PersonOnSiteDetail, JobAddressDetail, TimeFlexibilityTVAJD;
-    TextView HomeNmberDetail,MobileNmberDetail,JobRequestDetail,FullNameDetail,FullAddressDetailUser,
-            HomeNmberDetailUser,WorkNmberDetailUser,MobileNmberDetailUser,EmailDetail;
+    TextView HomeNmberDetail, MobileNmberDetail, JobRequestDetail, FullNameDetail, FullAddressDetailUser,
+            HomeNmberDetailUser, WorkNmberDetailUser, MobileNmberDetailUser, EmailDetail;
     LinearLayout RLDetail;
     RelativeLayout NavigationUpIM;
     SessionTradesman sessionTradesman;
-    TextView StatusDetailAJDTV,SubStatusDetailAJDTV;
+    TextView StatusDetailAJDTV, SubStatusDetailAJDTV;
     TextView AddNotesTV, ViewNotesTV;
     LinearLayout NoteOptionsLL;
-    String ProblemId = "",userId="",subStatus="",reason="",rateType="";
+    String ProblemId = "", userId = "", subStatus = "", reason = "", rateType = "";
     private TextView start_jobs;
     private TextView IsJobDoneTV;
     private TextView stop_jobs;
@@ -158,29 +159,34 @@ public class AllJobsDetail extends AppCompatActivity {
                     public void onClick(View v) {
 
                         int selectedId = radiogroup.getCheckedRadioButtonId();
+
                         radiobutton = (RadioButton) callFeeDialog.findViewById(selectedId);
 
-                        if (radiobutton.getText().toString().equals("Complete")) {
-                            AlertDialogOption();
+                        if (selectedId == -1) {
+                            Toast.makeText(AllJobsDetail.this, "Please select any option", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (radiobutton.getText().toString().equals("Complete")) {
+                                AlertDialogOption();
+                            }
+
+                            if (radiobutton.getText().toString().equals("Incomplete")) {
+
+                                AlertDialogOption1();
+
+                                SweetAlertDialog alertDialog = new SweetAlertDialog(AllJobsDetail.this, SweetAlertDialog.NORMAL_TYPE);
+                                alertDialog.setTitleText("fixezi");
+                                alertDialog.setContentText("Jobs marked as incomplete will be sent to 'jobs pending' folder ");
+                                alertDialog.show();
+
+                                Button btn = (Button) alertDialog.findViewById(R.id.confirm_button);
+                                btn.setBackgroundColor(ContextCompat.getColor(AllJobsDetail.this, R.color.lightblue));
+
+                            }
+
+                            /* Toast.makeText(AllJobsDetail.this, radiobutton.getText(), Toast.LENGTH_SHORT).show();*/
+
+                            callFeeDialog.dismiss();
                         }
-
-                        if (radiobutton.getText().toString().equals("Incomplete")) {
-
-                            AlertDialogOption1();
-
-                            SweetAlertDialog alertDialog = new SweetAlertDialog(AllJobsDetail.this,SweetAlertDialog.NORMAL_TYPE);
-                            alertDialog.setTitleText("fixezi");
-                            alertDialog.setContentText("Jobs marked as incomplete will be sent to 'jobs pending' folder ");
-                            alertDialog.show();
-
-                            Button btn = (Button) alertDialog.findViewById(R.id.confirm_button);
-                            btn.setBackgroundColor(ContextCompat.getColor(AllJobsDetail.this, R.color.lightblue));
-
-                        }
-
-                        /* Toast.makeText(AllJobsDetail.this, radiobutton.getText(), Toast.LENGTH_SHORT).show();*/
-
-                        callFeeDialog.dismiss();
 
                     }
 
@@ -198,14 +204,25 @@ public class AllJobsDetail extends AppCompatActivity {
                         OkayBTCR.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+
                                 int genid = radiogroup.getCheckedRadioButtonId();
-                                RadioButton radioButton = (RadioButton) callFeeDialog.findViewById(genid);
-                                Log.e("radioButton","radioButton = " + radioButton.getText().toString());
-                                reason = radioButton.getText().toString();
-                                subStatus = "0";
-                                Log.e("radioButton","reason = " + reason);
-                                completeProblem("0");
-                                callFeeDialog.dismiss();
+
+                                Log.e("radiogroupradiogroup", "radiogroup.getCheckedRadioButtonId() = " + radiogroup.getCheckedRadioButtonId());
+
+                                if (genid == -1) {
+                                    Toast.makeText(AllJobsDetail.this, "Please select any option", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    RadioButton radioButton = (RadioButton) callFeeDialog.findViewById(genid);
+                                    Log.e("radioButton", "radioButton = " + radioButton.getText().toString());
+                                    reason = radioButton.getText().toString();
+                                    subStatus = "0";
+                                    Log.e("radioButton", "reason = " + reason);
+                                    startActivity(new Intent(AllJobsDetail.this, InvoiceTradesmanAct.class)
+                                            .putExtra("problemId", ProblemId)
+                                    );
+                                    // completeProblem("0");
+                                    callFeeDialog.dismiss();
+                                }
                             }
                         });
 
@@ -271,17 +288,17 @@ public class AllJobsDetail extends AppCompatActivity {
     }
 
     private void completeProblem(String status) {
-        ProjectUtil.showProgressDialog(AllJobsDetail.this,false,"Please wait...");
+        ProjectUtil.showProgressDialog(AllJobsDetail.this, false, "Please wait...");
 
-        HashMap<String,String> params = new HashMap<>();
-        params.put("user_id",userId);
-        params.put("problem_id",ProblemId);
-        params.put("sub_status",subStatus);
-        params.put("status",status);
-        params.put("reason",reason);
-        params.put("rate_type",rateType);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("user_id", userId);
+        params.put("problem_id", ProblemId);
+        params.put("sub_status", subStatus);
+        params.put("status", status);
+        params.put("reason", reason);
+        params.put("rate_type", rateType);
 
-        Log.e("completeProblem","completeProblem = " + params);
+        Log.e("completeProblem", "completeProblem = " + params);
 
         AndroidNetworking.post(HttpPAth.Urlpath + "problem_completed_by_user")
                 .addBodyParameter(params)
@@ -291,16 +308,16 @@ public class AllJobsDetail extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         ProjectUtil.pauseProgressDialog();
-                        startActivity(new Intent(AllJobsDetail.this,TradesmanActivity.class));
+                        startActivity(new Intent(AllJobsDetail.this, TradesmanActivity.class));
                         finish();
-                        Log.e("completeProblem","completeProblem = " + response);
+                        Log.e("completeProblem", "completeProblem = " + response);
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         ProjectUtil.pauseProgressDialog();
-                        Log.e("completeProblem","ANError = " + anError.getErrorBody());
-                        Log.e("completeProblem","ANError = " + anError.getErrorDetail());
+                        Log.e("completeProblem", "ANError = " + anError.getErrorBody());
+                        Log.e("completeProblem", "ANError = " + anError.getErrorDetail());
                     }
                 });
 
@@ -314,9 +331,9 @@ public class AllJobsDetail extends AppCompatActivity {
         progressDialog.show();
 
         AndroidNetworking.get("https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?" + "manage_waiting_time&problem_id=" + ProblemId + "&waiting_status=" + start + "&timezone=" + "Asia")
-                .addPathParameter("pageNumber","0")
-                .addQueryParameter("limit","3")
-                .addHeaders("token","1234")
+                .addPathParameter("pageNumber", "0")
+                .addQueryParameter("limit", "3")
+                .addHeaders("token", "1234")
                 .setTag("test")
                 .setPriority(Priority.LOW)
                 .build()
@@ -332,8 +349,10 @@ public class AllJobsDetail extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
                     @Override
-                    public void onError(ANError error) {}
+                    public void onError(ANError error) {
+                    }
                 });
     }
 
@@ -352,7 +371,7 @@ public class AllJobsDetail extends AppCompatActivity {
         radio_btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(AllJobsDetail.this,JobDetailsAddQuote.class);
+                Intent in = new Intent(AllJobsDetail.this, JobDetailsAddQuote.class);
                 startActivity(in);
             }
         });

@@ -219,7 +219,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <EditText
                     android:id="@+id/housenoo"
                     android:layout_width="fill_parent"
@@ -230,7 +229,6 @@
                     android:editable="false"
                     android:hint="Your Address"
                     android:paddingLeft="40dp" />
-
 
                 <EditText
                     android:id="@+id/HomeAddressET"

@@ -5,9 +5,13 @@
 
     <LinearLayout
         android:id="@+id/linear1"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_95sdp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/adapter_border"
         android:orientation="vertical"
         android:padding="@dimen/_8sdp">
@@ -18,17 +22,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
+            android:singleLine="true"
             android:text="user name"
             android:textColor="#000">
 
         </com.cliffex.Fixezi.MyUtils.MyFontBoldTextView>
 
-         <ImageView
+        <ImageView
             android:id="@+id/CoverImage"
-            android:layout_width="@dimen/_75sdp"
-            android:layout_height="@dimen/_75sdp" />
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_75sdp"
+            android:scaleType="fitXY" />
 
-         <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
+        <com.cliffex.Fixezi.MyUtils.MyFontBoldTextView
             android:id="@+id/recommneded_by_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +44,6 @@
             android:textColor="#000">
 
         </com.cliffex.Fixezi.MyUtils.MyFontBoldTextView>
-
 
     </LinearLayout>
 

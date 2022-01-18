@@ -5,7 +5,7 @@
     android:background="@drawable/bg"
     android:fitsSystemWindows="true">
 
-    <include
+     <include
         android:id="@+id/selecttradesman_toolbar"
         layout="@layout/toolbar" />
 

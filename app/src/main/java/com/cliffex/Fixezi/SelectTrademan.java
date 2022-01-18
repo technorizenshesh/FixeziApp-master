@@ -1,5 +1,6 @@
 package com.cliffex.Fixezi;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -49,6 +51,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +60,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import me.crosswall.lib.coverflow.core.PagerContainer;
 
 public class SelectTrademan extends AppCompatActivity {
@@ -64,17 +68,17 @@ public class SelectTrademan extends AppCompatActivity {
     List<TradesManBean> tradesManBeanList;
     Toolbar selecttradesman_toolbar;
     TextView toolbar_title,
-             tradeenameee,
-             selectedfromprevious,
-             selectacompanytxttt,
-             youhaveselecttradementxttt;
+            tradeenameee,
+            selectedfromprevious,
+            selectacompanytxttt,
+            youhaveselecttradementxttt;
     ImageView right, left, CallOutFeeInfoST;
     RelativeLayout NavigationUpIM;
     SessionUser sessionUser;
     ArrayList<String> JsonObjectList;
     ViewPager pager;
     PagerContainer container;
-    Button QuoteNo,QuoteYes;
+    Button QuoteNo, QuoteYes;
     FrameLayout.LayoutParams layoutParams;
     TextView tv_selecttedArea;
     RelativeLayout rel_needqoutes;
@@ -98,10 +102,10 @@ public class SelectTrademan extends AppCompatActivity {
         PreferenceConnector.writeString(SelectTrademan.this,
                 PreferenceConnector.Address_Save1, "");
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
-                search_address = "null";
+                search_address = "";
                 status = "null";
             } else {
                 search_address = extras.getString("address");
@@ -152,12 +156,15 @@ public class SelectTrademan extends AppCompatActivity {
         Log.e("VAlue4", Appconstants.afterhours);
 
         if (InternetDetect.isConnected(this)) {
+            
             new JsonTask().execute();
+            
         } else {
             Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
-        if (select_status.equals("quick_search")) {}
+        if (select_status.equals("quick_search")) {
+        }
 
         QuoteYes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +202,7 @@ public class SelectTrademan extends AppCompatActivity {
                     }
 
                     private boolean Validation() {
-                        if(AmountQuoteET.getText().toString().equalsIgnoreCase("")) {
+                        if (AmountQuoteET.getText().toString().equalsIgnoreCase("")) {
                             Toast.makeText(SelectTrademan.this, "Please enter amount", Toast.LENGTH_SHORT).show();
                             return false;
                         } else if (ValidityQuoteET.getText().toString().equalsIgnoreCase("")) {
@@ -208,7 +215,6 @@ public class SelectTrademan extends AppCompatActivity {
                 });
 
                 QuoteDialog.show();
-
             }
         });
 
@@ -237,11 +243,13 @@ public class SelectTrademan extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+
                 dialog.show();
             }
         });
 
         left.setOnClickListener(new View.OnClickListener() {
+
             int CurrentItem = 0;
 
             @Override
@@ -288,6 +296,7 @@ public class SelectTrademan extends AppCompatActivity {
         layoutParams = new FrameLayout.LayoutParams(MyWidth, MyWidth);
         layoutParams.gravity = Gravity.CENTER;
         pager.setLayoutParams(layoutParams);
+
     }
 
     public class JsonTask extends AsyncTask<String, String, String> {
@@ -297,8 +306,8 @@ public class SelectTrademan extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            Toast.makeText(SelectTrademan.this, Appconstants.afterhours + "," + Appconstants.Category + ","
-//                    + Appconstants.ServiceLocation + "," + Appconstants.PREVIOUSTRADE_SELECTED, Toast.LENGTH_LONG).show();
+//          Toast.makeText(SelectTrademan.this, Appconstants.afterhours + "," + Appconstants.Category + ","
+//                  + Appconstants.ServiceLocation + "," + Appconstants.PREVIOUSTRADE_SELECTED, Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -322,11 +331,12 @@ public class SelectTrademan extends AppCompatActivity {
 //              Log.e("paramslisttradman","hashmap = " + hashMap.toString());
 
                 list.add(new BasicNameValuePair("select_trade", Appconstants.PREVIOUSTRADE_SELECTED));
-                list.add(new BasicNameValuePair("service_locatin","" /*Appconstants.ServiceLocation)*/));
+                list.add(new BasicNameValuePair("service_locatin", "" + search_address));
                 list.add(new BasicNameValuePair("address_type", Appconstants.Category));
                 list.add(new BasicNameValuePair("after_hours", Appconstants.afterhours));
                 list.add(new BasicNameValuePair("lat", String.valueOf(Appconstants.lat)));
-                list.add(new BasicNameValuePair("lon",String.valueOf(Appconstants.lon)));
+                list.add(new BasicNameValuePair("lon", String.valueOf(Appconstants.lon)));
+                list.add(new BasicNameValuePair("parth_address", "" + search_address));
 
                 Log.e("paramslisttradman", "" + list);
 
@@ -338,6 +348,7 @@ public class SelectTrademan extends AppCompatActivity {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String line = "";
                 StringBuffer stringBuffer = new StringBuffer();
+
                 while ((line = bufferedReader.readLine()) != null) {
                     stringBuffer.append(line);
                 }
@@ -382,10 +393,13 @@ public class SelectTrademan extends AppCompatActivity {
 
             } catch (JSONException e1) {
                 e1.printStackTrace();
+
             } catch (ClientProtocolException e1) {
                 e1.printStackTrace();
+
             } catch (UnsupportedEncodingException e1) {
                 e1.printStackTrace();
+
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -404,9 +418,16 @@ public class SelectTrademan extends AppCompatActivity {
                 adapter = new MyPagerAdapter((ArrayList<TradesManBean>) tradesManBeanList, status);
                 PagerContainerST1.setAdapter(adapter);
             } else if (result.equalsIgnoreCase("no data found")) {
+                Toast.makeText(SelectTrademan.this, " no data found ", Toast.LENGTH_SHORT).show();
             } else {
+
+                // select a tradesman //
+
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(SelectTrademan.this);
-                builder1.setMessage("We couldn't find any trades for your location, we are recruiting more and more trades every week, please try again later.\nThankyou");
+                builder1.setMessage("We couldn't find any trades for your location, " +
+                        "we are recruiting more and more trades every week, " +
+                        "please try again later.\nThankyou");
+
                 builder1.setCancelable(false);
                 builder1.setPositiveButton("Ok",
                         new DialogInterface.OnClickListener() {
@@ -415,9 +436,12 @@ public class SelectTrademan extends AppCompatActivity {
                                 dialog.cancel();
                             }
                         });
+
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
+
             }
+
         }
 
     }
@@ -441,11 +465,13 @@ public class SelectTrademan extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
             holder.user_name.setText(tradesManBeanList.get(position).getBusiness_name());
+
             holder.recommneded_by_user.setText("Reccomended by \n" + tradesManBeanList.get(position).getReCommendent() + " user");
 
+            Log.e("IMAGE_URL------------->", "" + tradesManBeanList.get(position).getProfile_pic());
             Log.e("IMAGE_URL------------->", "" + tradesManBeanList.get(position).getProfile_pic());
             Log.e("STATUS------------->", "" + tradesManBeanList.get(position).getBzy_status());
 
@@ -466,8 +492,11 @@ public class SelectTrademan extends AppCompatActivity {
                         Toast.makeText(SelectTrademan.this, "This Tradesman is currently on hold.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (status.equalsIgnoreCase("login")) {
+
+                            Log.e("dsfasfasas","JsonObjectList = " + JsonObjectList.get(position));
+
                             Intent intent = new Intent(SelectTrademan.this, BookTradesman.class);
-                            intent.putExtra("Data", JsonObjectList.get(pager.getCurrentItem()));
+                            intent.putExtra("Data", JsonObjectList.get(position));
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(SelectTrademan.this, SignupActivity.class);
@@ -485,10 +514,8 @@ public class SelectTrademan extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-
             return tradesManBeanList.size();
         }
-
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -512,6 +539,5 @@ public class SelectTrademan extends AppCompatActivity {
         }
 
     }
-
 
 }

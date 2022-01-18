@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -22,10 +23,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
@@ -34,7 +39,7 @@ import com.cliffex.Fixezi.Other.AppConfig;
 import com.cliffex.Fixezi.Response.IncomingTrades_Response;
 import com.cliffex.Fixezi.util.CallReceiver;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
-import com.cliffex.Fixezi.util.IabHelper;
+// import com.cliffex.Fixezi.util.IabHelper;
 import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
 import com.cliffex.Fixezi.util.ProjectUtil;
@@ -53,6 +58,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -72,6 +78,7 @@ public class IncomingJobRequestDetail extends
             FullNameDetail, FullAddressDetailUser, HomeNmberDetailUser, WorkNmberDetailUser,
             MobileNmberDetailUser, EmailDetail;
     RelativeLayout RLDetail;
+    boolean isDateFlexi, isTimeFlexi, isReschedule;
     SessionTradesman sessionTradesman;
     Button AcceptJobBt, RejectJobBt, btn_reschedule;
     public static String ProblemId;
@@ -80,7 +87,8 @@ public class IncomingJobRequestDetail extends
     IncomingTrades_Response successResponse;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    String WhichPlan = "";
+    String WhichPlan = "", tableId = "";
+    static String finalTime = "", finalDate = "";
     String mobileNumbe;
     public static TextView DateDetail, TimeDetail;
     public static ImageView img_pensile_two, img_pensile_one;
@@ -95,16 +103,16 @@ public class IncomingJobRequestDetail extends
     CallReceiver callReceiver;
 
     // SKUs for our products: the premium upgrade (non-consumable) and gas (consumable)
-    /*static final String SKU_GAS50 = "buy_50";
-    static final String SKU_GAS250 = "buy_250";
-    static final String SKU_GAS600 = "buy_600";
-    static final String SKU_GAS2000 = "buy_2000";*/
+    /* static final String SKU_GAS50 = "buy_50";
+       static final String SKU_GAS250 = "buy_250";
+       static final String SKU_GAS600 = "buy_600";
+       static final String SKU_GAS2000 = "buy_2000"; */
 
     // (arbitrary) request code for the purchase flow
     static final int RC_REQUEST = 10001;
 
     // The helper object
-    IabHelper mHelper;
+    // IabHelper mHelper;
 
     // Provides purchase notification while this app is running
     IabBroadcastReceiver mBroadcastReceiver;
@@ -195,7 +203,7 @@ public class IncomingJobRequestDetail extends
             public void onClick(View v) {
                 DialogFragment dFragment = new TimePickerFragment();
                 // Show the time picker dialog fragment
-                dFragment.show(getFragmentManager(),"Time Picker");
+                dFragment.show(getFragmentManager(), "Time Picker");
             }
         });
 
@@ -213,6 +221,7 @@ public class IncomingJobRequestDetail extends
                 btn_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        isReschedule = true;
                         Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse("tel:" + mobileNumbe));
                         startActivity(intent);
@@ -246,45 +255,118 @@ public class IncomingJobRequestDetail extends
             Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
-
         // IAB CODE
         // load game data
         String base64EncodedPublicKey = Appconstants.base64EncodedPublicKey;
 
         // Create the helper, passing it our context and the public key to verify signatures with
         Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        // mHelper = new IabHelper(this, base64EncodedPublicKey);
 
         // enable debug logging (for a production application, you should set this to false).
-        mHelper.enableDebugLogging(true);
+        //mHelper.enableDebugLogging(true);
 
         // Start setup. This is asynchronous and the specified listener
         // will be called once setup completes.
         Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
 
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    complain("Problem setting up in-app billing: " + result);
-                    return;
+//      mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+//            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+//
+//                if (!result.isSuccess()) {
+//                    // Oh noes, there was a problem.
+//                    complain("Problem setting up in-app billing: " + result);
+//                    return;
+//                }
+//
+//                // Have we been disposed of in the meantime? If so, quit.
+//                if (mHelper == null) return;
+//                mBroadcastReceiver = new IabBroadcastReceiver(IncomingJobRequestDetail.this);
+//                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
+//                registerReceiver(mBroadcastReceiver, broadcastFilter);
+//
+//                // IAB is fully set up. Now, let's get an inventory of stuff we own.
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+//                try {
+//                    mHelper.queryInventoryAsync(mGotInventoryListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error querying inventory. Another async operation in progress.");
+//                }
+//
+//            }
+//        });
+
+    }
+
+    private void dateTimeEditDialog() {
+
+        final Dialog dialog = new Dialog(IncomingJobRequestDetail.this);
+        dialog.setContentView(R.layout.date_time_edit_dialog);
+
+        TextView tvDateTimeText = dialog.findViewById(R.id.tvDateTimeText);
+        Button btnNo = dialog.findViewById(R.id.btnNo);
+        Button btnYes = dialog.findViewById(R.id.btnYes);
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (isDateFlexi) {
+                    img_pensile_one.setVisibility(View.VISIBLE);
                 }
 
-                // Have we been disposed of in the meantime? If so, quit.
-                if (mHelper == null) return;
-                mBroadcastReceiver = new IabBroadcastReceiver(IncomingJobRequestDetail.this);
-                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
-                registerReceiver(mBroadcastReceiver, broadcastFilter);
-
-                // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                Log.d(TAG, "Setup successful. Querying inventory.");
-                try {
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error querying inventory. Another async operation in progress.");
+                if (isTimeFlexi) {
+                    img_pensile_two.setVisibility(View.VISIBLE);
                 }
 
+                isReschedule = false;
+                dialog.dismiss();
+
+            }
+
+        });
+
+        dialog.show();
+
+    }
+
+    private void rescheduleApiCall() {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("date", finalDate);
+        params.put("time", finalTime);
+        if (isDateFlexi) params.put("IsDateFlexible", "yes");
+        else params.put("IsDateFlexible", "no");
+        if (isTimeFlexi) params.put("IsTimeFlexible", "yes");
+        else params.put("IsTimeFlexible", "no");
+        params.put("table_id", tableId);
+        params.put("Tradesman_id", sessionTradesman.getId());
+
+        Log.e("dasdasdasdas", "param = " + params);
+
+        ProjectUtil.showProgressDialog(IncomingJobRequestDetail.this, false, "Please wait...");
+        AndroidNetworking.post(HttpPAth.Urlpath + "reschedule_status_update")
+                .addBodyParameter(params)
+                .build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                ProjectUtil.pauseProgressDialog();
             }
         });
 
@@ -326,7 +408,9 @@ public class IncomingJobRequestDetail extends
                         dialog.dismiss();
                     }
                 });
+
                 dialog.show();
+
             }
         });
 
@@ -337,9 +421,9 @@ public class IncomingJobRequestDetail extends
                 Log.e("paymentPLan", "paymentPLan = " + paymentPLan);
                 if (paymentPLan.equals("NoPlan")) {
                     openNoPlanDialog();
-                } else if (paymentPLan.equalsIgnoreCase("Pay Per Job")) {
+                } else if (paymentPLan.equalsIgnoreCase("PayPerJob")) {
                     acceptjobDialog();
-                } else if(paymentPLan.equalsIgnoreCase("add_to_wallet")) {
+                } else if (paymentPLan.equalsIgnoreCase("add_to_wallet")) {
                     acceptjobDialog();
                 }
 
@@ -369,13 +453,13 @@ public class IncomingJobRequestDetail extends
 
         String text = "A payment of $9.95 will be deducted from your account";
 
-        MessageTV.setText(Html.fromHtml(text),TextView.BufferType.SPANNABLE);
+        MessageTV.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
 
         acceptBtGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                ProjectUtil.showProgressDialog(IncomingJobRequestDetail.this,false,"Please wait...");
+                ProjectUtil.showProgressDialog(IncomingJobRequestDetail.this, false, "Please wait...");
                 if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
                     new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED", incomingRequestBean.getProblem().getUser_id());
                 } else {
@@ -403,14 +487,14 @@ public class IncomingJobRequestDetail extends
 
         String text = "Your are on a <font color='#AF6C66'>Pay Per Job</font> Plan. you have to accept this request in order to see the user details.";
 
-        MessageTV.setText(Html.fromHtml(text),TextView.BufferType.SPANNABLE);
+        MessageTV.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
 
         acceptBtGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  dialog.dismiss();
-                  jobPaymentDialog();
-                  //                String payload = sessionTradesman.getId();
+                dialog.dismiss();
+                jobPaymentDialog();
+                //                String payload = sessionTradesman.getId();
 //                try {
 //                    mHelper.launchPurchaseFlow(IncomingJobRequestDetail.this, Appconstants.SKU_PAY_PER_JOB, RC_REQUEST, mPurchaseFinishedListener, payload);
 //                } catch (IabHelper.IabAsyncInProgressException e) {
@@ -512,6 +596,16 @@ public class IncomingJobRequestDetail extends
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isReschedule) {
+            if (isDateFlexi || isTimeFlexi) {
+                dateTimeEditDialog();
+            }
+        }
+    }
+
     private void JsonJobDetail(String problem_id) {
 
         Call<ResponseBody> call = AppConfig.loadInterface().jobDetails(problem_id);
@@ -524,6 +618,28 @@ public class IncomingJobRequestDetail extends
                         String responseData = response.body().string();
                         JSONArray jsonArray = new JSONArray(responseData);
                         JSONObject obj = jsonArray.getJSONObject(0);
+
+                        JSONArray problemArray = obj.getJSONArray("problem");
+                        JSONObject problemObj = problemArray.getJSONObject(0);
+
+                        finalDate = problemObj.getString("date");
+                        finalTime = problemObj.getString("time");
+                        tableId = obj.getString("id");
+                        mobileNumbe = obj.getString("mobile_no");
+
+                        Log.e("sdfsfsdfsd", "finalDate = " + finalDate);
+                        Log.e("sdfsfsdfsd", "finalTime = " + finalTime);
+                        Log.e("sdfsfsdfsd", "tableId = " + tableId);
+                        Log.e("sdfsfsdfsd", "mobileNumbe = " + mobileNumbe);
+
+                        if (problemObj.getString("IsDateFlexible").equals("yes")) {
+                            isDateFlexi = true;
+                        }
+
+                        if (problemObj.getString("IsTimeFlexible").equals("yes")) {
+                            isTimeFlexi = true;
+                        }
+
                         Log.e("sdfsfsdfsd", "responseDataRetrofi = " + responseData);
                         paymentPLan = obj.getString("plan_type");
                         Log.e("sdfsfsdfsd", "paymentPLan = " + paymentPLan);
@@ -569,6 +685,7 @@ public class IncomingJobRequestDetail extends
                 t.printStackTrace();
                 Toast.makeText(IncomingJobRequestDetail.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
             }
+
         });
 
     }
@@ -856,7 +973,7 @@ public class IncomingJobRequestDetail extends
             ProjectUtil.pauseProgressDialog();
             if (result == null) {
             } else if (result.equalsIgnoreCase("ACCEPTED")) {
-                startActivity(new Intent(IncomingJobRequestDetail.this,TradesmanActivity.class));
+                startActivity(new Intent(IncomingJobRequestDetail.this, TradesmanActivity.class));
                 finish();
 //                try {
 //                    mHelper.consumeAsync(myGlobalPurchase, mConsumeFinishedListener);
@@ -879,69 +996,69 @@ public class IncomingJobRequestDetail extends
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-
-            Log.e("GAURAV LOG", "QueryInventoryFinished");
-
-            // Have we been disposed of in the meantime? If so, quit.
-            if (mHelper == null) return;
-
-            // Is it a failure?
-            if (result.isFailure()) {
-                complain("Failed to query inventory: " + result);
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-            Purchase gasPurchase = inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB);
-            if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
-                Log.d(TAG, "We have gas. Consuming it.");
-
-                IsAlreadyPurchased = true;
-                myGlobalPurchase = inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB);
-
-                /*try {
-                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                }*/
-
-            }
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
+//    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+//        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+//            Log.d(TAG, "Query inventory finished.");
+//
+//            Log.e("GAURAV LOG", "QueryInventoryFinished");
+//
+//            // Have we been disposed of in the meantime? If so, quit.
+//            if (mHelper == null) return;
+//
+//            // Is it a failure?
+//            if (result.isFailure()) {
+//                complain("Failed to query inventory: " + result);
+//                return;
+//            }
+//
+//            Log.d(TAG, "Query inventory was successful.");
+//
+//            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
+//            Purchase gasPurchase = inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB);
+//            if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
+//                Log.d(TAG, "We have gas. Consuming it.");
+//
+//                IsAlreadyPurchased = true;
+//                myGlobalPurchase = inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB);
+//
+//                /*try {
+//                    mHelper.consumeAsync(inventory.getPurchase(Appconstants.SKU_PAY_PER_JOB), mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//                }*/
+//
+//            }
+//            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+//        }
+//    };
 
     @Override
     public void receivedBroadcast() {
         // Received a broadcast notification that the inventory of items has changed
         Log.d(TAG, "Received broadcast notification. Querying inventory.");
-        try {
-            mHelper.queryInventoryAsync(mGotInventoryListener);
-        } catch (IabHelper.IabAsyncInProgressException e) {
-            complain("Error querying inventory. Another async operation in progress.");
-        }
+//        try {
+//            mHelper.queryInventoryAsync(mGotInventoryListener);
+//        } catch (IabHelper.IabAsyncInProgressException e) {
+//            complain("Error querying inventory. Another async operation in progress.");
+//        }
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-        if (mHelper == null) return;
-
-        // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            super.onActivityResult(requestCode, resultCode, data);
-        } else {
-            Log.d(TAG, "onActivityResult handled by IABUtil.");
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+////        if (mHelper == null) return;
+//
+//        // Pass on the activity result to the helper for handling
+////        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+////            // not handled, so handle it ourselves (here's where you'd
+////            // perform any handling of activity results not related to in-app
+////            // billing...
+////            super.onActivityResult(requestCode, resultCode, data);
+////        } else {
+////            Log.d(TAG, "onActivityResult handled by IABUtil.");
+////        }
+//    }
 
     /**
      * Verifies the developer payload of a purchase.
@@ -953,86 +1070,86 @@ public class IncomingJobRequestDetail extends
     }
 
     // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-
-            Log.e("GAURAV LOG", "IabPurchaseFinished");
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-                complain("Error purchasing: " + result);
-
-                return;
-            }
-            if (!verifyDeveloperPayload(purchase)) {
-                complain("Error purchasing. Authenticity verification failed.");
-
-                return;
-            }
-
-            Log.d(TAG, "Purchase successful.");
-
-            if (purchase.getSku().equals(Appconstants.SKU_PAY_PER_JOB)) {
-
-                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
-                IsAlreadyPurchased = true;
-                myGlobalPurchase = purchase;
-
-                if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
-
-                    new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED", incomingRequestBean.getProblem().getUser_id());
-                } else {
-
-                    Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
-                }
-
-                /*try {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-
-                    return;
-                }*/
-            }
-        }
-    };
-
-    // Called when consumption is complete
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
-
-            Log.e("GAURAV LOG", "ConsumnedFinished");
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            // We know this is the "gas" sku because it's the only one we consume,
-            // so we don't check which sku was consumed. If you have more than one
-            // sku, you probably should check...
-
-
-            if (purchase.getSku().equals(Appconstants.SKU_PAY_PER_JOB)) {
-
-                if (result.isSuccess()) {
-                    // successfully consumed, so we apply the effects of the item in our
-                    // game world's logic, which in our case means filling the gas tank a bit
-                    Log.d(TAG, "Consumption successful. Provisioning.");
-
-                    IsAlreadyPurchased = false;
-                    finish();
-
-                } else {
-                    complain("Error while consuming: " + result);
-                }
-            }
-
-            Log.d(TAG, "End consumption flow.");
-        }
-    };
+//    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+//        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+//            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+//
+//            Log.e("GAURAV LOG", "IabPurchaseFinished");
+//
+//            // if we were disposed of in the meantime, quit.
+//            if (mHelper == null) return;
+//
+//            if (result.isFailure()) {
+//                complain("Error purchasing: " + result);
+//
+//                return;
+//            }
+//            if (!verifyDeveloperPayload(purchase)) {
+//                complain("Error purchasing. Authenticity verification failed.");
+//
+//                return;
+//            }
+//
+//            Log.d(TAG, "Purchase successful.");
+//
+//            if (purchase.getSku().equals(Appconstants.SKU_PAY_PER_JOB)) {
+//
+//                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
+//                IsAlreadyPurchased = true;
+//                myGlobalPurchase = purchase;
+//
+//                if (InternetDetect.isConnected(IncomingJobRequestDetail.this)) {
+//
+//                    new JsonTaskAcceptOrReject().execute(ProblemId, "ACCEPTED", incomingRequestBean.getProblem().getUser_id());
+//                } else {
+//
+//                    Toast.makeText(IncomingJobRequestDetail.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                /*try {
+//                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//                } catch (IabHelper.IabAsyncInProgressException e) {
+//                    complain("Error consuming gas. Another async operation in progress.");
+//
+//                    return;
+//                }*/
+//            }
+//        }
+//    };
+//
+//    // Called when consumption is complete
+//    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+//        public void onConsumeFinished(Purchase purchase, IabResult result) {
+//            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+//
+//            Log.e("GAURAV LOG", "ConsumnedFinished");
+//
+//            // if we were disposed of in the meantime, quit.
+//            if (mHelper == null) return;
+//
+//            // We know this is the "gas" sku because it's the only one we consume,
+//            // so we don't check which sku was consumed. If you have more than one
+//            // sku, you probably should check...
+//
+//
+//            if (purchase.getSku().equals(Appconstants.SKU_PAY_PER_JOB)) {
+//
+//                if (result.isSuccess()) {
+//                    // successfully consumed, so we apply the effects of the item in our
+//                    // game world's logic, which in our case means filling the gas tank a bit
+//                    Log.d(TAG, "Consumption successful. Provisioning.");
+//
+//                    IsAlreadyPurchased = false;
+//                    finish();
+//
+//                } else {
+//                    complain("Error while consuming: " + result);
+//                }
+//            }
+//
+//            Log.d(TAG, "End consumption flow.");
+//        }
+//    };
 
 
     // We're being destroyed. It's important to dispose of the helper here!
@@ -1047,10 +1164,10 @@ public class IncomingJobRequestDetail extends
 
         // very important:
         Log.d(TAG, "Destroying helper.");
-        if (mHelper != null) {
-            mHelper.disposeWhenFinished();
-            mHelper = null;
-        }
+//        if (mHelper != null) {
+//            mHelper.disposeWhenFinished();
+//            mHelper = null;
+//        }
     }
 
 
@@ -1093,18 +1210,72 @@ public class IncomingJobRequestDetail extends
         final DatePicker dp = new DatePicker(IncomingJobRequestDetail.this);
         ab.setView(dp);
         ab.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int dom = dp.getDayOfMonth();
                 int mm = dp.getMonth();
                 int yy = dp.getYear();
                 String date = dom + "-" + (mm + 1) + "-" + yy;
+                finalDate = date;
+
+                Log.e("sadasdfasdasd", "finalDate = " + finalDate);
                 DateDetail.setText(date);
                 strday = DateDetail.getText().toString();
+                finalDate = strday;
+                updatenum(strday, finalTime, ProblemId);
             }
         });
+
         ab.show();
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void updatenum(String date, String time, String problem_id) {
+
+        Log.e("fasdasdas", "date = " + date + " time = " + time + " problem_id = " + problem_id);
+
+        ProjectUtil.showProgressDialog(IncomingJobRequestDetail.this, true, "Please wait...");
+        Call<ResponseBody> call = AppConfig.loadInterface().updatedate(date, time, problem_id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    if (response.isSuccessful()) {
+                        String responseData = response.body().string();
+                        JSONObject object = new JSONObject(responseData);
+                        String message = object.getString("message");
+
+                        Log.e("fasdasdas", "responseDataresponseData = " + responseData);
+
+                        System.out.println("Updatenum" + object);
+
+                        if (object.getString("status").equals("1")) {
+                           /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                            }*/
+                        } else {
+                           /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                Toast.makeText(getContext(), ""+message, Toast.LENGTH_SHORT).show();
+                            }*/
+                        }
+
+                    } else ;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                ProjectUtil.pauseProgressDialog();
+                Toast.makeText(IncomingJobRequestDetail.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
