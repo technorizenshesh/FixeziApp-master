@@ -67,7 +67,9 @@ public class CardPayment_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_payment_);
+
         instance = this;
+        
         creditCardView = (CreditCardView) findViewById(R.id.cardview);
         Toolbarcard = (Toolbar) findViewById(R.id.Toolbarcard);
         NavigationUpIM = (RelativeLayout) Toolbarcard.findViewById(R.id.NavigationUpIM);
@@ -80,6 +82,52 @@ public class CardPayment_Activity extends AppCompatActivity {
         btn_paynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Card.Builder card = new Card.Builder(cardNumber,
+                        Integer.valueOf(expiry.split("/")[0]),
+                        Integer.valueOf(expiry.split("/")[1]), cvv);
+
+                Log.e("sdfdsfdsfdsf","cardHolderName____________________" + cardHolderName);
+                Log.e("sdfdsfdsfdsf","cardNumber________________________" + cardNumber);
+                Log.e("sdfdsfdsfdsf","expirymonth____________________________" + expiry.split("/")[0]);
+                Log.e("sdfdsfdsfdsf","expirymonthyear____________________________" + expiry.split("/")[1]);
+                Log.e("sdfdsfdsfdsf","cvv_______________________________" + cvv);
+
+                System.out.println("cardHolderName____________________" + cardHolderName);
+                System.out.println("cardNumber________________________" + cardNumber);
+                System.out.println("expiry____________________________" + expiry);
+                System.out.println("cvv_______________________________" + cvv);
+
+                Stripe stripe = new Stripe(mContext, Constant.STRIPE_LIVE_KEY);
+
+                ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+                stripe.createCardToken(
+                        card.build(), new ApiResultCallback<Token>() {
+                            @Override
+                            public void onSuccess(Token token) {
+                                ProjectUtil.pauseProgressDialog();
+
+                                // Toast.makeText(mContext, getString(R.string.successful), Toast.LENGTH_SHORT).show();
+                                // charge(token);
+
+                                HashMap<String,String> userdetails = sessionUser.getUserDetails();
+                                String userEmail = userdetails.get("Email");
+
+                                if(cusId == null || cusId.equals("")) {
+                                    saveCardApi(token.getId(),userEmail,"PayPerJob",
+                                            cardHolderName,cardNumber,expiry.split("/")[0],
+                                            expiry.split("/")[1],cvv);
+                                } else {
+                                    addCardApi(token.getId());
+                                }
+
+                            }
+
+                            @Override
+                            public void onError(@NotNull Exception e) {
+                                ProjectUtil.pauseProgressDialog();
+                            }
+
+                        });
 
             }
         });
@@ -113,52 +161,52 @@ public class CardPayment_Activity extends AppCompatActivity {
             creditCardView.setCardExpiry(expiry);
             creditCardView.setCardNumber(cardNumber);
 
-            Card.Builder card = new Card.Builder(cardNumber,
-                    Integer.valueOf(expiry.split("/")[0]),
-                    Integer.valueOf(expiry.split("/")[1]), cvv);
-
-            Log.e("sdfdsfdsfdsf","cardHolderName____________________" + cardHolderName);
-            Log.e("sdfdsfdsfdsf","cardNumber________________________" + cardNumber);
-            Log.e("sdfdsfdsfdsf","expirymonth____________________________" + expiry.split("/")[0]);
-            Log.e("sdfdsfdsfdsf","expirymonthyear____________________________" + expiry.split("/")[1]);
-            Log.e("sdfdsfdsfdsf","cvv_______________________________" + cvv);
-
-            System.out.println("cardHolderName____________________" + cardHolderName);
-            System.out.println("cardNumber________________________" + cardNumber);
-            System.out.println("expiry____________________________" + expiry);
-            System.out.println("cvv_______________________________" + cvv);
-
-            Stripe stripe = new Stripe(mContext, Constant.STRIPE_TEST_KEY);
-
-            ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
-            stripe.createCardToken(
-                    card.build(), new ApiResultCallback<Token>() {
-                        @Override
-                        public void onSuccess(Token token) {
-                            ProjectUtil.pauseProgressDialog();
-
-                            // Toast.makeText(mContext, getString(R.string.successful), Toast.LENGTH_SHORT).show();
-                            // charge(token);
-
-                            HashMap<String,String> userdetails = sessionUser.getUserDetails();
-                            String userEmail = userdetails.get("Email");
-
-                            if(cusId == null || cusId.equals("")) {
-                                saveCardApi(token.getId(),userEmail,"PayPerJob",
-                                        cardHolderName,cardNumber,expiry.split("/")[0],
-                                        expiry.split("/")[1],cvv);
-                            } else {
-                                addCardApi(token.getId());
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(@NotNull Exception e) {
-                            ProjectUtil.pauseProgressDialog();
-                        }
-
-                    });
+            //            Card.Builder card = new Card.Builder(cardNumber,
+//                    Integer.valueOf(expiry.split("/")[0]),
+//                    Integer.valueOf(expiry.split("/")[1]), cvv);
+//
+//            Log.e("sdfdsfdsfdsf","cardHolderName____________________" + cardHolderName);
+//            Log.e("sdfdsfdsfdsf","cardNumber________________________" + cardNumber);
+//            Log.e("sdfdsfdsfdsf","expirymonth____________________________" + expiry.split("/")[0]);
+//            Log.e("sdfdsfdsfdsf","expirymonthyear____________________________" + expiry.split("/")[1]);
+//            Log.e("sdfdsfdsfdsf","cvv_______________________________" + cvv);
+//
+//            System.out.println("cardHolderName____________________" + cardHolderName);
+//            System.out.println("cardNumber________________________" + cardNumber);
+//            System.out.println("expiry____________________________" + expiry);
+//            System.out.println("cvv_______________________________" + cvv);
+//
+//            Stripe stripe = new Stripe(mContext, Constant.STRIPE_TEST_KEY);
+//
+//            ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+//            stripe.createCardToken(
+//                    card.build(), new ApiResultCallback<Token>() {
+//                        @Override
+//                        public void onSuccess(Token token) {
+//                            ProjectUtil.pauseProgressDialog();
+//
+//                            // Toast.makeText(mContext, getString(R.string.successful), Toast.LENGTH_SHORT).show();
+//                            // charge(token);
+//
+//                            HashMap<String,String> userdetails = sessionUser.getUserDetails();
+//                            String userEmail = userdetails.get("Email");
+//
+//                            if(cusId == null || cusId.equals("")) {
+//                                saveCardApi(token.getId(),userEmail,"PayPerJob",
+//                                        cardHolderName,cardNumber,expiry.split("/")[0],
+//                                        expiry.split("/")[1],cvv);
+//                            } else {
+//                                addCardApi(token.getId());
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(@NotNull Exception e) {
+//                            ProjectUtil.pauseProgressDialog();
+//                        }
+//
+//                    });
 
         }
 

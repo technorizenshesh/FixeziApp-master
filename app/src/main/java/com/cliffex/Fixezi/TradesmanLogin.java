@@ -200,26 +200,21 @@ public class TradesmanLogin extends AppCompatActivity {
                     }
                 }
 
-
             }
 
-
             private boolean ValidSuccess() {
-
                 if (TradesmanUsernameLogin.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanLogin.this, "Please Enter Username", Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (TradesmanPasswordLogin.getText().toString().equalsIgnoreCase("")) {
-
                     Toast.makeText(TradesmanLogin.this, "Please Enter Password", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-
                 return true;
             }
 
         });
+
     }
 
     private void forgetEmail(String email) {
@@ -237,7 +232,7 @@ public class TradesmanLogin extends AppCompatActivity {
                         String message = object.getString("result");
                         System.out.println("Forgetemail" + object);
                         if (message.equals("successfully")) {
-                            //Toast.makeText(LoginActivity.this, "Data Send", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(LoginActivity.this, "Data Send", Toast.LENGTH_SHORT).show();
                             new EasyDialog.Builder(TradesmanLogin.this)
                                     .setTitle("fixezi")
                                     .setSubtitle("Sent On Your Email")
@@ -248,9 +243,7 @@ public class TradesmanLogin extends AppCompatActivity {
                                     .setConfirmBtnColor("#51d11a")
                                     .setConfirmBtn("OK", new EasyDialogListener() {
                                         @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        }
+                                        public void onClick(DialogInterface dialogInterface, int i) {}
                                     })
                                     /* .setCancelBtn("no", new EasyDialogListener() {
                                          @Override
@@ -261,14 +254,12 @@ public class TradesmanLogin extends AppCompatActivity {
                                     .build();
                         } else {
                             Toast.makeText(TradesmanLogin.this, "Sorry Email Id is not Registered", Toast.LENGTH_SHORT).show();
-
                         }
-
                     } else ;
-
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
+
             }
 
             @Override
@@ -276,7 +267,9 @@ public class TradesmanLogin extends AppCompatActivity {
                 t.printStackTrace();
                 Toast.makeText(TradesmanLogin.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
             }
+
         });
+
     }
 
     private class JsonTradesmanLogin extends AsyncTask<String, String, TradesManBean> {
@@ -299,6 +292,8 @@ public class TradesmanLogin extends AppCompatActivity {
                 params.put("username_email", paramss[0]);
                 params.put("password", paramss[1]);
                 params.put("registration_id", paramss[2]);
+
+                Log.e("sdfasfasfasd","params = " + params);
 
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {

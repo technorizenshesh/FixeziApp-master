@@ -1,17 +1,14 @@
 package com.cliffex.Fixezi;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -21,7 +18,6 @@ import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.adapter.AdapterMyCards;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
@@ -32,7 +28,7 @@ import java.util.HashMap;
 public class ChooseCardAct extends AppCompatActivity {
 
     Context mContext = ChooseCardAct.this;
-    ImageView ivAddCard,image_nav;
+    ImageView ivAddCard, image_nav;
     SwipeRefreshLayout swipLayout;
     RecyclerView rvChooseCard;
     String cusId = "";
@@ -64,20 +60,24 @@ public class ChooseCardAct extends AppCompatActivity {
 
         ivAddCard.setOnClickListener(v -> {
             startActivity(new Intent(mContext, CardPayment_Activity.class)
-            .putExtra("cusid", cusId));
+                    .putExtra("cusid", cusId));
         });
 
         image_nav.setOnClickListener(v -> {
-           finish();
+            finish();
         });
 
     }
 
     private void getCards() {
-        ProjectUtil.showProgressDialog(mContext,true, "Please wait...");
+
+        ProjectUtil.showProgressDialog(mContext, true, "Please wait...");
+
         HashMap<String, String> param = new HashMap<>();
         param.put("user_id", sessionTradesman.getId());
+
         Log.e("addCardApi", "param = " + param);
+
         AndroidNetworking.post(HttpPAth.Urlpath + "get_user_card")
                 .addBodyParameter(param)
                 .build()
@@ -96,13 +96,13 @@ public class ChooseCardAct extends AppCompatActivity {
 
                                 String str = resultObj.getJSONObject("sources").getString("data");
 
-                                ArrayList<ModelMyCards.Data> cardList = new Gson().fromJson(str,new TypeToken<ArrayList<ModelMyCards.Data>>(){}.getType());
+                                ArrayList<ModelMyCards.Data> cardList = new Gson().fromJson(str, new TypeToken<ArrayList<ModelMyCards.Data>>() {}.getType());
 
-                                AdapterMyCards adapterMyCards = new AdapterMyCards(mContext, cardList,ChooseCardAct.this::addPaymentApiCallback);
+                                AdapterMyCards adapterMyCards = new AdapterMyCards(mContext, cardList, ChooseCardAct.this::addPaymentApiCallback);
                                 rvChooseCard.setAdapter(adapterMyCards);
 
                             } else {
-                                AdapterMyCards adapterMyCards = new AdapterMyCards(mContext,null,ChooseCardAct.this::addPaymentApiCallback);
+                                AdapterMyCards adapterMyCards = new AdapterMyCards(mContext, null, ChooseCardAct.this::addPaymentApiCallback);
                                 rvChooseCard.setAdapter(adapterMyCards);
                             }
                         } catch (Exception e) {
@@ -127,13 +127,13 @@ public class ChooseCardAct extends AppCompatActivity {
 
     private void addPaymentApi(ModelMyCards.Data data) {
 
-        HashMap<String,String> param = new HashMap<>();
-        param.put("cust_id",data.getCustomer());
-        param.put("plan_type","add_to_wallet");
-        param.put("user_id",sessionTradesman.getId());
-        param.put("card_id",data.getId());
+        HashMap<String, String> param = new HashMap<>();
+        param.put("cust_id", data.getCustomer());
+        param.put("plan_type", "add_to_wallet");
+        param.put("user_id", sessionTradesman.getId());
+        param.put("card_id", data.getId());
 
-        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         AndroidNetworking.post(HttpPAth.Urlpath + "update_plan_type")
                 .addBodyParameter(param)
                 .build()
@@ -141,15 +141,15 @@ public class ChooseCardAct extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         ProjectUtil.pauseProgressDialog();
-                        startActivity(new Intent(mContext,TradesmanActivity.class));
-                        Log.e("addPaymentApi","addPaymentApi = " + response);
+                        startActivity(new Intent(mContext, TradesmanActivity.class));
+                        Log.e("addPaymentApi", "addPaymentApi = " + response);
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         ProjectUtil.pauseProgressDialog();
-                        Log.e("addPaymentApi","anError = " + anError.getErrorBody());
-                        Log.e("addPaymentApi","anError = " + anError.getErrorDetail());
+                        Log.e("addPaymentApi", "anError = " + anError.getErrorBody());
+                        Log.e("addPaymentApi", "anError = " + anError.getErrorDetail());
                     }
                 });
 
