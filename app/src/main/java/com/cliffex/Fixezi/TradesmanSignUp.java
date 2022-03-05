@@ -40,7 +40,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.NonScrollListView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -67,6 +66,7 @@ import java.util.List;
 
 import static com.cliffex.Fixezi.helpus.ContextManager.getContext;
 import static java.lang.Integer.parseInt;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TradesmanSignUp extends AppCompatActivity {
 

@@ -16,6 +16,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 /**
  * Created by bhupesh on 9/7/2016.

@@ -26,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.Other.AppConfig;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -61,6 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.cliffex.Fixezi.Other.MySharedPref.saveData;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TradesmanLogin extends AppCompatActivity {
 

@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +32,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -154,9 +154,7 @@ public class EnterDifferentAddress extends AppCompatActivity {
         SubmitAddressBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (Validation()) {
-
                     Appconstants.WHICH_TYPE_ADDRESS = "Postal Address";
                     Appconstants.SITE_ADDRESS = HouseNumberET.getText().toString() + ", " + StreetNameET.getText().toString() + ", " + PostCodeET.getText().toString() + ", " + CityStateET.getText().toString();
                     Appconstants.PERSON_ON_SITE = PersonOnSiteET.getText().toString();

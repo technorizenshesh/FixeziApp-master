@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
 // import com.cliffex.Fixezi.util.IabHelper;
 import com.cliffex.Fixezi.util.IabResult;
@@ -40,6 +39,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class PurchaseEmployeeId extends AppCompatActivity implements IabBroadcastReceiver.IabBroadcastListener {
 

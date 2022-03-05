@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import androidx.appcompat.app.AppCompatActivity;
 

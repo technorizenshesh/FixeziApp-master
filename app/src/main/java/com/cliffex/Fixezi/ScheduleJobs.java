@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.R.attr.phoneNumber;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class ScheduleJobs extends AppCompatActivity {
 

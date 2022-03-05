@@ -8,10 +8,10 @@
     android:background="@drawable/bg"
     android:fitsSystemWindows="true">
 
-     <include
+    <include
         android:id="@+id/dash_toolbar"
         layout="@layout/toolbar_dash"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true" />
 
     <ScrollView
         android:layout_width="match_parent"

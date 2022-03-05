@@ -2,6 +2,8 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,23 +20,34 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
+import com.cliffex.Fixezi.MyUtils.HttpPAth;
+import com.cliffex.Fixezi.util.ProjectUtil;
+
 import org.ankit.perfectdialog.EasyDialog;
 import org.ankit.perfectdialog.EasyDialogListener;
 import org.ankit.perfectdialog.Icon;
+import org.json.JSONException;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import org.json.JSONObject;
 
 public class PaymentPlan extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView toolbar_title;
     RelativeLayout NavigationUpIM;
-    LinearLayout SubscribePlanEconomy,PayPerJobPlanLL,
-                 SubscribePlanFull,PayPerJobPlanLL2;
-    TextView CurrentPlanTV,tv_perJob;
+    Context mContext = PaymentPlan.this;
+    LinearLayout SubscribePlanEconomy, PayPerJobPlanLL,
+            SubscribePlanFull, PayPerJobPlanLL2;
+    TextView CurrentPlanTV, tv_perJob, tvAlreadyPurchased;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String WhichPlan = "";
     String plainn;
+    SessionTradesman sessionTradesman;
     public static Activity instance = null;
 
     @Override
@@ -42,9 +55,11 @@ public class PaymentPlan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
         setContentView(R.layout.activity_payment_plan);
+        sessionTradesman = new SessionTradesman(this);
 
         toolbar = (Toolbar) findViewById(R.id.ToolbarPP);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        tvAlreadyPurchased = (TextView) findViewById(R.id.tvAlreadyPurchased);
         tv_perJob = (TextView) findViewById(R.id.tv_perJob);
         NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
 
@@ -65,8 +80,6 @@ public class PaymentPlan extends AppCompatActivity {
         sharedPreferences = getApplicationContext().getSharedPreferences("FixeziPref", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        loadData();
-
         PayPerJobPlanLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +94,36 @@ public class PaymentPlan extends AppCompatActivity {
             }
         });
 
+        getPaymentStatusApi();
+
+    }
+
+    private void getPaymentStatusApi() {
+
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+        AndroidNetworking.post(HttpPAth.Urlpath + "get_payment_status")
+                .addBodyParameter("user_id", sessionTradesman.getId())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            WhichPlan = jsonObject.getString("plan_type");
+                            loadData();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("asdasdasdas", "response = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
+
     }
 
     private void openDialog2() {
@@ -89,13 +132,14 @@ public class PaymentPlan extends AppCompatActivity {
         builder.setMessage("Sorry,this plan is temporary unavailable until Fixezi has enough user's to generate ongoing work.");
         builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         }).create().show();
     }
 
     private void payPerJobDialog() {
+
         Dialog dialog = new Dialog(PaymentPlan.this, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.setContentView(R.layout.which_payment_plan_dialog);
 
@@ -115,6 +159,7 @@ public class PaymentPlan extends AppCompatActivity {
         });
 
         dialog.show();
+
     }
 
     private void openDialog() {
@@ -131,24 +176,29 @@ public class PaymentPlan extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }).setCancelBtn("no", new EasyDialogListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
-                }).build();
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        }).build();
     }
 
     void loadData() {
 
         WhichPlan = sharedPreferences.getString("WhichPlan", "Pay Per Job");
-        Log.e("WhichPlan",WhichPlan);
+        Log.e("WhichPlan", WhichPlan);
 
         if (WhichPlan.equalsIgnoreCase(Appconstants.SKU_FUll)) {
             CurrentPlanTV.setText("12 Months Full Plan");
+            tvAlreadyPurchased.setVisibility(View.GONE);
+        } else if (WhichPlan.equalsIgnoreCase(Appconstants.PAY_PER_JOB)) {
+            CurrentPlanTV.setText("Currently you have Pay Per Job Plan");
+            tvAlreadyPurchased.setVisibility(View.VISIBLE);
         } else if (WhichPlan.equalsIgnoreCase(Appconstants.SKU_ECONOMY)) {
             CurrentPlanTV.setText("12 Months Economy Plan");
-        } else if (WhichPlan.equalsIgnoreCase("Pay Per Job")) {
-            CurrentPlanTV.setText("Currently you have no plan");
+            tvAlreadyPurchased.setVisibility(View.GONE);
         } else {
             CurrentPlanTV.setText("Currently you have no plan");
+            tvAlreadyPurchased.setVisibility(View.GONE);
         }
 
     }

@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import static android.os.Environment.getExternalStorageDirectory;
 
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;

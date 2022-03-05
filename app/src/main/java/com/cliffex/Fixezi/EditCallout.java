@@ -1,6 +1,7 @@
 package com.cliffex.Fixezi;
 
 import android.app.ProgressDialog;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.Other.AppConfig;
 import com.google.gson.Gson;
 

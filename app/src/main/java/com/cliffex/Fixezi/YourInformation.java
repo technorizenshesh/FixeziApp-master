@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class YourInformation extends AppCompatActivity {
 
     Toolbar ToolbarYourInfo;
-    TextView toolbar_title, EditProfileInfoTV, EditServiceLocationTV, EditAddTrade, EditCompanyInfo, EditCallout, ManageUserTV;
+    TextView toolbar_title, EditProfileInfoTV, EditServiceLocationTV, EditAddTrade,
+             EditCompanyInfo, EditCallout, ManageUserTV;
     RelativeLayout NavigationUpIM;
 
     @Override

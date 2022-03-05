@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -105,8 +104,8 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:background="@drawable/gray_outline_back"
             android:gravity="top|left"
-            android:inputType="textVisiblePassword|textMultiLine"
             android:hint="@string/type_your_note_here"
+            android:inputType="textVisiblePassword|textMultiLine"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
@@ -119,25 +118,26 @@
             android:background="@color/purpal"
             android:gravity="center"
             android:paddingTop="@dimen/_12sdp"
-            android:textStyle="bold"
             android:paddingBottom="@dimen/_12sdp"
             android:text="@string/create_additional_qoute"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/markJobAsComplete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@color/blue_light"
             android:gravity="center"
             android:paddingTop="@dimen/_12sdp"
-            android:textStyle="bold"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:paddingBottom="@dimen/_12sdp"
             android:text="@string/mark_job_as_complete"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;

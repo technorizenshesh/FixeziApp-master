@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.UserDetail;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.Other.AppConfig;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -190,20 +190,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (!isError) {
                     if (InternetDetect.isConnected(getApplicationContext())) {
-
                         if (RegId.equalsIgnoreCase("")) {
                             registerBackground();
                         } else {
                             new JsonLogin().execute(Suser, Spass, RegId);
                             Log.e("RegId>>", RegId);
                         }
-
                     } else {
-
                         errorToast("Check Internet Connection");
                     }
+
                 }
+
             }
+
         });
 
     }
@@ -214,7 +214,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initComp() {
-
         remembercheckbox = (CheckBox) findViewById(R.id.remembercheckbox);
         forgot_password = (TextView) findViewById(R.id.forgot_password);
         remembertxt = (TextView) findViewById(R.id.remembertxt);
@@ -229,7 +228,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void errorToast(String x) {
-
         Toast.makeText(getApplicationContext(), x, Toast.LENGTH_SHORT).show();
     }
 
@@ -312,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
         }.execute(null, null, null);
     }
 
-  /*  private class ForgetJSon extends AsyncTask<String, Void, String> {
+    /*  private class ForgetJSon extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -364,10 +362,11 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
 
-               *//* final Dialog dialog=new Dialog(LoginActivity.this);
+               *//*   final Dialog dialog=new Dialog(LoginActivity.this);
                 dialog.setContentView(R.layout.dialog_sendemail);
                 dialog.setCancelable(false);
                 Button btn_ok= (Button) dialog.findViewById(R.id.btn_ok);
+
                 btn_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -386,7 +385,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private class JsonLogin extends AsyncTask<String, String, String> {
 
-        String id, name, houseno, street, postcode, city, state, homephone, workphone, mobilephone, email, username, result;
+        String id, name, houseno, street, postcode, city, state, homephone,
+               workphone, mobilephone, email, username, result;
         UserDetail userDetail;
 
         @Override

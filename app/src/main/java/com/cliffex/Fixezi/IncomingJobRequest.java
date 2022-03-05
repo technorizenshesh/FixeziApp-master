@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -27,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -236,7 +236,8 @@ public class IncomingJobRequest extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView ProblemJobRequest, DateJobRequest, TimeJobRequest, FlexibleDateJobRequest, FlexibleTimeJobRequest, NumberTv,StatusTV;
+            TextView ProblemJobRequest, DateJobRequest, TimeJobRequest,
+                     FlexibleDateJobRequest, FlexibleTimeJobRequest, NumberTv,StatusTV;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -276,52 +277,36 @@ public class IncomingJobRequest extends AppCompatActivity {
 
             if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("REJECTED")) {
-
                 holder.StatusTV.setText("REJECTED BY TRADESMAN");
                 holder.StatusTV.setTextColor(ContextCompat.getColor(mContext,R.color.red));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("PROCESS")) {
-
                 holder.StatusTV.setText("IN PROCESS");
                 holder.StatusTV.setTextColor(Color.parseColor("#c79202"));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("RESCHEDULE")) {
-
                 holder.StatusTV.setText("RESCHEDULE");
                 holder.StatusTV.setTextColor(Color.parseColor("#DAA520"));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("ACCEPTED")) {
-
                 holder.StatusTV.setText("ACCEPTED");
                 holder.StatusTV.setTextColor(Color.parseColor("#32CD32"));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim().equalsIgnoreCase("COMPLETED") ||
                     incomingRequestListBean.get(position).getProblem().getStatus().trim().equalsIgnoreCase("RATED")) {
-
                 holder.StatusTV.setText("COMPLETED");
                 holder.StatusTV.setTextColor(Color.parseColor("#32CD32"));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("CANCELLED")) {
-
                 holder.StatusTV.setText("CANCELLED BY USER");
                 holder.StatusTV.setTextColor(ContextCompat.getColor(mContext,R.color.red));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("PENDING")) {
-
                 holder.StatusTV.setText("PENDING");
                 holder.StatusTV.setTextColor(ContextCompat.getColor(mContext,R.color.red));
-
             } else if (incomingRequestListBean.get(position).getProblem().getOrder_status().trim()
                     .equalsIgnoreCase("JOB EXPORTED")) {
-
                 holder.StatusTV.setText("EXPORTED BY TRADESMAN");
                 holder.StatusTV.setTextColor(ContextCompat.getColor(mContext,R.color.red));
-
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -329,6 +314,7 @@ public class IncomingJobRequest extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(IncomingJobRequest.this, IncomingJobRequestDetail.class);
                     intent.putExtra("ProblemId", incomingRequestListBean.get(position).getProblem().getId());
+                    intent.putExtra("rstatus", incomingRequestListBean.get(position).getProblem().getR_status());
                     startActivity(intent);
                 }
 

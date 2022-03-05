@@ -1,5 +1,6 @@
 package com.cliffex.Fixezi;
 
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.VideoView;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import androidx.appcompat.app.AppCompatActivity;
 

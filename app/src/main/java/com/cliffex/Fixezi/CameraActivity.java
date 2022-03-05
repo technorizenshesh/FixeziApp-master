@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;

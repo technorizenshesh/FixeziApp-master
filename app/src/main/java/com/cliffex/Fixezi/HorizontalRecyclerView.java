@@ -1,6 +1,7 @@
 package com.cliffex.Fixezi;
 
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -9,11 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

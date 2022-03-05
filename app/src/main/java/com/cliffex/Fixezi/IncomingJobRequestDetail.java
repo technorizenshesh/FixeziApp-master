@@ -2,9 +2,9 @@ package com.cliffex.Fixezi;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -39,9 +39,6 @@ import com.cliffex.Fixezi.Other.AppConfig;
 import com.cliffex.Fixezi.Response.IncomingTrades_Response;
 import com.cliffex.Fixezi.util.CallReceiver;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
-// import com.cliffex.Fixezi.util.IabHelper;
-import com.cliffex.Fixezi.util.IabResult;
-import com.cliffex.Fixezi.util.Inventory;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.cliffex.Fixezi.util.Purchase;
 import com.cliffex.Fixezi.util.TimePickerFragment;
@@ -68,8 +65,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IncomingJobRequestDetail extends
-        AppCompatActivity implements
-        IabBroadcastReceiver.IabBroadcastListener {
+        AppCompatActivity implements IabBroadcastReceiver.IabBroadcastListener {
 
     Toolbar toolbar;
     TextView toolbar_textview, ProblemDetail, FlexibleDateDetail,
@@ -77,11 +73,12 @@ public class IncomingJobRequestDetail extends
     TextView qotesaccepted, tv_canceljob, HomeNmberDetail, MobileNmberDetail, JobRequestDetail,
             FullNameDetail, FullAddressDetailUser, HomeNmberDetailUser, WorkNmberDetailUser,
             MobileNmberDetailUser, EmailDetail;
-    RelativeLayout RLDetail;
+    RelativeLayout RLDetail, RLBill, RLrelation;
     boolean isDateFlexi, isTimeFlexi, isReschedule;
     SessionTradesman sessionTradesman;
     Button AcceptJobBt, RejectJobBt, btn_reschedule;
     public static String ProblemId;
+    Context mContext = IncomingJobRequestDetail.this;
     IncomingRequestBean incomingRequestBean;
     RelativeLayout NavigationUpIM;
     IncomingTrades_Response successResponse;
@@ -95,7 +92,7 @@ public class IncomingJobRequestDetail extends
     public static String strday;
     public static String strdate = null;
     RatingBar ratin1, ratin2, ratin3;
-    String paymentPLan = "";
+    String paymentPLan = "", rStatus = "";
 
     // Debug tag, for logging
     static final String TAG = "fixezi";
@@ -132,10 +129,25 @@ public class IncomingJobRequestDetail extends
 
         loadWhichPlan();
 
+        rStatus = getIntent().getStringExtra("rstatus");
+
+        Log.e("rStatusrStatus", "rStatus = " + rStatus);
+
         RLDetail = (RelativeLayout) findViewById(R.id.RLDetail);
+        RLBill = (RelativeLayout) findViewById(R.id.RLBill);
+        RLrelation = (RelativeLayout) findViewById(R.id.RLrelation);
         ProblemDetail = (TextView) findViewById(R.id.ProblemDetail);
         billPayerUser = (TextView) findViewById(R.id.billPayerUser);
         ralationUser = (TextView) findViewById(R.id.ralationUser);
+
+        if (rStatus == null || rStatus.equals("")) {
+            RLBill.setVisibility(View.GONE);
+            RLrelation.setVisibility(View.GONE);
+        } else {
+            RLBill.setVisibility(View.VISIBLE);
+            RLrelation.setVisibility(View.VISIBLE);
+        }
+
         DateDetail = (TextView) findViewById(R.id.DateDetail);
         TimeDetail = (TextView) findViewById(R.id.TimeDetail);
         tv_canceljob = (TextView) findViewById(R.id.tv_canceljob);
@@ -474,6 +486,7 @@ public class IncomingJobRequestDetail extends
                 dialog.dismiss();
             }
         });
+
         dialog.show();
     }
 
@@ -494,7 +507,7 @@ public class IncomingJobRequestDetail extends
             public void onClick(View v) {
                 dialog.dismiss();
                 jobPaymentDialog();
-                //                String payload = sessionTradesman.getId();
+//                String payload = sessionTradesman.getId();
 //                try {
 //                    mHelper.launchPurchaseFlow(IncomingJobRequestDetail.this, Appconstants.SKU_PAY_PER_JOB, RC_REQUEST, mPurchaseFinishedListener, payload);
 //                } catch (IabHelper.IabAsyncInProgressException e) {
@@ -599,11 +612,43 @@ public class IncomingJobRequestDetail extends
     @Override
     protected void onResume() {
         super.onResume();
+
+        getPaymentStatusApi();
+
         if (isReschedule) {
             if (isDateFlexi || isTimeFlexi) {
                 dateTimeEditDialog();
             }
         }
+
+    }
+
+    private void getPaymentStatusApi() {
+
+        ProjectUtil.showProgressDialog(mContext, true, getString(R.string.please_wait));
+        AndroidNetworking.post(HttpPAth.Urlpath + "get_payment_status")
+                .addBodyParameter("user_id", sessionTradesman.getId())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            WhichPlan = jsonObject.getString("plan_type");
+                            // loadWhichPlan();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("asdasdasdas", "response = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
+
     }
 
     private void JsonJobDetail(String problem_id) {
@@ -922,12 +967,14 @@ public class IncomingJobRequestDetail extends
                 params.put("user_id", paramss[2]);
 
                 StringBuilder postData = new StringBuilder();
+
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (postData.length() != 0) postData.append('&');
                     postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
                     postData.append('=');
                     postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
                 }
+
                 String urlParameters = postData.toString();
                 URLConnection conn = url.openConnection();
 
@@ -963,7 +1010,6 @@ public class IncomingJobRequestDetail extends
                 e.printStackTrace();
                 Log.e("EMESSAGE", e.getMessage());
             }
-
             return null;
         }
 
@@ -995,7 +1041,7 @@ public class IncomingJobRequestDetail extends
 
     }
 
-    // Listener that's called when we finish querying the items and subscriptions we own
+// Listener that's called when we finish querying the items and subscriptions we own
 //    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
 //        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
 //            Log.d(TAG, "Query inventory finished.");
@@ -1206,7 +1252,8 @@ public class IncomingJobRequestDetail extends
     }
 
     private void DateSelect() {
-        android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(IncomingJobRequestDetail.this);
+        android.app.AlertDialog.Builder ab = new
+                android.app.AlertDialog.Builder(IncomingJobRequestDetail.this);
         final DatePicker dp = new DatePicker(IncomingJobRequestDetail.this);
         ab.setView(dp);
         ab.setPositiveButton("SET", new DialogInterface.OnClickListener() {

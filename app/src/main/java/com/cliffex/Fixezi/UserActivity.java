@@ -49,7 +49,6 @@ import com.cliffex.Fixezi.Model.PendingRequestBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.GPSTracker;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.NonScrollListView;
 import com.cliffex.Fixezi.util.MyApp;
 import com.google.android.gms.analytics.HitBuilders;
@@ -92,6 +91,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class UserActivity extends AppCompatActivity
         implements TimePickerDialogSet.OnTimeSetListener,
@@ -104,9 +104,7 @@ public class UserActivity extends AppCompatActivity
     Toolbar dash_toolbar;
     String Loginuserid = "";
     Context mContext = UserActivity.this;
-    TextView toolbar_title, tradetxt, select_problem,
-            pleseeseleccttttxtv, enter_adddress, setdatetimeee,
-            selecttrade, YourAddressTV;
+    TextView toolbar_title, tradetxt, select_problem, pleseeseleccttttxtv, enter_adddress, setdatetimeee, selecttrade, YourAddressTV;
     Button acceptbtn, commbtn, ressbtnn;
     String redcolor = "#00A69B";
     LinearLayout sellecttttradinglayyy, uplayy, selectproblembackkk;
@@ -130,8 +128,8 @@ public class UserActivity extends AppCompatActivity
     ImageView ProfileIM;
     RelativeLayout NavigationUpIM;
     RelativeLayout CommercialInfo, ResidentialInfo, YourAddressInfo, OtherAddressInfo;
-    int jobCount = 0;
-    TextView JobCountTV;
+    public static int jobCount = 0;
+    public static TextView JobCountTV;
     RelativeLayout SelectProblemInfoRL, SelectTradeInfoRL;
     private LayoutInflater li;
     private View promptsView;
@@ -495,6 +493,7 @@ public class UserActivity extends AppCompatActivity
                 Log.e("sfasdasdas", "sfasdasdas = " + Appconstants.SITE_ADDRESS);
 
                 if (!isError) {
+
                     if (address != null || !(address.equals(""))) {
                         Appconstants.SITE_ADDRESS = address;
                     }
@@ -515,6 +514,7 @@ public class UserActivity extends AppCompatActivity
                     i.putExtra("select_status", "quick_search");
                     startActivity(i);
                 }
+
             }
 
         });
@@ -566,7 +566,6 @@ public class UserActivity extends AppCompatActivity
                 }
 
                 if (!isError) {
-
                     Appconstants.JOB_REQUEST = Any_Job_Request.getText().toString();
                     selectAddress = "your address";
                     Appconstants.WHICH_TYPE_ADDRESS = "Main Address";
@@ -598,13 +597,9 @@ public class UserActivity extends AppCompatActivity
 
                     enterpostaladress.setBackgroundResource(R.drawable.outline_round_10);
                     enter_adddress.setTextColor(Color.parseColor("#000000"));
-
                 }
 
-                //                if (status.equals("login")) {
-//
-//
-//
+//                if (status.equals("login")) {
 //                } else {
 //                    AddressAlertDailoge();
 //                }
@@ -873,6 +868,8 @@ public class UserActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        JobCountTV.setText(String.valueOf(jobCount));
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "UserActivity");
@@ -1175,10 +1172,10 @@ public class UserActivity extends AppCompatActivity
 
             // Set the results into TextViews
             holder.ProblemNameTV.setText(data.get(position));
+
             holder.ProblemNameTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (holder.ProblemNameTV.isChecked()) {
                         holder.ProblemNameTV.setChecked(false);
                         Selecteddata.remove(data.get(position));
@@ -1194,11 +1191,13 @@ public class UserActivity extends AppCompatActivity
             });
 
             return view;
+
         }
 
         public class ViewHolder {
             CheckedTextView ProblemNameTV;
         }
+
     }
 
     private class JsonGetAllJobs extends AsyncTask<String, String, List<PendingRequestBean>> {
@@ -1210,6 +1209,8 @@ public class UserActivity extends AppCompatActivity
 
         @Override
         protected List<PendingRequestBean> doInBackground(String... paramss) {
+
+            Log.e("asdasdas","Urlpath = " + sessionUser.getId());
 
             try {
                 URL url = new URL(HttpPAth.Urlpath + "get_bookingList_by_userid&");
@@ -1320,18 +1321,15 @@ public class UserActivity extends AppCompatActivity
                 }
 
                 if (!(index == null)) {
-
-                    Intent intent = new Intent(UserActivity.this, RatingSystem.class);
-
-                    intent.putExtra("TradesmanId", result.get(Integer.parseInt(index)).getProblem().getTradesman_id());
-                    intent.putExtra("ProblemId", result.get(Integer.parseInt(index)).getProblem().getId());
-                    startActivity(intent);
-
-                } else {
-
-                }
+/* 19-02-2022 Code Commented */
+//                    Intent intent = new Intent(UserActivity.this, RatingSystem.class);
+//                    intent.putExtra("TradesmanId", result.get(Integer.parseInt(index)).getProblem().getTradesman_id());
+//                    intent.putExtra("ProblemId", result.get(Integer.parseInt(index)).getProblem().getId());
+//                    startActivity(intent);
+                } else {}
 
                 jobCount = result.size();
+                Log.e("asdasdas","jobCountjobCount = " + jobCount);
                 String jobCountStr = String.valueOf(jobCount);
                 JobCountTV.setText(jobCountStr);
 

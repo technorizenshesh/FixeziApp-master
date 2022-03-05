@@ -1,7 +1,7 @@
 package com.cliffex.Fixezi;
 
 import android.os.AsyncTask;
-
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 /**
  * Created by ritesh on 5/1/17.

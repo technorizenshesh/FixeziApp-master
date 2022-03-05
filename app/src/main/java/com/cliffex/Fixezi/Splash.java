@@ -25,6 +25,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Splash extends AppCompatActivity {
 
@@ -164,16 +165,14 @@ public class Splash extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        ActivityCompat.requestPermissions(
+        ActivityCompat.requestPermissions (
                 this,
-                new String[]{
+                new String[] {
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
                         Manifest.permission.CAMERA,
-                        Manifest.permission.WAKE_LOCK,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                        Manifest.permission.READ_EXTERNAL_STORAGE },
                 MY_PERMISSIONS_REQUEST_WRITE_FIELS
         );
     }

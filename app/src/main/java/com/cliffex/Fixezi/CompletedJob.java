@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,10 +84,8 @@ public class CompletedJob extends AppCompatActivity {
 
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonTaskGetAllJobRequest().execute();
         } else {
-
             Toast.makeText(CompletedJob.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
@@ -95,11 +93,9 @@ public class CompletedJob extends AppCompatActivity {
 
     public class JsonTaskGetAllJobRequest extends AsyncTask<String, String, List<IncomingRequestBean>> {
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -109,7 +105,6 @@ public class CompletedJob extends AppCompatActivity {
                 URL url = new URL(HttpPAth.Urlpath + "Tradesman_completed_byid&");
                 Map<String, Object> params = new LinkedHashMap<>();
                 params.put("Tradesman_id", sessionTradesman.getId());
-
 
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
@@ -142,7 +137,6 @@ public class CompletedJob extends AppCompatActivity {
 
                 List<IncomingRequestBean> incomingRequestListBeanList = new ArrayList<IncomingRequestBean>();
 
-
                 JSONArray jsonArray = new JSONArray(response);
 
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -162,7 +156,6 @@ public class CompletedJob extends AppCompatActivity {
                     incomingRequestBean.setUsername(object.getString("username"));
                     incomingRequestBean.setStreet(object.getString("street"));
                     incomingRequestBean.setHousenoo(object.getString("housenoo"));
-
 
                     JSONArray ProblemArray = object.getJSONArray("problem");
                     JSONObject ProblemObject = ProblemArray.getJSONObject(0);
@@ -207,18 +200,14 @@ public class CompletedJob extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<IncomingRequestBean> result) {
             super.onPostExecute(result);
-
             if (result == null) {
-
                 NoJobsFoundTV4.setVisibility(View.VISIBLE);
             } else if (result.isEmpty()) {
-
                 NoJobsFoundTV4.setVisibility(View.VISIBLE);
             } else {
                 AlbumsAdapter adapter = new AlbumsAdapter(CompletedJob.this, result);
                 recyclerView.setAdapter(adapter);
             }
-
         }
 
     }
@@ -243,7 +232,6 @@ public class CompletedJob extends AppCompatActivity {
                 FlexibleTimeJobRequest = (TextView) view.findViewById(R.id.FlexibleTimeJobRequest);
                 StatusTV = (TextView) view.findViewById(R.id.StatusTV);
                 NumberTv = (TextView) view.findViewById(R.id.NumberTv);
-
             }
         }
 
@@ -264,7 +252,7 @@ public class CompletedJob extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-            holder.StatusTV.setText("Completed-" + incomingRequestListBean.get(position).getProblem().getSub_status());
+            holder.StatusTV.setText("Completed"/* + incomingRequestListBean.get(position).getProblem().getSub_status()*/);
             holder.StatusTV.setTextColor(Color.parseColor("#32CD32"));
 
             holder.ProblemJobRequest.setText(incomingRequestListBean.get(position).getProblem().getProblem());

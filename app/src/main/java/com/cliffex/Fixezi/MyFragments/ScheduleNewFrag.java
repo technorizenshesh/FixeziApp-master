@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.R;
 import com.cliffex.Fixezi.ScheduleJobsDetailTradesman;
 import com.cliffex.Fixezi.ScheduleJobsDetailWorker;
@@ -46,6 +45,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 /**
  * A simple {@link Fragment} subclass.

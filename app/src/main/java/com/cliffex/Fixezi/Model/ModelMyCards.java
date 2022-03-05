@@ -52,6 +52,8 @@ public class ModelMyCards implements Serializable {
 
         private String address_country;
 
+        private String default_source;
+
         private String address_line1;
 
         private String address_line1_check;
@@ -89,6 +91,14 @@ public class ModelMyCards implements Serializable {
         private String name;
 
         private String tokenization_method;
+
+        public String getDefault_source() {
+            return default_source;
+        }
+
+        public void setDefault_source(String default_source) {
+            this.default_source = default_source;
+        }
 
         public void setId(String id){
             this.id = id;

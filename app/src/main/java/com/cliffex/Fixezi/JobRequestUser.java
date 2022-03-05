@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -29,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cliffex.Fixezi.Model.PendingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +55,7 @@ import java.util.Map;
 public class JobRequestUser extends AppCompatActivity {
 
     Toolbar toolbar;
-    TextView toolbar_textview,rut;
+    TextView toolbar_textview, rut;
     SessionUser sessionUser;
     RecyclerView recyclerView;
     Context mContext = JobRequestUser.this;
@@ -90,7 +90,7 @@ public class JobRequestUser extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new AlbumsAdapter(mContext,null);
+        adapter = new AlbumsAdapter(mContext, null);
 
     }
 
@@ -203,16 +203,16 @@ public class JobRequestUser extends AppCompatActivity {
         protected void onPostExecute(List<PendingRequestBean> result) {
             super.onPostExecute(result);
 
-            if (result==null) {
+            if (result == null) {
 
             } else {
 
-                for(int i=0;i<result.size();i++) {
-                   if(result.get(i).getProblem().getOrder_status().equalsIgnoreCase("COMPLETED") ||
-                      result.get(i).getProblem().getOrder_status().equalsIgnoreCase("RATED")) {
-                      result.remove(i);
-                      i--;
-                   }
+                for (int i = 0; i < result.size(); i++) {
+                    if (result.get(i).getProblem().getOrder_status().equalsIgnoreCase("COMPLETED") ||
+                            result.get(i).getProblem().getOrder_status().equalsIgnoreCase("RATED")) {
+                        result.remove(i);
+                        i--;
+                    }
                 }
 
                 adapter = new AlbumsAdapter(JobRequestUser.this, result);
@@ -259,7 +259,7 @@ public class JobRequestUser extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder,@SuppressLint("RecyclerView") final int position) {
+        public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
             holder.ProblemJobRequest.setText(pendingRequestListBean.get(position).getProblem().getProblem());
             holder.DateJobRequest.setText(pendingRequestListBean.get(position).getProblem().getDate());
@@ -311,9 +311,9 @@ public class JobRequestUser extends AppCompatActivity {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(pendingRequestListBean.get(position).getProblem().getOrder_status().equalsIgnoreCase("CANCELLED") ||
-                            pendingRequestListBean.get(position).getProblem().getOrder_status().equalsIgnoreCase("REJECTED")){
-                        cancelledJobDialog(pendingRequestListBean,pendingRequestListBean.get(position).getProblem().getOrder_status(),position);
+                    if (pendingRequestListBean.get(position).getProblem().getOrder_status().equalsIgnoreCase("CANCELLED") ||
+                            pendingRequestListBean.get(position).getProblem().getOrder_status().equalsIgnoreCase("REJECTED")) {
+                        cancelledJobDialog(pendingRequestListBean, pendingRequestListBean.get(position).getProblem().getOrder_status(), position);
                     } else {
                         Intent intent = new Intent(JobRequestUser.this, JobRequestUserDetail.class);
                         intent.putExtra("ProblemId", pendingRequestListBean.get(position).getProblem().getId());
@@ -507,7 +507,8 @@ public class JobRequestUser extends AppCompatActivity {
     }
 
     private void cancelledJobDialog(final List<PendingRequestBean> pendingRequestListBean,
-                                    final String Status,final int position) {
+                                    final String Status, final int position) {
+
         final Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.setContentView(R.layout.cancel_job_remove_dialog);
 
@@ -549,11 +550,11 @@ public class JobRequestUser extends AppCompatActivity {
                                 URL url = new URL(HttpPAth.Urlpath + "delete_booking_problem&");
                                 Map<String, Object> params = new LinkedHashMap<>();
                                 params.put("problem_id", paramss[0]);
+                                params.put("type", "USER");
 
                                 StringBuilder postData = new StringBuilder();
                                 for (Map.Entry<String, Object> param : params.entrySet()) {
-                                    if (postData.length() != 0)
-                                        postData.append('&');
+                                    if (postData.length() != 0) postData.append('&');
                                     postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
                                     postData.append('=');
                                     postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
@@ -599,7 +600,9 @@ public class JobRequestUser extends AppCompatActivity {
                         protected void onPostExecute(String result) {
                             super.onPostExecute(result);
 
-                            if (result == null) {} else if (result.equalsIgnoreCase("successfully")) {
+                            if (result == null) {
+                            } else if (result.equalsIgnoreCase("successfully")) {
+                                UserActivity.jobCount = UserActivity.jobCount - 1;
                                 Toast.makeText(JobRequestUser.this, "Deleted", Toast.LENGTH_SHORT).show();
                                 pendingRequestListBean.remove(position);
                                 adapter.notifyDataSetChanged();
@@ -610,6 +613,7 @@ public class JobRequestUser extends AppCompatActivity {
                     }
 
                     new JsonDelete().execute(pendingRequestListBean.get(position).getProblem().getId());
+                    Log.e("asdasdasdsa", "Request ID = " + pendingRequestListBean.get(position).getProblem().getId());
 
                 } else if (Status.equalsIgnoreCase("ACCEPTED")) {
 
@@ -640,7 +644,8 @@ public class JobRequestUser extends AppCompatActivity {
                         }
 
                         dialog.cancel();
-//                        android.support.v7.app.AlertDialog.Builder builder1 = new android.support.v7.app.AlertDialog.Builder(JobRequestUser.this);
+
+                        //                        android.support.v7.app.AlertDialog.Builder builder1 = new android.support.v7.app.AlertDialog.Builder(JobRequestUser.this);
 //                        builder1.setMessage("Are you sure you want to cancel?");
 //                        builder1.setCancelable(true);
 //

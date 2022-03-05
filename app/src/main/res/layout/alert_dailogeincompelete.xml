@@ -38,7 +38,6 @@
 
             </RadioButton>
 
-
              <RadioButton
                 android:id="@+id/radio_btn_complete"
                 android:layout_width="wrap_content"
@@ -50,7 +49,7 @@
             </RadioButton>
 
             <RadioButton
-                android:id="@+id/reschedule"
+                android:id="@+id/rb_need_to_return"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -60,6 +59,7 @@
             </RadioButton>
 
             <RadioButton
+                android:id="@+id/rb_need_to_quote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"

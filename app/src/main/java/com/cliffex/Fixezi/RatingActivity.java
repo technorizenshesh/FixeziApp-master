@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.cliffex.Fixezi.Other.MySharedPref.getData;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class RatingActivity extends AppCompatActivity {
 

@@ -2,15 +2,14 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.app.Dialog;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,11 +34,13 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialogSet;
 
-
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by technorizen8 on 3/5/16.
@@ -431,27 +433,33 @@ public class MyDateAndTimePick extends AppCompatActivity implements
         });
 
         if (type_string.equals("time")) {
-            timePicker1.setIs24HourView(true);
-            final Calendar currentDate = Calendar.getInstance();
-            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
-                    android.R.style.Theme_Holo_Light_Dialog,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            date.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            date.set(Calendar.MINUTE, minute);
-                            RadialPickerLayout view1 = null;
-                            final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
-                            final int minute1 = date.get(Calendar.MINUTE);
-                            int second1 = currentDate.get(Calendar.SECOND);
-                            MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
-                        }
-                    }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
-            timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            LayoutInflater inflater = getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
-            timePickerDialog.setCustomTitle(dialogView);
-            timePickerDialog.show();
+
+            Calendar currentDate = Calendar.getInstance();
+            CustomTimePickerDialog customTimePickerDialog = new CustomTimePickerDialog(mContext,
+                    onTimeSetListener, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+            customTimePickerDialog.show();
+
+            //            timePicker1.setIs24HourView(true);
+//            final Calendar currentDate = Calendar.getInstance();
+//            TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
+//                    android.R.style.Theme_Holo_Light_Dialog,
+//                    new TimePickerDialog.OnTimeSetListener() {
+//                        @Override
+//                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                            date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+//                            date.set(Calendar.MINUTE, minute);
+//                            RadialPickerLayout view1 = null;
+//                            final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
+//                            final int minute1 = date.get(Calendar.MINUTE);
+//                            int second1 = currentDate.get(Calendar.SECOND);
+//                            MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
+//                        }
+//                    }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+//            timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            LayoutInflater inflater = getLayoutInflater();
+//            View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
+//            timePickerDialog.setCustomTitle(dialogView);
+//            timePickerDialog.show();
 
 //            TimePickerDialogSet tpd = TimePickerDialogSet.newInstance(MyDateAndTimePick.this, now.get(Calendar.HOUR_OF_DAY),
 //                    now.get(Calendar.MINUTE),false);
@@ -467,7 +475,7 @@ public class MyDateAndTimePick extends AppCompatActivity implements
 
         }
 
-        //        picktimetxtviewlayyy.setOnClickListener(new View.OnClickListener() {
+//        picktimetxtviewlayyy.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //
@@ -493,25 +501,35 @@ public class MyDateAndTimePick extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 final Calendar currentDate = Calendar.getInstance();
-                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
-                        android.R.style.Theme_Holo_Light_Dialog,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                date.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                date.set(Calendar.MINUTE, minute);
-                                RadialPickerLayout view1 = null;
-                                final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
-                                final int minute1 = date.get(Calendar.MINUTE);
-                                int second1 = currentDate.get(Calendar.SECOND);
-                                MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
-                            }
-                        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
-                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
-                timePickerDialog.setCustomTitle(dialogView);
-                timePickerDialog.show();
+
+                Log.e("asdasdasdasdasd","currentDate.get(Calendar.HOUR_OF_DAY) = " + currentDate.get(Calendar.HOUR_OF_DAY));
+                Log.e("asdasdasdasdasd","currentDate.get(Calendar.MINUTE) = " + currentDate.get(Calendar.MINUTE));
+
+                CustomTimePickerDialog customTimePickerDialog = new CustomTimePickerDialog(mContext,
+                        onTimeSetListener, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+                customTimePickerDialog.show();
+
+//                final Calendar currentDate = Calendar.getInstance();
+//                TimePickerDialog timePickerDialog = new TimePickerDialog(mContext,
+//                        android.R.style.Theme_Holo_Light_Dialog,
+//                        new TimePickerDialog.OnTimeSetListener() {
+//                            @Override
+//                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                                date.set(Calendar.HOUR_OF_DAY, hourOfDay);
+//                                date.set(Calendar.MINUTE, minute);
+//                                RadialPickerLayout view1 = null;
+//                                final int hourOfDay1 = date.get(Calendar.HOUR_OF_DAY);
+//                                final int minute1 = date.get(Calendar.MINUTE);
+//                                int second1 = currentDate.get(Calendar.SECOND);
+//                                MyDateAndTimePick.this.onTimeSet(view1, hourOfDay1, minute1, second1);
+//                            }
+//                        }, currentDate.get(Calendar.HOUR_OF_DAY), currentDate.get(Calendar.MINUTE), false);
+//                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                LayoutInflater inflater = getLayoutInflater();
+//                View dialogView = inflater.inflate(R.layout.custom_date_time_picker_dialog, null);
+//                timePickerDialog.setCustomTitle(dialogView);
+//                timePickerDialog.show();
+
 //                Calendar now = Calendar.getInstance();
 //                TimePickerDialogSet tpd = TimePickerDialogSet.newInstance(MyDateAndTimePick.this, now.get(Calendar.HOUR_OF_DAY),
 //                        now.get(Calendar.MINUTE), false);
@@ -524,10 +542,86 @@ public class MyDateAndTimePick extends AppCompatActivity implements
 //                });
 //                tpd.setStyle(DialogFragment.STYLE_NO_TITLE,android.R.style.Theme_Holo_Light_Dialog);
 //                tpd.show(getFragmentManager(), "Timepickerdialog");
+
             }
 
         });
 
+    }
+
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Calendar calendar = Calendar.getInstance();
+            RadialPickerLayout view1 = null;
+            int second1 = calendar.get(Calendar.SECOND);
+            MyDateAndTimePick.this.onTimeSet(view1, hourOfDay, minute, second1);
+        }
+    };
+
+    public class CustomTimePickerDialog extends TimePickerDialog {
+
+        private final static int TIME_PICKER_INTERVAL = 15;
+        private TimePicker mTimePicker;
+        private final OnTimeSetListener mTimeSetListener;
+        int hoursOfTheDay, MinutesOfTheday;
+
+        public CustomTimePickerDialog(Context context, OnTimeSetListener listener,
+                                      int hourOfDay, int minute, boolean is24HourView) {
+            super(context, TimePickerDialog.THEME_HOLO_LIGHT, null, hourOfDay,
+                    minute / TIME_PICKER_INTERVAL, is24HourView);
+            mTimeSetListener = listener;
+            hoursOfTheDay = hourOfDay;
+            MinutesOfTheday = minute;
+        }
+
+        @Override
+        public void updateTime(int hourOfDay, int minuteOfHour) {
+            mTimePicker.setCurrentHour(hourOfDay);
+            mTimePicker.setCurrentMinute(minuteOfHour / TIME_PICKER_INTERVAL);
+            Log.e("sdfsdfsdff","minuteSpinner");
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case BUTTON_POSITIVE:
+                    if (mTimeSetListener != null) {
+                        mTimeSetListener.onTimeSet(mTimePicker, mTimePicker.getCurrentHour(),
+                                mTimePicker.getCurrentMinute() * TIME_PICKER_INTERVAL);
+                    }
+                    break;
+                case BUTTON_NEGATIVE:
+                    cancel();
+                    break;
+            }
+        }
+
+        @Override
+        public void onAttachedToWindow() {
+            super.onAttachedToWindow();
+            try {
+                Class<?> classForid = Class.forName("com.android.internal.R$id");
+                Field timePickerField = classForid.getField("timePicker");
+                mTimePicker = (TimePicker) findViewById(timePickerField.getInt(null));
+                Field field = classForid.getField("minute");
+
+                NumberPicker minuteSpinner = (NumberPicker) mTimePicker
+                        .findViewById(field.getInt(null));
+                minuteSpinner.setMinValue(0);
+                minuteSpinner.setMaxValue((60 / TIME_PICKER_INTERVAL) - 1);
+                List<String> displayedValues = new ArrayList<>();
+                for (int i = 0; i < 60; i += TIME_PICKER_INTERVAL) {
+                    displayedValues.add(String.format("%02d", i));
+                }
+                minuteSpinner.setDisplayedValues(displayedValues
+                        .toArray(new String[displayedValues.size()]));
+                updateTime(hoursOfTheDay, MinutesOfTheday);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void alertDialogYesNo(String msg) {

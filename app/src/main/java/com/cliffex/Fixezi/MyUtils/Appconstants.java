@@ -70,6 +70,7 @@ public class Appconstants {
     public static final String SKU_PAY_PER_JOB= "pay_per_job";
     */
     public static final String SKU_ECONOMY = "economy_plan_demo";
+    public static final String PAY_PER_JOB = "PayPerJob";
     public static final String SKU_FUll = "full_plan_demo";
     public static final String SKU_PAY_PER_JOB = "pay_per_job_demo";
 

@@ -111,6 +111,7 @@ import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
 import static com.cliffex.Fixezi.R.drawable.btn_skyblue;
 
 import okhttp3.OkHttpClient;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TradesmanSignup2 extends AppCompatActivity {
 

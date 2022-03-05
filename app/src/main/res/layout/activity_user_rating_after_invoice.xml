@@ -1,105 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
-
+    android:orientation="vertical"
+    tools:context=".UserRating">
 
     <include
-        android:id="@+id/rating_system_toolbar"
+        android:id="@+id/profile_toolbar"
         layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rating_system_toolbar">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/flxil"
-                android:layout_width="match_parent"
+            <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                android:id="@+id/tvCustomerName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@drawable/border_black_solid_white"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:padding="@dimen/_10sdp"
+                android:hint="Customer Name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp" />
 
-                <ImageView
-                    android:id="@+id/fxlog"
-                    android:layout_width="@dimen/new_logo_width"
-                    android:layout_height="@dimen/new_logo_height"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/final_logoupdate" />
-
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rat1"
-                android:layout_width="fill_parent"
+            <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/flxil"
-                android:layout_marginTop="20dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="used your company,\nplease rate them"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16dp" />
 
-                >
-
-                <RelativeLayout
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/grey">
-
-                    <com.cliffex.Fixezi.MyUtils.MyFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="Rating Categories are"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16dp" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="fill_parent"
-                        android:layout_alignParentRight="true"
-
-                        android:background="@color/black" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="fill_parent"
-                        android:layout_alignParentLeft="true"
-
-                        android:background="@color/black" />
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-
-                        android:layout_alignParentTop="true"
-                        android:background="@color/black" />
-
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1dp"
-
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/black" />
-                </RelativeLayout>
-
-            </RelativeLayout>
-
+            <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@drawable/border_black_solid_white"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="Ratings Categories are"
+                android:textSize="16dp" />
 
             <RelativeLayout
                 android:id="@+id/rat2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rat1">
-
+                android:layout_below="@+id/rat1"
+                android:layout_marginTop="20dp">
 
                 <RelativeLayout
-
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
@@ -112,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:text="Efficiency"
+                        android:text="Easily Contacted"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16dp" />
 
@@ -124,7 +87,6 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorPrimary" />
 
-
                     <RatingBar
                         android:id="@+id/ratin1"
                         style="@style/StarRatingBar"
@@ -133,18 +95,16 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="38dp"
+                        android:isIndicator="false"
                         android:numStars="5"
+                        android:rating="5"
                         android:stepSize="1" />
-
 
                 </RelativeLayout>
 
-
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/rat3"
@@ -152,14 +112,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rat2">
 
-
                 <RelativeLayout
-
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/ratebggg">
 
                     <com.cliffex.Fixezi.MyUtils.MyFontTextView
@@ -168,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:text="Workmanship"
+                        android:text="Ease Of Job"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16dp" />
 
@@ -190,11 +148,12 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="38dp"
+                        android:isIndicator="false"
                         android:numStars="5"
+                        android:rating="5"
                         android:stepSize="1" />
 
                 </RelativeLayout>
-
 
             </RelativeLayout>
 
@@ -204,13 +163,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rat3">
 
-
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/ratebggg">
 
                     <com.cliffex.Fixezi.MyUtils.MyFontTextView
@@ -219,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:text="Price"
+                        android:text="Payment \non completion"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16dp" />
 
@@ -231,19 +189,97 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorPrimary" />
 
-
                     <RatingBar
                         android:id="@+id/ratin3"
                         style="@style/StarRatingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tv3_ratin33"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="38dp"
+                        android:isIndicator="false"
                         android:numStars="5"
+                        android:rating="5"
                         android:stepSize="1" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rat5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rat4">
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ratebggg">
+
+                    <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                        android:id="@+id/tv3_ratins3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="Job Completed / Cancelled"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/tv_canceljob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:text="0/6"
+                        android:textColor="@color/black" />
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rat4">
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ratebggg">
+
+                    <com.cliffex.Fixezi.MyUtils.MyFontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:text="Quotes accepted/Cancelled "
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/qotesaccepted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:text="3/2"
+                        android:textColor="@color/black" />
+
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -356,12 +392,10 @@
 
                 </RelativeLayout>
 
-
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 
-
-</RelativeLayout>
+</LinearLayout>

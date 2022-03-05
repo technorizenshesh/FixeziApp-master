@@ -28,7 +28,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 /**
  * Created by technorizen8 on 13/4/16.
  */

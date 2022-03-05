@@ -145,6 +145,8 @@
     <string name="type_your_quote_here">Type Your Quote Here</string>
     <string name="hire_trades_at_the">Hire trades at the</string>
     <string name="speed_of_thought">speed of thought</string>
+    <string name="_7_days">7 Days</string>
+    <string name="doller_sign">$</string>
 
     <string-array name="imageFor">
         <item>1</item>

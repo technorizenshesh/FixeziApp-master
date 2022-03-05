@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Subscribe extends AppCompatActivity {
 

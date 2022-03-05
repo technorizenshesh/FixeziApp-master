@@ -2,8 +2,8 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +20,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Constant.Constant;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.Other.AppConfig;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.cooltechworks.creditcarddesign.CardEditActivity;
 import com.cooltechworks.creditcarddesign.CreditCardUtils;
@@ -31,28 +29,18 @@ import com.stripe.android.Stripe;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 
-import org.ankit.perfectdialog.EasyDialog;
-import org.ankit.perfectdialog.EasyDialogListener;
-import org.ankit.perfectdialog.Icon;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CardPayment_Activity extends AppCompatActivity {
 
     final int GET_NEW_CARD = 2;
     private CreditCardView creditCardView;
-    private String cardHolderName,cardNumber,expiry,cvv;
+    private String cardHolderName, cardNumber, expiry, cvv;
     Toolbar Toolbarcard;
     TextView toolbar_title;
     private String token_id;
@@ -69,7 +57,7 @@ public class CardPayment_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_card_payment_);
 
         instance = this;
-        
+
         creditCardView = (CreditCardView) findViewById(R.id.cardview);
         Toolbarcard = (Toolbar) findViewById(R.id.Toolbarcard);
         NavigationUpIM = (RelativeLayout) Toolbarcard.findViewById(R.id.NavigationUpIM);
@@ -82,22 +70,24 @@ public class CardPayment_Activity extends AppCompatActivity {
         btn_paynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Card.Builder card = new Card.Builder(cardNumber,
                         Integer.valueOf(expiry.split("/")[0]),
                         Integer.valueOf(expiry.split("/")[1]), cvv);
 
-                Log.e("sdfdsfdsfdsf","cardHolderName____________________" + cardHolderName);
-                Log.e("sdfdsfdsfdsf","cardNumber________________________" + cardNumber);
-                Log.e("sdfdsfdsfdsf","expirymonth____________________________" + expiry.split("/")[0]);
-                Log.e("sdfdsfdsfdsf","expirymonthyear____________________________" + expiry.split("/")[1]);
-                Log.e("sdfdsfdsfdsf","cvv_______________________________" + cvv);
+                Log.e("sdfdsfdsfdsf", "cardHolderName____________________" + cardHolderName);
+                Log.e("sdfdsfdsfdsf", "cardNumber________________________" + cardNumber);
+                Log.e("sdfdsfdsfdsf", "expirymonth____________________________" + expiry.split("/")[0]);
+                Log.e("sdfdsfdsfdsf", "expirymonthyear____________________________" + expiry.split("/")[1]);
+                Log.e("sdfdsfdsfdsf", "cvv_______________________________" + cvv);
 
                 System.out.println("cardHolderName____________________" + cardHolderName);
                 System.out.println("cardNumber________________________" + cardNumber);
                 System.out.println("expiry____________________________" + expiry);
                 System.out.println("cvv_______________________________" + cvv);
 
-                Stripe stripe = new Stripe(mContext, Constant.STRIPE_LIVE_KEY);
+                // Stripe stripe = new Stripe(mContext, Constant.STRIPE_LIVE_KEY);
+                Stripe stripe = new Stripe(mContext, Constant.STRIPE_TEST_KEY);
 
                 ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
                 stripe.createCardToken(
@@ -109,13 +99,13 @@ public class CardPayment_Activity extends AppCompatActivity {
                                 // Toast.makeText(mContext, getString(R.string.successful), Toast.LENGTH_SHORT).show();
                                 // charge(token);
 
-                                HashMap<String,String> userdetails = sessionUser.getUserDetails();
+                                HashMap<String, String> userdetails = sessionUser.getUserDetails();
                                 String userEmail = userdetails.get("Email");
 
-                                if(cusId == null || cusId.equals("")) {
-                                    saveCardApi(token.getId(),userEmail,"PayPerJob",
-                                            cardHolderName,cardNumber,expiry.split("/")[0],
-                                            expiry.split("/")[1],cvv);
+                                if (cusId == null || cusId.equals("")) {
+                                    saveCardApi(token.getId(), userEmail, "PayPerJob",
+                                            cardHolderName, cardNumber, expiry.split("/")[0],
+                                            expiry.split("/")[1], cvv);
                                 } else {
                                     addCardApi(token.getId());
                                 }
@@ -213,22 +203,22 @@ public class CardPayment_Activity extends AppCompatActivity {
     }
 
     private void addCardApi(String token) {
-        ProjectUtil.showProgressDialog(mContext,false,"Please wait...");
-        HashMap<String,String> param = new HashMap<>();
-        param.put("cus_id",cusId);
-        param.put("source",token);
-        Log.e("addCardApiSource","param = " + param);
-        AndroidNetworking.post(HttpPAth.Urlpath+"add_card")
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+        HashMap<String, String> param = new HashMap<>();
+        param.put("cus_id", cusId);
+        param.put("source", token);
+        Log.e("addCardApiSource", "param = " + param);
+        AndroidNetworking.post(HttpPAth.Urlpath + "add_card")
                 .addBodyParameter(param)
                 .build()
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("addCardApiSource","response = " + response);
+                        Log.e("addCardApiSource", "response = " + response);
                         ProjectUtil.pauseProgressDialog();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getString("status").equals("1")) {
+                            if (jsonObject.getString("status").equals("1")) {
                                 cardSaveDialog();
                             }
                         } catch (Exception e) {
@@ -238,8 +228,8 @@ public class CardPayment_Activity extends AppCompatActivity {
 
                     @Override
                     public void onError(ANError anError) {
-                        Log.e("adfasdasdas","ANError = " + anError.getErrorDetail());
-                        Log.e("adfasdasdas","ANError = " + anError.getErrorBody());
+                        Log.e("adfasdasdas", "ANError = " + anError.getErrorDetail());
+                        Log.e("adfasdasdas", "ANError = " + anError.getErrorBody());
                     }
                 });
 
@@ -256,7 +246,7 @@ public class CardPayment_Activity extends AppCompatActivity {
             @Override
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 pDialog.dismissWithAnimation();
-                startActivity(new Intent(mContext,ChooseCardAct.class));
+                startActivity(new Intent(mContext, ChooseCardAct.class));
                 finish();
             }
         });
@@ -264,46 +254,46 @@ public class CardPayment_Activity extends AppCompatActivity {
         pDialog.show();
     }
 
-    private void saveCardApi(String token,String email,String plantype,String cardHolder,
-                             String cardNo,String expMonth,String expYear,String cvv) {
-       ProjectUtil.showProgressDialog(mContext,false,"Please wait...");
-       HashMap<String,String> param = new HashMap<>();
-       param.put("user_id",sessionUser.getId());
-       param.put("email",email);
-       param.put("description",email);
-       param.put("source",token);
-       param.put("plan_type",plantype);
-       param.put("cardHolderName",cardHolder);
-       param.put("cardnumber",cardNo);
-       param.put("expmonth",expMonth);
-       param.put("expyear",expYear);
-       param.put("cvc",cvv);
-       Log.e("adfasdasdas","param = " + param.toString());
-       AndroidNetworking.post(HttpPAth.Urlpath+"save_card")
-               .addBodyParameter(param)
-               .build()
-               .getAsString(new StringRequestListener() {
-                   @Override
-                   public void onResponse(String response) {
-                       Log.e("adfasdasdas","response = " + response);
-                       ProjectUtil.pauseProgressDialog();
-                       try {
-                           JSONObject jsonObject = new JSONObject(response);
-                           if(jsonObject.getString("status").equals("1")) {
-                               cardSaveDialog();
-                           }
-                       } catch (Exception e) {
-                           e.printStackTrace();
-                       }
-                   }
+    private void saveCardApi(String token, String email, String plantype, String cardHolder,
+                             String cardNo, String expMonth, String expYear, String cvv) {
+        ProjectUtil.showProgressDialog(mContext, false, "Please wait...");
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", sessionUser.getId());
+        param.put("email", email);
+        param.put("description", email);
+        param.put("source", token);
+        param.put("plan_type", plantype);
+        param.put("cardHolderName", cardHolder);
+        param.put("cardnumber", cardNo);
+        param.put("expmonth", expMonth);
+        param.put("expyear", expYear);
+        param.put("cvc", cvv);
+        Log.e("adfasdasdas", "param = " + param.toString());
+        AndroidNetworking.post(HttpPAth.Urlpath + "save_card")
+                .addBodyParameter(param)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("adfasdasdas", "response = " + response);
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getString("status").equals("1")) {
+                                cardSaveDialog();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                   @Override
-                   public void onError(ANError anError) {
-                       Log.e("adfasdasdas","ANError = " + anError.getErrorDetail());
-                       Log.e("adfasdasdas","ANError = " + anError.getErrorBody());
-                       ProjectUtil.pauseProgressDialog();
-                   }
-               });
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.e("adfasdasdas", "ANError = " + anError.getErrorDetail());
+                        Log.e("adfasdasdas", "ANError = " + anError.getErrorBody());
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
 
     }
 

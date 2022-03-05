@@ -438,7 +438,6 @@
                         android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
-
                         <TextView
                             android:id="@+id/FullNameDetailScheduleAJD"
                             android:layout_width="wrap_content"
@@ -447,7 +446,6 @@
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
-
 
                         <TextView
                             android:id="@+id/FullAddressDetailUserScheduleAJD"
@@ -458,9 +456,7 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-
                     </LinearLayout>
-
 
                     <RelativeLayout
                         android:id="@+id/RLTen"

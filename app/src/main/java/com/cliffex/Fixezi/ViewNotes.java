@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cliffex.Fixezi.Model.NotesBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +43,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class ViewNotes extends AppCompatActivity {
 
@@ -78,7 +78,9 @@ public class ViewNotes extends AppCompatActivity {
         toolbar_textview = (TextView) findViewById(R.id.toolbar_title);
         NavigationUpIM = (RelativeLayout) findViewById(R.id.NavigationUpIM);
         toolbar_textview.setText("View Notes");
+        
         setSupportActionBar(toolbar);
+
         NavigationUpIM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,11 +96,8 @@ public class ViewNotes extends AppCompatActivity {
         RecyclerViewVN.setItemAnimator(new DefaultItemAnimator());
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonGetNotes().execute(ProblemId);
-
         } else {
-
             Toast.makeText(ViewNotes.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
@@ -116,12 +115,10 @@ public class ViewNotes extends AppCompatActivity {
         layoutParams169 = new RelativeLayout.LayoutParams(width, MyHeight169);
         layoutParams44 = new RelativeLayout.LayoutParams(width, MyHeight44);
 
-
     }
 
 
     private class JsonGetNotes extends AsyncTask<String, String, List<NotesBean>> {
-
 
         @Override
         protected void onPreExecute() {

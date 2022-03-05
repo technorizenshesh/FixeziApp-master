@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Select_radius_Map extends AppCompatActivity implements OnMapReadyCallback {
 

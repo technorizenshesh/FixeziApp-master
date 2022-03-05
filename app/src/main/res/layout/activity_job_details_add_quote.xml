@@ -9,7 +9,6 @@
         android:id="@+id/tradesamn_toolbar"
         layout="@layout/toolbar" />
 
-
     <LinearLayout
         android:id="@+id/linear1"
         android:layout_width="match_parent"
@@ -23,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="7 Days ">
+            android:text="@string/_7_days">
         </RadioButton>
 
         <RadioButton
@@ -50,8 +49,16 @@
             android:fontFamily="@font/droidderif"
             android:text="Job 666"
             android:textColor="@color/red">
-
         </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/droidderif"
+            android:text="Quote to:"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/black"/>
 
         <EditText
             android:id="@+id/jobs_et"
@@ -71,21 +78,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_above="@id/save_send_quote"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:layout_marginBottom="@dimen/_10sdp">
 
-        <EditText
-            android:id="@+id/price_et"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/droidderif"
+            android:text="Total :"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/border_black_solid_white"
-            android:hint="Price"
-            android:inputType="number"
-            android:paddingLeft="@dimen/_10sdp">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
 
-        </EditText>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/droidderif"
+                android:text="@string/doller_sign"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textSize="@dimen/_18sdp"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/price_et"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/border_black_solid_white"
+                android:hint="Price"
+                android:inputType="number"
+                android:paddingLeft="@dimen/_10sdp">
+
+            </EditText>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -93,11 +127,11 @@
         android:id="@+id/save_send_quote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/skyblue"
         android:fontFamily="@font/droidderif"
         android:gravity="center_horizontal"
         android:padding="@dimen/_10sdp"
-        android:layout_alignParentBottom="true"
         android:text="Save &amp; send quote to user"
         android:textColor="#fff"
         android:textSize="@dimen/_14sdp">

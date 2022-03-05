@@ -52,6 +52,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static java.security.AccessController.getContext;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Select_Radius extends FragmentActivity
         implements OnMapReadyCallback,

@@ -26,8 +26,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.Model.TradesManBean;
+import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 
 import org.apache.http.HttpResponse;

@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.MyFontBoldTextView;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TrademanTermsActivity extends AppCompatActivity {
 

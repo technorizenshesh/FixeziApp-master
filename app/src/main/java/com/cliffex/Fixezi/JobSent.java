@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

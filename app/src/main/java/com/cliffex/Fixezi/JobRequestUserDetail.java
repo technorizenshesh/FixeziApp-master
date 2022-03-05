@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.Activity;
 import android.app.Dialog;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,7 +28,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.PendingRequestBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;

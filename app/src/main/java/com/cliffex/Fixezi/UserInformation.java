@@ -1,23 +1,17 @@
 package com.cliffex.Fixezi;
 
-import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
-
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -45,18 +39,14 @@ import androidx.core.content.FileProvider;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
-import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.Model.UserDetail;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.Base64Decode;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.MyUtils.InternetDetect;
-import com.cliffex.Fixezi.util.Compress;
 import com.cliffex.Fixezi.util.ProjectUtil;
-import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.apache.http.HttpEntity;
@@ -121,6 +111,7 @@ public class UserInformation extends AppCompatActivity {
     private static File getOutputMediaFile(int type) {
 
         File mediaStorageDir = new File(android.os.Environment.getExternalStorageDirectory(), "/fixezi");
+
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d("Hello Camera", "Oops! Failed create Hello Camera directory");
@@ -128,11 +119,14 @@ public class UserInformation extends AppCompatActivity {
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
         File mediaFile;
+
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg");
+
         return mediaFile;
+
     }
 
     @Override
@@ -171,7 +165,6 @@ public class UserInformation extends AppCompatActivity {
         contusertxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (signup2checkbox.isChecked()) {
                     if (InternetDetect.isConnected(UserInformation.this)) {
                         if (Validation()) {
@@ -187,7 +180,6 @@ public class UserInformation extends AppCompatActivity {
             }
 
             private boolean Validation() {
-
                 if (FnameUpdateET.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(UserInformation.this, "Enter First Name", Toast.LENGTH_SHORT).show();
                     return false;
@@ -220,7 +212,6 @@ public class UserInformation extends AppCompatActivity {
         editcheck0.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (isChecked) {
                     updatepostaledit.setEnabled(true);
                     MobileNumberedit.setEnabled(true);
@@ -248,9 +239,7 @@ public class UserInformation extends AppCompatActivity {
                     UpdateHomeAddressET.setEnabled(false);
                     img_user_image.setEnabled(false);
                 }
-
             }
-
         });
 
     }
@@ -259,7 +248,7 @@ public class UserInformation extends AppCompatActivity {
         ProjectUtil.showProgressDialog(UserInformation.this, false, "Please wait...");
         String postReceiverUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
                 address.replace(",", "+") + "&key=" + getResources().getString(R.string.places_api_key);
-        Log.e("asdasdasds", "Plcaes Url = " + postReceiverUrl);
+        Log.e("asdasdasds", "Places Url = " + postReceiverUrl);
         AndroidNetworking.get(postReceiverUrl).build().getAsString(new StringRequestListener() {
             @Override
             public void onResponse(String response) {

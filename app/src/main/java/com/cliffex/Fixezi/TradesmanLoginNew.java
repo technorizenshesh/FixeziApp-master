@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TradesmanLoginNew extends AppCompatActivity {
 

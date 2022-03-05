@@ -17,6 +17,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class RemoveAccount extends AppCompatActivity {
 

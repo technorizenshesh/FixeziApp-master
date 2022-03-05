@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.ServiceLocationBean;
 import com.cliffex.Fixezi.Model.CategoryBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.NonScrollListView;
 
 import org.apache.http.HttpResponse;

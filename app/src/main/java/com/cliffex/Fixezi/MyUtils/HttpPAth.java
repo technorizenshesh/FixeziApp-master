@@ -8,6 +8,14 @@ import android.widget.RelativeLayout;
 
 public class HttpPAth {
 
+    // get Payment Plan Api
+    // "get_payment_status&user_id
+    // {"result":"successfully","exp_status":"Expire","plan_type":"NoPlan","status":1,"message":"successfull"}
+
+    // Payment Api
+    // "add_payment
+    // user_id, plan_type, total_amount, payment_method
+
     // public static String Urlpath="http://www.technorizen.co.in/WORKSPACE6/FIXEZI/webserv.php?";
     // public static String Urlpath="https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?";
     public static String Urlpath = "https://fixezi.com.au/fixezi_admin/FIXEZI/webserv.php?";

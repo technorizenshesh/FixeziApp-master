@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -27,7 +28,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
 

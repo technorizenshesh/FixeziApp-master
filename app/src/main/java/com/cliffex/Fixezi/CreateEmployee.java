@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.Model.WorkerBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -175,7 +175,6 @@ public class CreateEmployee extends AppCompatActivity {
             }
         });
 
-
     }
 
     private class JsonCreateUser extends AsyncTask<String, String, String> {
@@ -198,6 +197,8 @@ public class CreateEmployee extends AppCompatActivity {
                 params.put("name", paramss[1]);
                 params.put("username", paramss[2]);
                 params.put("password", paramss[3]);
+
+                Log.e("asdfasfasfa","paramsparams = " + params.toString());
 
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
@@ -235,11 +236,10 @@ public class CreateEmployee extends AppCompatActivity {
                 JSONObject Object = ParentArray.getJSONObject(0);
                 String result = Object.getString("result");
                 if (result.equalsIgnoreCase("unsuccessfully")) {
-
                     Error = Object.getString("error");
                 }
-                return result;
 
+                return result;
 
             } catch (JSONException e1) {
                 e1.printStackTrace();
@@ -257,16 +257,16 @@ public class CreateEmployee extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (result == null) {
-
+                Toast.makeText(CreateEmployee.this, "User Already Exist", Toast.LENGTH_SHORT).show();
             } else if (result.equalsIgnoreCase("successfully")) {
-
                 Toast.makeText(CreateEmployee.this, "New User Created", Toast.LENGTH_SHORT).show();
                 finish();
             } else if (result.equalsIgnoreCase("unsuccessfully")) {
-
                 Toast.makeText(CreateEmployee.this, "Error : " + Error, Toast.LENGTH_SHORT).show();
             }
+
             CreateEmployeePB.setVisibility(View.GONE);
+
         }
     }
 

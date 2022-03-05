@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.AsyncTask;
@@ -25,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class PendingJobs extends AppCompatActivity {
 
@@ -90,11 +92,8 @@ public class PendingJobs extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         if (InternetDetect.isConnected(this)) {
-
             new JsonGetPendingJob().execute();
-
         } else {
-
             Toast.makeText(PendingJobs.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
 
@@ -146,7 +145,6 @@ public class PendingJobs extends AppCompatActivity {
                 Log.e("JsonAllJob", response);
 
                 List<IncomingRequestBean> incomingRequestListBeanList = new ArrayList<IncomingRequestBean>();
-
 
                 JSONArray jsonArray = new JSONArray(response);
 
@@ -269,29 +267,19 @@ public class PendingJobs extends AppCompatActivity {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
             String status = incomingRequestListBean.get(position).getProblem().getReason();
-            if (status.equalsIgnoreCase("Need to quote")) {
 
+            if (status.equalsIgnoreCase("Need to quote")) {
                 holder.StatusTV.setText(status);
                 holder.StatusTV.setTextColor(Color.parseColor("#FF0000"));
-
-
-
             } else if (status.equalsIgnoreCase("Ordered parts")) {
-
                 holder.StatusTV.setText(status);
                 holder.StatusTV.setTextColor(getResources().getColor(R.color.blue));
-
-
             } else if (status.equalsIgnoreCase("Job has been Quoted")) {
-
                 holder.StatusTV.setText(status);
                 holder.StatusTV.setTextColor(Color.parseColor("#32CD32"));
-
             } else if (status.equalsIgnoreCase("Need to return")) {
-
                 holder.StatusTV.setText(status);
                 holder.StatusTV.setTextColor(Color.parseColor("#000000"));
-
             }
 
             holder.NumberTv.setText("Job " + incomingRequestListBean.get(position).getProblem().getId());
@@ -301,15 +289,12 @@ public class PendingJobs extends AppCompatActivity {
             holder.FlexibleDateJobRequest.setText(incomingRequestListBean.get(position).getProblem().getIsDateFlexible());
             holder.FlexibleTimeJobRequest.setText(incomingRequestListBean.get(position).getProblem().getIsTimeFlexible());
 
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Intent intent = new Intent(mContext, JobRequestUserDetail.class);
                     intent.putExtra("ProblemId", incomingRequestListBean.get(position).getProblem().getId());
                     startActivity(intent);
-
                 }
             });
 

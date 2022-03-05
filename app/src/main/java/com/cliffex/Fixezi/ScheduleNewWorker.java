@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cliffex.Fixezi.Model.CalendarBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -39,6 +38,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class ScheduleNewWorker extends AppCompatActivity {
 

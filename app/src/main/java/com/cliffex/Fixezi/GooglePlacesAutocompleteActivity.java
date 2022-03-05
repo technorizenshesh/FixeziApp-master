@@ -1,6 +1,7 @@
 package com.cliffex.Fixezi;
 
 import java.util.ArrayList;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

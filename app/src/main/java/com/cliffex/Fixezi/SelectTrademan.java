@@ -37,7 +37,6 @@ import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -61,7 +60,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.crosswall.lib.coverflow.core.PagerContainer;
+import me.crosswall.lib.coverflow.core.PagerContainer;import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class SelectTrademan extends AppCompatActivity {
 
@@ -221,13 +220,11 @@ public class SelectTrademan extends AppCompatActivity {
         QuoteNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Appconstants.IsQuoteSelected = "No";
                 QuoteNo.setBackgroundResource(R.drawable.border_black_solid_red);
                 QuoteNo.setTextColor(Color.parseColor("#ffffff"));
                 QuoteYes.setBackgroundResource(R.drawable.border_black_solid_white);
                 QuoteYes.setTextColor(Color.parseColor("#000000"));
-
             }
         });
 
@@ -492,9 +489,7 @@ public class SelectTrademan extends AppCompatActivity {
                         Toast.makeText(SelectTrademan.this, "This Tradesman is currently on hold.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (status.equalsIgnoreCase("login")) {
-
                             Log.e("dsfasfasas","JsonObjectList = " + JsonObjectList.get(position));
-
                             Intent intent = new Intent(SelectTrademan.this, BookTradesman.class);
                             intent.putExtra("Data", JsonObjectList.get(position));
                             startActivity(intent);

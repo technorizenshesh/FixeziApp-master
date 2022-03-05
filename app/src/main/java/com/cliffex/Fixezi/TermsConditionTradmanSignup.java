@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 
 import ir.alirezabdn.wp7progress.WP10ProgressBar;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 /**
  * Created by technorizen8 on 30/1/16.

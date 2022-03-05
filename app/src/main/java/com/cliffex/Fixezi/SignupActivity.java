@@ -36,7 +36,6 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -64,6 +63,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.cliffex.Fixezi.Other.MySharedPref.getData;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class SignupActivity extends AppCompatActivity {
 

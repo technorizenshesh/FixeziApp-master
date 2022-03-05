@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 /**
  * Created by technorizen8 on 2/3/16.
  */
@@ -69,14 +69,11 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-
         fb_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(Profile.this, Nav_FB.class);
                 startActivity(intent);
-
             }
         });
 
@@ -96,11 +93,11 @@ public class Profile extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String jobCount = bundle.getString("jobCount");
 
-        if (jobCount.equalsIgnoreCase("0")) {
+        if (UserActivity.jobCount == 0) {
             JobCountProfileTV.setVisibility(View.GONE);
         } else {
             JobCountProfileTV.setVisibility(View.VISIBLE);
-            JobCountProfileTV.setText(jobCount);
+            JobCountProfileTV.setText(String.valueOf(UserActivity.jobCount));
         }
 
         JobRequestsTV.setOnClickListener(new View.OnClickListener() {
@@ -179,9 +176,9 @@ public class Profile extends AppCompatActivity {
             public void onClick(View v) {
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("status","null");
-                editor.putString("loginname","null");
-                editor.putString("userid","null");
+                editor.putString("status", "null");
+                editor.putString("loginname", "null");
+                editor.putString("userid", "null");
                 editor.commit();
                 sessionUser.logoutUser();
                 sessionWorker.logoutUser();
@@ -191,5 +188,17 @@ public class Profile extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (UserActivity.jobCount == 0) {
+            JobCountProfileTV.setVisibility(View.GONE);
+        } else {
+            JobCountProfileTV.setVisibility(View.VISIBLE);
+            JobCountProfileTV.setText(String.valueOf(UserActivity.jobCount));
+        }
+    }
+
 }
 

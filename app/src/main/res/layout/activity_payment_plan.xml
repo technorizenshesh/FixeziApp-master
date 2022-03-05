@@ -35,7 +35,6 @@
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
-
                 <LinearLayout
                     android:id="@+id/LL"
                     android:layout_width="match_parent"
@@ -55,87 +54,99 @@
 
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_below="@+id/MessagePPTV"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
-
-                    <LinearLayout
-                        android:id="@+id/PayPerJobPlanLL"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_black_solid_blue"
-                                android:gravity="center"
-                                android:padding="10dp"
-                                android:text="Pay Per Job"
-                                android:textColor="#ffffff" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_black_solid_white"
-                                android:gravity="center"
-                                android:padding="10dp"
-                                android:text="For every Job you Accept"
-                                android:textColor="#000000" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_black_solid_blue"
-                                android:gravity="center"
-                                android:padding="10dp"
-                                android:text="For Companies of any size"
-                                android:textColor="#ffffff" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
-                                android:background="@drawable/border_black"
-                                android:gravity="center"
-                                android:padding="10dp"
-
-                                />
-
-
-                        </LinearLayout>
-
+                        android:layout_height="match_parent">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:orientation="vertical">
+                            android:id="@+id/PayPerJobPlanLL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/tv_perJob"
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_black_solid_blue"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Pay Per Job"
+                                    android:textColor="#ffffff" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_black_solid_white"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="For every Job you Accept"
+                                    android:textColor="#000000" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/border_black_solid_blue"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="For Companies of any size"
+                                    android:textColor="#ffffff" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/border_black"
+                                    android:gravity="center"
+                                    android:padding="10dp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/border_black_solid_white"
-                                android:gravity="center"
-                                android:padding="5dp"
-                                android:text="$9.95 per Job"
-                                android:textColor="#000000" />
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_perJob"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/border_black_solid_white"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="$9.95 per Job"
+                                    android:textColor="#000000" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvAlreadyPurchased"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_110sdp"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            android:background="@color/graybarcolornew"
+                            android:elevation="@dimen/_10sdp"
+                            android:text="Already Purchased"
+                            android:textSize="@dimen/_18sdp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold" />
 
+                    </RelativeLayout>
 
                     <TextView
                         style="@style/Base.TextAppearance.AppCompat.Medium"
@@ -146,7 +157,6 @@
                         android:text="OR"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
-
 
                     <LinearLayout
                         android:id="@+id/PayPerJobPlanLL2"

@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.text.Spanned;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.Model.WorkerBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -71,7 +71,6 @@ public class AllJobs extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_all_jobs);

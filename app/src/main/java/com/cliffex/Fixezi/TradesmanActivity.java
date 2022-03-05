@@ -25,17 +25,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.MyUtils.MyFontTextView;
 import com.cliffex.Fixezi.activities.EmployeeTradeHomeAct;
 import com.cliffex.Fixezi.util.IabBroadcastReceiver;
 // import com.cliffex.Fixezi.util.IabHelper;
 //import com.cliffex.Fixezi.util.IabResult;
 import com.cliffex.Fixezi.util.Inventory;
+import com.cliffex.Fixezi.util.ProjectUtil;
 import com.cliffex.Fixezi.util.Purchase;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
@@ -65,6 +68,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class TradesmanActivity extends AppCompatActivity implements
         IabBroadcastReceiver.IabBroadcastListener {
@@ -186,7 +190,8 @@ public class TradesmanActivity extends AppCompatActivity implements
         loadData();
 
         Log.d(TAG, "Creating IAB helper.");
-//        mHelper = new IabHelper(this, Appconstants.base64EncodedPublicKey);
+
+        //        mHelper = new IabHelper(this, Appconstants.base64EncodedPublicKey);
 //
 //        // Toast.makeText(this, AfterHour, Toast.LENGTH_SHORT).show();
 //
@@ -246,6 +251,8 @@ public class TradesmanActivity extends AppCompatActivity implements
         tvEmployeeJobs = findViewById(R.id.tvEmployeeJobs);
 
         emegancy_callout_notes = (LinearLayout) findViewById(R.id.emegancy_callout_notes);
+
+        getPaymentStatusApi();
 
         if (Appconstants.afterhours.equals("no")) {
             emegancy_callout_notes.setVisibility(View.GONE);
@@ -504,6 +511,27 @@ public class TradesmanActivity extends AppCompatActivity implements
         } else {
             Toast.makeText(TradesmanActivity.this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void getPaymentStatusApi() {
+
+        ProjectUtil.showProgressDialog(mContext,true,getString(R.string.please_wait));
+        AndroidNetworking.post(HttpPAth.Urlpath + "get_payment_status")
+                .addBodyParameter("user_id",sessionTradesman.getId())
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        Log.e("asdasdasdas","response = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
 
     }
 

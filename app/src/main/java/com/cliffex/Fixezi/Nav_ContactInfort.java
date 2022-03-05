@@ -1,6 +1,7 @@
 package com.cliffex.Fixezi;
 
 import android.content.Intent;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;

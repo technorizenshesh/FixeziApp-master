@@ -43,7 +43,7 @@ public interface LoadInterface {
                                 @Query("notes_type") String notes_type,
                                 @Query("timeonjob") String timeonjob,
                                 @Part MultipartBody.Part body);
-    //https://fixezi.com.au/FIXEZI/webserv.php?add_trademan_notes&problem_id=6&notes_description=abcs&notes_type=Photo&timeonjob=6:45%20PM&notes_image=IMG_20190115_184521.jpg
+    // https://fixezi.com.au/FIXEZI/webserv.php?add_trademan_notes&problem_id=6&notes_description=abcs&notes_type=Photo&timeonjob=6:45%20PM&notes_image=IMG_20190115_184521.jpg
 
     @FormUrlEncoded
     @POST("FIXEZI/webserv.php?get_tradesman_profile")

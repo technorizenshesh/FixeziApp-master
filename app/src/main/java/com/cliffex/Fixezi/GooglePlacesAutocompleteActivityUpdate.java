@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;

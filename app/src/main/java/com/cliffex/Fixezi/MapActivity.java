@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.Manifest;
 import android.app.Activity;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;

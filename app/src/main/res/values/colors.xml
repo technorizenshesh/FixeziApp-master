@@ -34,6 +34,7 @@
     <color name="colorBluefixezi">#0072BB</color>
     <color name="bluebarfill">#18afb0</color>
     <color name="graybarcolor">#e0e0e0</color>
+    <color name="graybarcolornew">#80e0e0e0</color>
     <color name="bargray">#7f7f7f</color>
     <color name="iosbluecolor">#49A2F0</color>
 </resources>

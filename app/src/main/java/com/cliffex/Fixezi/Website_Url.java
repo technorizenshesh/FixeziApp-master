@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Website_Url extends AppCompatActivity {
 

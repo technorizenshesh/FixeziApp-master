@@ -2,8 +2,10 @@ package com.cliffex.Fixezi;
 
 /**
  * @author Jose Davis Nidhin
+ * import com.cliffex.Fixezi.MyUtils.InternetDetect;
  */
 
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;

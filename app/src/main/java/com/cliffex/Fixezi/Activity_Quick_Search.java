@@ -3,6 +3,7 @@ package com.cliffex.Fixezi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 

@@ -30,6 +30,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class EmployeeTradeHomeAct extends AppCompatActivity {
 
@@ -49,6 +50,7 @@ public class EmployeeTradeHomeAct extends AppCompatActivity {
         Log.e("adadasd","user_id = " + sessionTradesman.getId());
 
         itit();
+
     }
 
     private void itit() {

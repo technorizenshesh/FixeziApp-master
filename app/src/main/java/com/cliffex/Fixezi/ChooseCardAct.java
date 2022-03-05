@@ -1,5 +1,7 @@
 package com.cliffex.Fixezi;
 
+import android.app.Activity;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,11 +35,13 @@ public class ChooseCardAct extends AppCompatActivity {
     RecyclerView rvChooseCard;
     String cusId = "";
     SessionTradesman sessionTradesman;
+    public static Activity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_card);
+        instance = this;
         sessionTradesman = new SessionTradesman(this);
         itit();
     }
@@ -96,7 +100,8 @@ public class ChooseCardAct extends AppCompatActivity {
 
                                 String str = resultObj.getJSONObject("sources").getString("data");
 
-                                ArrayList<ModelMyCards.Data> cardList = new Gson().fromJson(str, new TypeToken<ArrayList<ModelMyCards.Data>>() {}.getType());
+                                ArrayList<ModelMyCards.Data> cardList = new Gson().fromJson(str, new TypeToken<ArrayList<ModelMyCards.Data>>() {
+                                }.getType());
 
                                 AdapterMyCards adapterMyCards = new AdapterMyCards(mContext, cardList, ChooseCardAct.this::addPaymentApiCallback);
                                 rvChooseCard.setAdapter(adapterMyCards);
@@ -119,17 +124,56 @@ public class ChooseCardAct extends AppCompatActivity {
                     }
 
                 });
+
     }
 
     public void addPaymentApiCallback(ModelMyCards.Data data) {
-        addPaymentApi(data);
+        addPaymentUpdateApiCall(data);
+        // addPaymentApi(data);
+    }
+
+    private void addPaymentUpdateApiCall(ModelMyCards.Data data) {
+
+        HashMap<String, String> param = new HashMap<>();
+
+        param.put("user_id", sessionTradesman.getId());
+        param.put("plan_type", "PayPerJob");
+        param.put("total_amount", "9.95");
+        param.put("payment_method", "Card");
+        param.put("token", data.getCustomer());
+        param.put("currency", "AUD");
+
+        Log.e("addPaymentApi", "paramparamparam = " + param);
+
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+        AndroidNetworking.post(HttpPAth.Urlpath + "add_payment")
+                .addBodyParameter(param)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        PaymentPlan.instance.finish();
+                        finish();
+                        // startActivity(new Intent(mContext, TradesmanActivity.class));
+                        Log.e("addPaymentApi", "addPaymentApi = " + response);
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                        Log.e("addPaymentApi", "anError = " + anError.getErrorBody());
+                        Log.e("addPaymentApi", "anError = " + anError.getErrorDetail());
+                    }
+                });
+
     }
 
     private void addPaymentApi(ModelMyCards.Data data) {
 
         HashMap<String, String> param = new HashMap<>();
         param.put("cust_id", data.getCustomer());
-        param.put("plan_type", "add_to_wallet");
+        param.put("plan_type", "PayPerJob");
         param.put("user_id", sessionTradesman.getId());
         param.put("card_id", data.getId());
 

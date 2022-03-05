@@ -23,6 +23,7 @@ import com.cliffex.Fixezi.util.Purchase;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class SubscriptionActivity extends AppCompatActivity implements IabBroadcastReceiver.IabBroadcastListener {
 

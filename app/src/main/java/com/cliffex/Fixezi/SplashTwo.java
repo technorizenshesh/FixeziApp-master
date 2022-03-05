@@ -39,6 +39,7 @@ import org.ankit.perfectdialog.EasyDialogListener;
 import org.ankit.perfectdialog.Icon;
 import org.json.JSONObject;
 import java.util.List;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class SplashTwo extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback {
@@ -76,6 +77,7 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
         // getLocationDialog();
 
         ContinueSTTV = findViewById(R.id.ContinueSTTV);
+
         if (getIntent().getExtras() != null) {
             new EasyDialog.Builder(this)
                     .setTitle("Alert!")
@@ -106,31 +108,31 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
             }
         });
 
-        try {
-
-            if (ActivityCompat.checkSelfPermission(this, mPermission[0])
-                    != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[1])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[2])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[3])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[4])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[5])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[6])
-                            != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        mPermission, REQUEST_CODE_PERMISSION);
-
-            } else {
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//
+//            if (ActivityCompat.checkSelfPermission(this, mPermission[0])
+//                    != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[1])
+//                            != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[2])
+//                            != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[3])
+//                            != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[4])
+//                            != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[5])
+//                            != PackageManager.PERMISSION_GRANTED ||
+//                    ActivityCompat.checkSelfPermission(this, mPermission[6])
+//                            != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this,
+//                        mPermission, REQUEST_CODE_PERMISSION);
+//
+//            } else {
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void GPSStatus() {
@@ -222,7 +224,6 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     private void removeGpsDialog() {
@@ -374,11 +375,11 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
     public void onResult(@NonNull Result result) {
 
         final Status status = result.getStatus();
+
         switch (status.getStatusCode()) {
+
             case LocationSettingsStatusCodes.SUCCESS:
-
                 // NO need to show the dialog;
-
                 break;
 
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -399,6 +400,7 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 // Location settings are unavailable so not possible to show any dialog now
                 break;
+
         }
 
     }
@@ -407,15 +409,12 @@ public class SplashTwo extends AppCompatActivity implements GoogleApiClient.Conn
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CHECK_SETTINGS) {
-
             if (resultCode == RESULT_OK) {
-
                 Toast.makeText(getApplicationContext(), "GPS enabled", Toast.LENGTH_LONG).show();
             } else {
-
                 Toast.makeText(getApplicationContext(), "GPS is not enabled", Toast.LENGTH_LONG).show();
             }
-
         }
     }
+
 }

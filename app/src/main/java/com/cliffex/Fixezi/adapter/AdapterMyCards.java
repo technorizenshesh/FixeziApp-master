@@ -50,7 +50,9 @@ public class AdapterMyCards extends RecyclerView.Adapter<AdapterMyCards.MyViewCa
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MyViewCardHolder holder, int position) {
+
         ModelMyCards.Data data = cardsList.get(position);
+
         holder.cardHolder.setText(data.getName());
         holder.cardNumber.setText(data.getBrand()+" **** **** **** "+data.getLast4());
         holder.tvDateYear.setText(data.getExp_month()+"/"+ data.getExp_year());

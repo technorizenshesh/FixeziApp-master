@@ -11,8 +11,8 @@ android {
         applicationId "com.cliffex.Fixezi"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 36
-        versionName "36.0"
+        versionCode 40
+        versionName "40.0"
         multiDexEnabled true
         signingConfig signingConfigs.debug
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'

@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.Dialog;
 import android.content.Context;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;

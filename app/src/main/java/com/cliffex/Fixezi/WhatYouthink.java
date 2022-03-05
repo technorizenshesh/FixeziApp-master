@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cliffex.Fixezi.MyUtils.MyFontBoldTextView;
-
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 /**
  * Created by technorizen8 on 17/3/16.
  */

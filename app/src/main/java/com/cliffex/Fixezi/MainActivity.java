@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,7 +27,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import com.cliffex.Fixezi.Constant.PreferenceConnector;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

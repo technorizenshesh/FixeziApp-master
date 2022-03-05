@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 public class Profile_Your_Information extends AppCompatActivity {
 
@@ -18,7 +19,6 @@ public class Profile_Your_Information extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile__your__information);
-
         SetuUI();
     }
 

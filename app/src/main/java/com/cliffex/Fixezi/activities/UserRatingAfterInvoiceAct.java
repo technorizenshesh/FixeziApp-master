@@ -1,4 +1,4 @@
-package com.cliffex.Fixezi;
+package com.cliffex.Fixezi.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,8 +15,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
 import com.cliffex.Fixezi.Other.AppConfig;
+import com.cliffex.Fixezi.R;
+import com.cliffex.Fixezi.SessionTradesman;
+import com.cliffex.Fixezi.SessionUser;
+import com.cliffex.Fixezi.TradesmanActivity;
+import com.cliffex.Fixezi.UserRating;
+import com.cliffex.Fixezi.util.ProjectUtil;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,24 +36,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserRating extends AppCompatActivity {
+public class UserRatingAfterInvoiceAct extends AppCompatActivity {
 
+    Context mContext = UserRatingAfterInvoiceAct.this;
+    String userId = "", userName = "";
     TextView toolbar_title, qotesaccepted, tv_canceljob, tvCustomerName;
     RelativeLayout NavigationUpIM, doneratesystem, backratesystem;
     RatingBar ratin1, ratin2, ratin3;
+    ProgressDialog progressDialog;
     SessionUser sessionUser;
     SessionTradesman sessionTradesman;
-    ProgressDialog progressDialog;
-    String userId = "", userName = "";
-    Context mContext = UserRating.this;
+    private String problemId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_rating);
+        setContentView(R.layout.activity_user_rating_after_invoice);
 
         progressDialog = new ProgressDialog(this);
         sessionUser = new SessionUser(this);
+        sessionTradesman = new SessionTradesman(this);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         qotesaccepted = (TextView) findViewById(R.id.qotesaccepted);
         doneratesystem = findViewById(R.id.doneratesystem);
@@ -61,6 +71,7 @@ public class UserRating extends AppCompatActivity {
 
         userId = getIntent().getStringExtra("userId");
         userName = getIntent().getStringExtra("username");
+        problemId = getIntent().getStringExtra("problemId");
 
         tvCustomerName.setText(userName);
 
@@ -69,6 +80,10 @@ public class UserRating extends AppCompatActivity {
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(), "DroidSerif.ttf");
         toolbar_title.setTypeface(custom_font);
+
+        doneratesystem.setOnClickListener(v -> {
+            callRatingApis();
+        });
 
         backratesystem.setOnClickListener(v -> {
             finish();
@@ -83,6 +98,38 @@ public class UserRating extends AppCompatActivity {
         });
 
         getUserRating();
+
+    }
+
+    private void callRatingApis() {
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("user_id", userId);
+        param.put("tradesman_id", sessionTradesman.getId());
+        param.put("problem_id", problemId);
+        param.put("easily_contacted", String.valueOf(ratin1.getRating()));
+        param.put("ease_of_job", String.valueOf(ratin2.getRating()));
+        param.put("payment_on_completion", String.valueOf(ratin3.getRating()));
+
+        Log.e("asdasdasd", "paramparamparam = " + param);
+
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+        AndroidNetworking.post(HttpPAth.Urlpath + "rating_tradesman")
+                .addBodyParameter(param)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        finish();
+                        startActivity(new Intent(mContext, TradesmanActivity.class));
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
 
     }
 
@@ -134,7 +181,7 @@ public class UserRating extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
                 progressDialog.dismiss();
-                Toast.makeText(UserRating.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserRatingAfterInvoiceAct.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
             }
 
         });

@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.content.Context;
 import android.net.Uri;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

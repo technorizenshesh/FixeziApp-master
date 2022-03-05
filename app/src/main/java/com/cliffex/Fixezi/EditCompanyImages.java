@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import static android.os.Build.VERSION.SDK_INT;
 
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import static com.cliffex.Fixezi.R.drawable.border_tourtoise_solide;
 
 import android.Manifest;
@@ -55,7 +56,6 @@ import com.cliffex.Fixezi.Model.TradesManBean;
 import com.cliffex.Fixezi.MyUtils.Appconstants;
 import com.cliffex.Fixezi.MyUtils.Base64Decode;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import com.cliffex.Fixezi.util.Compress;
 import com.cliffex.Fixezi.util.ProjectUtil;
 import com.google.gson.Gson;

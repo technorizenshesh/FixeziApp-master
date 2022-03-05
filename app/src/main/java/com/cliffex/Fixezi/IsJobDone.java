@@ -2,6 +2,7 @@ package com.cliffex.Fixezi;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.cliffex.Fixezi.Model.IncomingRequestBean;
 import com.cliffex.Fixezi.MyUtils.HttpPAth;
-import com.cliffex.Fixezi.MyUtils.InternetDetect;
 
 import org.json.JSONArray;
 import org.json.JSONException;

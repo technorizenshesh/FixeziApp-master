@@ -1,7 +1,9 @@
 package com.cliffex.Fixezi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import com.cliffex.Fixezi.MyUtils.InternetDetect;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +43,7 @@ public class JobDetailsAddQuote extends AppCompatActivity {
     ArrayList<File> fileArray = new ArrayList<>();
     File file1, file2, file3, file4, file5, file6, file7, file8, file9, file10;
     HashMap<String, File> fileHashMap = new HashMap<>();
+    private String type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class JobDetailsAddQuote extends AppCompatActivity {
         fileArray = (ArrayList<File>) getIntent().getSerializableExtra("filearray");
         problemId = getIntent().getStringExtra("problemId");
         notes = getIntent().getStringExtra("notes");
+        type = getIntent().getStringExtra("type");
 
         toolbar = (Toolbar) findViewById(R.id.tradesamn_toolbar);
         toolbar_textview = (TextView) findViewById(R.id.toolbar_title);
@@ -88,6 +92,7 @@ public class JobDetailsAddQuote extends AppCompatActivity {
 
                     Button btn = (Button) alertDialog.findViewById(R.id.confirm_button);
                     btn.setBackgroundColor(ContextCompat.getColor(JobDetailsAddQuote.this, R.color.lightblue));
+
                 } else if (price_et.getText().toString().equalsIgnoreCase("")) {
 
                     SweetAlertDialog alertDialog = new SweetAlertDialog(JobDetailsAddQuote.this, SweetAlertDialog.NORMAL_TYPE);
@@ -97,6 +102,7 @@ public class JobDetailsAddQuote extends AppCompatActivity {
 
                     Button btn = (Button) alertDialog.findViewById(R.id.confirm_button);
                     btn.setBackgroundColor(ContextCompat.getColor(JobDetailsAddQuote.this, R.color.lightblue));
+
                 } else {
                     if (rb7.isChecked()) {
                         sendQuoteToUseApi("7");
@@ -106,8 +112,7 @@ public class JobDetailsAddQuote extends AppCompatActivity {
                         Toast.makeText(JobDetailsAddQuote.this, "Please select Days", Toast.LENGTH_SHORT).show();
                     }
                 }
-
-                //   finish();
+                // finish();
             }
         });
 
@@ -178,7 +183,10 @@ public class JobDetailsAddQuote extends AppCompatActivity {
                         btn.setBackgroundColor(ContextCompat.getColor(JobDetailsAddQuote.this, R.color.lightblue));
 
                         btn.setOnClickListener(v -> {
-                            finish();
+                            if("incomplete".equals(type)) {
+                                finish();
+                                startActivity(new Intent(JobDetailsAddQuote.this,TradesmanActivity.class));
+                            } else { finish(); }
                         });
 
                         Log.e("responseresponse","response = " + response);
