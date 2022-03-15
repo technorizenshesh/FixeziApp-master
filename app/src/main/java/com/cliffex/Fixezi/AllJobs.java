@@ -89,6 +89,7 @@ public class AllJobs extends AppCompatActivity {
 
         rut.setText(textstyle);
 
+
         // rut.setText(" ");
         toolbar_textview.setText("All Jobs");
         setSupportActionBar(toolbar);

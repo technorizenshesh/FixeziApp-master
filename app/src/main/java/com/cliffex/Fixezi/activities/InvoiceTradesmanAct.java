@@ -73,6 +73,8 @@ public class InvoiceTradesmanAct extends AppCompatActivity {
         itit();
     }
 
+
+
     private void itit() {
 
         tvTittleInvoice = findViewById(R.id.tvTittleInvoice);
